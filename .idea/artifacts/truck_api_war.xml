@@ -1,0 +1,14 @@
+<component name="ArtifactManager">
+  <artifact type="war" name="truck-api:war">
+    <output-path>$PROJECT_DIR$/common-parent/truck-api/target</output-path>
+    <properties id="maven-jee-properties">
+      <options>
+        <module>truck-api</module>
+        <packaging>war</packaging>
+      </options>
+    </properties>
+    <root id="archive" name="truck-api.war">
+      <element id="artifact" artifact-name="truck-api:war exploded" />
+    </root>
+  </artifact>
+</component>

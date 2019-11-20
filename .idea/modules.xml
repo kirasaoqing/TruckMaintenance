@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ProjectModuleManager">
+    <modules>
+      <module fileurl="file://$PROJECT_DIR$/.idea/TruckMaintenance.iml" filepath="$PROJECT_DIR$/.idea/TruckMaintenance.iml" />
+      <module fileurl="file://$PROJECT_DIR$/common-parent/common-parent.iml" filepath="$PROJECT_DIR$/common-parent/common-parent.iml" />
+      <module fileurl="file://$PROJECT_DIR$/common-parent/truck-api/truck-api.iml" filepath="$PROJECT_DIR$/common-parent/truck-api/truck-api.iml" />
+      <module fileurl="file://$PROJECT_DIR$/common-parent/truck-dao/truck-dao.iml" filepath="$PROJECT_DIR$/common-parent/truck-dao/truck-dao.iml" />
+      <module fileurl="file://$PROJECT_DIR$/common-parent/truck-manager/truck-manager.iml" filepath="$PROJECT_DIR$/common-parent/truck-manager/truck-manager.iml" />
+      <module fileurl="file://$PROJECT_DIR$/common-parent/truck-model/truck-model.iml" filepath="$PROJECT_DIR$/common-parent/truck-model/truck-model.iml" />
+      <module fileurl="file://$PROJECT_DIR$/common-parent/truck-service/truck-service.iml" filepath="$PROJECT_DIR$/common-parent/truck-service/truck-service.iml" />
+    </modules>
+  </component>
+</project>
