@@ -24,6 +24,6 @@ public class UserController {
         System.out.println("......");
         User user = userService.findById(id);
         System.out.println(user);
-        return "hello";
+        return "home";
     }
 }
