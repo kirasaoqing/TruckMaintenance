@@ -35,12 +35,13 @@
 
 
     <!--配置拦截器-->
-    <!--<mvc:interceptors>
-        &lt;!&ndash;配置登录拦截器&ndash;&gt;
+    <mvc:interceptors>
+        <!--配置登录拦截器-->
         <mvc:interceptor>
             <mvc:mapping path="/**"/>
-            <bean class="com.cx.truck.backoffice.web.interceptor.LoginInterceptor"/>
+            <!--<mvc:exclude-mapping path=""/>-->
+            <bean class="com.cx.truck.web.interceptor.LoginInterceptor"/>
         </mvc:interceptor>
-    </mvc:interceptors>-->
+    </mvc:interceptors>
 
 </beans>

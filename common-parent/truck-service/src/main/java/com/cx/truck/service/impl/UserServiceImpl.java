@@ -5,13 +5,15 @@ import com.cx.truck.service.IUserService;
 import com.cx.truck.service.base.BaseServiceImpl;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
 @Service
 @Transactional
 public class UserServiceImpl extends BaseServiceImpl<User> implements IUserService {
 
     @Override
-    public User login(String username, String password) {
-        return null;
+    public User login(User user) {
+        User loginUser = userMapper.findByUsernameAndPassword(user);
+        return loginUser;
     }
 
     @Override

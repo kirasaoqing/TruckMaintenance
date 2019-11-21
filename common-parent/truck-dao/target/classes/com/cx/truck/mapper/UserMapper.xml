@@ -5,4 +5,8 @@
     <select id="findById" resultType="user" parameterType="int">
         SELECT * FROM t_user WHERE id = #{id}
     </select>
+
+    <select id="findByUsernameAndPassword" resultType="user" parameterType="user">
+        SELECT * FROM t_user WHERE username = #{username} AND password = #{password}
+    </select>
 </mapper>

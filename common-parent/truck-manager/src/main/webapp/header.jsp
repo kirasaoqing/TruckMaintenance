@@ -70,7 +70,7 @@
                         <li><a class="js-scroll-trigger" href="${pageContext.request.contextPath}/index.jsp#more">联系我们</a></li>
                         <li class="ml-xl-5 ml-lg-2 mt-lg-0 mt-sm-4 mt-3">
                             <a href="${pageContext.request.contextPath}/login.jsp" class="reqe-button text-uppercase">登录</a>
-                            <a href="${pageContext.request.contextPath}/register.jsp" class="reqe-button text-uppercase">注册</a>
+                            <%--<a href="${pageContext.request.contextPath}/register.jsp" class="reqe-button text-uppercase">注册</a>--%>
                         </li>
                     </ul>
                 </nav>

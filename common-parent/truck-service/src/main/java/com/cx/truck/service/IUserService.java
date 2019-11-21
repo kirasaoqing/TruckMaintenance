@@ -7,11 +7,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 public interface IUserService extends IBaseService<User> {
 
     /**
-     * 特有方法：登录
-     * @param username
-     * @param password
+     * 登录
+     * @param user
      * @return
      */
     @Autowired
-    public User login(String username, String password);
+    public User login(User user);
 }

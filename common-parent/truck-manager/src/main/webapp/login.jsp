@@ -83,20 +83,20 @@
         <div class="right-w3l">
             <input type="submit" class="form-control bg-theme" value="登录">
         </div>
-        <div class="row sub-w3l my-3">
+        <%--<div class="row sub-w3l my-3">
             <div class="col-sm-6 sub-w3layouts_hub">
                 <input type="checkbox" id="brand1" value="">
                 <label for="brand1" class="text-secondary">
                     <span></span>记住我?</label>
             </div>
-            <%--<div class="col-sm-6 forgot-w3l text-sm-right">
+            <div class="col-sm-6 forgot-w3l text-sm-right">
                 <a href="#" class="text-secondary">忘记密码?</a>
-            </div>--%>
-        </div>
-        <p class="text-center dont-do text-secondary">您是否有账号?
+            </div>
+        </div>--%>
+        <%--<p class="text-center dont-do text-secondary">您是否有账号?
             <a href="${pageContext.request.contextPath}/register.jsp" class="text-theme-2 font-weight-bold">
                 注册</a>
-        </p>
+        </p>--%>
     </form>
 </div>
 <!-- //login -->

@@ -121,7 +121,7 @@
                     <ul class="nav-menu list-unstyled d-flex flex-md-row align-items-md-center">
                         <!-- Log out-->
                         <li class="nav-item">
-                            <a href="${pageContext.request.contextPath}/index.jsp" class="nav-link logout">
+                            <a href="${pageContext.request.contextPath}/user/logout.do" class="nav-link logout">
                                 <span class="d-none d-sm-inline-block">退出</span>
                                 <i class="fa fa-sign-out"></i>
                             </a>
@@ -139,7 +139,7 @@
                 <div class="col-xl-2 col-md-4 col-6">
                     <div class="wrapper count-title d-flex">
                         <div class="icon"><i class="icon-user"></i></div>
-                        <div class="name"><strong class="text-uppercase">新进客户</strong><span>今天</span>
+                        <div class="name"><strong class="text-uppercase">新进 客户</strong><span>今天</span>
                             <div class="count-number">5</div>
                         </div>
                     </div>
@@ -148,7 +148,7 @@
                 <div class="col-xl-2 col-md-4 col-6">
                     <div class="wrapper count-title d-flex">
                         <div class="icon"><i class="icon-padnote"></i></div>
-                        <div class="name"><strong class="text-uppercase">维修车辆</strong><span>今天</span>
+                        <div class="name"><strong class="text-uppercase">维修 车辆</strong><span>今天</span>
                             <div class="count-number">7</div>
                         </div>
                     </div>
@@ -157,7 +157,7 @@
                 <div class="col-xl-2 col-md-4 col-6">
                     <div class="wrapper count-title d-flex">
                         <div class="icon"><i class="icon-check"></i></div>
-                        <div class="name"><strong class="text-uppercase">完工车辆</strong><span>今天</span>
+                        <div class="name"><strong class="text-uppercase">完工 车辆</strong><span>今天</span>
                             <div class="count-number">6</div>
                         </div>
                     </div>
@@ -166,7 +166,7 @@
                 <div class="col-xl-2 col-md-4 col-6">
                     <div class="wrapper count-title d-flex">
                         <div class="icon"><i class="icon-bill"></i></div>
-                        <div class="name"><strong class="text-uppercase">新进客户</strong><span>当月</span>
+                        <div class="name"><strong class="text-uppercase">新进 客户</strong><span>当月</span>
                             <div class="count-number">100</div>
                         </div>
                     </div>
@@ -175,7 +175,7 @@
                 <div class="col-xl-2 col-md-4 col-6">
                     <div class="wrapper count-title d-flex">
                         <div class="icon"><i class="icon-list"></i></div>
-                        <div class="name"><strong class="text-uppercase">维修车辆</strong><span>当月</span>
+                        <div class="name"><strong class="text-uppercase">维修 车辆</strong><span>当月</span>
                             <div class="count-number">166</div>
                         </div>
                     </div>
@@ -184,7 +184,7 @@
                 <div class="col-xl-2 col-md-4 col-6">
                     <div class="wrapper count-title d-flex">
                         <div class="icon"><i class="icon-list-1"></i></div>
-                        <div class="name"><strong class="text-uppercase">完工车辆</strong><span>当月</span>
+                        <div class="name"><strong class="text-uppercase">完工 车辆</strong><span>当月</span>
                             <div class="count-number">160</div>
                         </div>
                     </div>
