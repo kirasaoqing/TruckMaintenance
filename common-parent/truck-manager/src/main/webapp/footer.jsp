@@ -198,7 +198,7 @@
 </footer>
 <!-- copyright -->
 <div class="cpy-right text-center bg-theme">
-    <p class="text-wh">Copyright &copy; 2019.LYQX All rights reserved.More Templates 炉洋汽修 版权所有</p>
+    <p class="text-wh">Copyright &copy; 2019.LYQX All rights reserved. 炉洋汽修 版权所有</p>
 </div>
 <!-- //copyright -->
 </body>
