@@ -5,7 +5,7 @@
   Time: 10:28
   To change this template use File | Settings | File Templates.
 --%>
-<%@ page contentType="text/html;charset=UTF-8" language="java" %>
+<%@ page contentType="text/html;charset=UTF-8" language="java"%>
 <html>
 <head>
     <title>Login</title>
@@ -26,6 +26,7 @@
         function moveToTop() {
             window.scrollTo(0, 1);
         }
+
     </script>
     <!-- //Meta tag Keywords -->
 
@@ -97,6 +98,7 @@
             <a href="${pageContext.request.contextPath}/register.jsp" class="text-theme-2 font-weight-bold">
                 注册</a>
         </p>--%>
+        <p class="text-center dont-do text-secondary">${login_msg}</p>
     </form>
 </div>
 <!-- //login -->
