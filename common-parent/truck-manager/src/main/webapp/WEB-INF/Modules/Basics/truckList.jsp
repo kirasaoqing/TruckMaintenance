@@ -1,9 +1,16 @@
+<%--
+  Created by IntelliJ IDEA.
+  User: kira
+  Date: 2019-11-22
+  Time: 15:55
+  To change this template use File | Settings | File Templates.
+--%>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <html>
 <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <title>Home</title>
+    <title>TruckList</title>
     <meta name="description" content="">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="robots" content="all,follow">
@@ -48,7 +55,7 @@
             <!-- User Info-->
             <div class="sidenav-header-inner text-center">
                 <img src="${pageContext.request.contextPath}/assets/Images/xpic4711.jpg" alt="person"
-                    class="img-fluid rounded-circle">
+                     class="img-fluid rounded-circle">
                 <h2 class="h5">炉洋汽修</h2>
                 <span>LY TruckMaintenance</span>
             </div>
@@ -64,7 +71,7 @@
         <div class="main-menu">
             <h5 class="sidenav-heading">基本功能</h5>
             <ul id="side-main-menu" class="side-menu list-unstyled">
-                <li class="active">
+                <li>
                     <a href="${pageContext.request.contextPath}/home/home.do">
                         <i class="icon-home"></i>主页
                     </a>
@@ -95,12 +102,13 @@
             <h5 class="sidenav-heading">系统设置</h5>
             <ul id="side-admin-menu" class="side-menu list-unstyled">
                 <li><a href="${pageContext.request.contextPath}/home/customer.do"> <i class="icon-screen"> </i>客户信息</a></li>
-                <li><a href="${pageContext.request.contextPath}/home/truck.do"> <i class="icon-picture"> </i>车辆信息</a></li>
+                <li class="active"><a href="${pageContext.request.contextPath}/home/truck.do"> <i class="icon-picture"> </i>车辆信息</a></li>
                 <li><a href="${pageContext.request.contextPath}/home/worker.do"> <i class="icon-picture"> </i>员工信息</a></li>
             </ul>
         </div>
     </div>
 </nav>
+<!--page-->
 <div class="page">
     <!-- navbar-->
     <header class="header">
@@ -131,81 +139,118 @@
             </div>
         </nav>
     </header>
-    <!-- Counts Section -->
-    <section class="dashboard-counts section-padding">
+    <!-- content start -->
+    <div class="breadcrumb-holder">
         <div class="container-fluid">
+            <ul class="breadcrumb">
+                <li class="breadcrumb-item">
+                    <a href="${pageContext.request.contextPath}/home/home.do">主页</a>
+                </li>
+                <li class="breadcrumb-item active">车辆</li>
+            </ul>
+        </div>
+    </div>
+    <section class="dashboard-counts section-padding">
+
+        <div class="container-fluid">
+            <!-- Page Header-->
+            <%--<header>
+                <h1 class="h3 display">员工列表</h1>
+                <div class="am-btn-group am-btn-group-xs">
+                    <button type="button" class="am-btn am-btn-default"><span class="am-icon-plus"></span> 新增</button>
+                    <button type="button" class="am-btn am-btn-default"><span class="am-icon-save"></span> 保存</button>
+                    <button type="button" class="am-btn am-btn-default"><span class="am-icon-archive"></span> 审核</button>
+                    <button type="button" class="am-btn am-btn-default"><span class="am-icon-trash-o"></span> 删除</button>
+                </div>
+            </header>--%>
+
             <div class="row">
-                <!-- Count item widget-->
-                <div class="col-xl-2 col-md-4 col-6">
-                    <div class="wrapper count-title d-flex">
-                        <div class="icon"><i class="icon-user"></i></div>
-                        <div class="name"><strong class="text-uppercase">新进 客户</strong><span>今天</span>
-                            <div class="count-number">5</div>
+                <div class="col-lg-12">
+                    <div class="card">
+                        <div class="card-header">
+                            <h2><span class="fa fa-user-circle-o"></span> 车辆列表</h2>
                         </div>
-                    </div>
-                </div>
-                <!-- Count item widget-->
-                <div class="col-xl-2 col-md-4 col-6">
-                    <div class="wrapper count-title d-flex">
-                        <div class="icon"><i class="icon-padnote"></i></div>
-                        <div class="name"><strong class="text-uppercase">维修 车辆</strong><span>今天</span>
-                            <div class="count-number">7</div>
+                        <div class="card-deck">
+                            <div class="col-lg-8">
+                                <button type="button" class="btn btn-primary"><span class="fa fa-plus"></span> 新增</button>
+                                <button type="button" class="btn btn-primary"><span class="fa fa-copy"></span> 复制</button>
+                                <button type="button" class="btn btn-primary"><span class="fa fa-edit"></span> 修改</button>
+                                <button type="button" class="btn btn-primary"><span class="fa fa-trash"></span> 删除</button>
+                            </div>
+                            <div class="col-lg-4">
+                                <input type="text">
+                                <button class="btn btn-dark" type="button"><span class="fa fa-search"></span>搜索</button>
+                            </div>
                         </div>
-                    </div>
-                </div>
-                <!-- Count item widget-->
-                <div class="col-xl-2 col-md-4 col-6">
-                    <div class="wrapper count-title d-flex">
-                        <div class="icon"><i class="icon-check"></i></div>
-                        <div class="name"><strong class="text-uppercase">完工 车辆</strong><span>今天</span>
-                            <div class="count-number">6</div>
-                        </div>
-                    </div>
-                </div>
-                <!-- Count item widget-->
-                <div class="col-xl-2 col-md-4 col-6">
-                    <div class="wrapper count-title d-flex">
-                        <div class="icon"><i class="icon-bill"></i></div>
-                        <div class="name"><strong class="text-uppercase">新进 客户</strong><span>当月</span>
-                            <div class="count-number">100</div>
-                        </div>
-                    </div>
-                </div>
-                <!-- Count item widget-->
-                <div class="col-xl-2 col-md-4 col-6">
-                    <div class="wrapper count-title d-flex">
-                        <div class="icon"><i class="icon-list"></i></div>
-                        <div class="name"><strong class="text-uppercase">维修 车辆</strong><span>当月</span>
-                            <div class="count-number">166</div>
-                        </div>
-                    </div>
-                </div>
-                <!-- Count item widget-->
-                <div class="col-xl-2 col-md-4 col-6">
-                    <div class="wrapper count-title d-flex">
-                        <div class="icon"><i class="icon-list-1"></i></div>
-                        <div class="name"><strong class="text-uppercase">完工 车辆</strong><span>当月</span>
-                            <div class="count-number">160</div>
+                        <div class="card-body">
+
+                            <div class="table-responsive">
+                                <table class="table">
+                                    <thead>
+                                    <th class="table-check">
+                                        <input type="checkbox" />
+                                    </th>
+                                    <th class="table-id">ID</th>
+                                    <th class="table-title">标题</th>
+                                    <th class="table-type">类别</th>
+                                    <th class="table-author">作者</th>
+                                    <th class="table-date">修改日期</th>
+                                    </thead>
+                                    <tbody>
+                                    <tr>
+                                        <td><input type="checkbox" /></td>
+                                        <td>1</td>
+                                        <td><a href="#">Business management</a></td>
+                                        <td>default</td>
+                                        <td>测试1号</td>
+                                        <td>2014年9月4日 7:28:47</td>
+                                    </tr>
+                                    <tr>
+                                        <td><input type="checkbox" /></td>
+                                        <td>1</td>
+                                        <td><a href="#">Business management</a></td>
+                                        <td>default</td>
+                                        <td>测试1号</td>
+                                        <td>2014年9月4日 7:28:47</td>
+                                    </tr>
+                                    <tr>
+                                        <td><input type="checkbox" /></td>
+                                        <td>1</td>
+                                        <td><a href="#">Business management</a></td>
+                                        <td>default</td>
+                                        <td>测试1号</td>
+                                        <td>2014年9月4日 7:28:47</td>
+                                    </tr>
+                                    <tr>
+                                        <td><input type="checkbox" /></td>
+                                        <td>1</td>
+                                        <td><a href="#">Business management</a></td>
+                                        <td>default</td>
+                                        <td>测试1号</td>
+                                        <td>2014年9月4日 7:28:47</td>
+                                    </tr>
+                                    <tr>
+                                        <td><input type="checkbox" /></td>
+                                        <td>1</td>
+                                        <td><a href="#">Business management</a></td>
+                                        <td>default</td>
+                                        <td>测试1号</td>
+                                        <td>2014年9月4日 7:28:47</td>
+                                    </tr>
+                                    </tbody>
+                                </table>
+                            </div>
                         </div>
                     </div>
                 </div>
             </div>
+
+
         </div>
     </section>
-    <footer class="main-footer">
-        <div class="container-fluid">
-            <div class="row">
-                <div class="col-sm-6">
-                    <p>Copyright &copy; 2019.LYQX All rights reserved. 炉洋汽修 版权所有</p>
-                </div>
-                <div class="col-sm-6 text-right">
-
-
-                </div>
-            </div>
-        </div>
-    </footer>
 </div>
+
+
 <!-- JavaScript files-->
 <script src="${pageContext.request.contextPath}/assets/vendor/jquery/jquery.min.js"></script>
 <script src="${pageContext.request.contextPath}/assets/vendor/popper.js/umd/popper.min.js"></script>

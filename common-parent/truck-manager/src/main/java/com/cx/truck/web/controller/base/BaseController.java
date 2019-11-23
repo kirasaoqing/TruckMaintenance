@@ -1,7 +1,6 @@
 package com.cx.truck.web.controller.base;
 
 import java.lang.reflect.ParameterizedType;
-import java.lang.reflect.Type;
 
 public abstract class BaseController<T> {
 

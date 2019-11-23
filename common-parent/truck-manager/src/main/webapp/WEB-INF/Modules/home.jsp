@@ -54,7 +54,7 @@
             </div>
             <!-- Small Brand information, appears on minimized sidebar-->
             <div class="sidenav-header-logo">
-                <a href="${pageContext.request.contextPath}/Modules/home.jsp" class="brand-small text-center">
+                <a href="${pageContext.request.contextPath}/home/home.do" class="brand-small text-center">
                     <strong>L</strong>
                     <strong class="text-primary">Y</strong>
                 </a>
@@ -64,8 +64,8 @@
         <div class="main-menu">
             <h5 class="sidenav-heading">基本功能</h5>
             <ul id="side-main-menu" class="side-menu list-unstyled">
-                <li>
-                    <a href="${pageContext.request.contextPath}/Modules/home.jsp">
+                <li class="active">
+                    <a href="${pageContext.request.contextPath}/home/home.do">
                         <i class="icon-home"></i>主页
                     </a>
                 </li>
@@ -94,9 +94,9 @@
         <div class="admin-menu">
             <h5 class="sidenav-heading">系统设置</h5>
             <ul id="side-admin-menu" class="side-menu list-unstyled">
-                <li><a href="#"> <i class="icon-screen"> </i>客户信息</a></li>
-                <li><a href=""> <i class="icon-picture"> </i>车辆信息</a></li>
-                <li><a href=""> <i class="icon-picture"> </i>员工信息</a></li>
+                <li><a href="${pageContext.request.contextPath}/home/customer.do"> <i class="icon-screen"> </i>客户信息</a></li>
+                <li><a href="${pageContext.request.contextPath}/home/truck.do"> <i class="icon-picture"> </i>车辆信息</a></li>
+                <li><a href="${pageContext.request.contextPath}/home/worker.do"> <i class="icon-picture"> </i>员工信息</a></li>
             </ul>
         </div>
     </div>
