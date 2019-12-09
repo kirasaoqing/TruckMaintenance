@@ -1,5 +1,7 @@
 package com.cx.truck.service.base;
 
+import java.util.List;
+
 public interface IBaseService<T> {
     /**
      * 新增
@@ -33,9 +35,22 @@ public interface IBaseService<T> {
     public T findById(Integer id);
 
     /**
+     * 通过名称查找
+     * @param name
+     * @return true:不存在 false:存在
+     */
+    public boolean findByName(String name);
+
+    /**
      * 通过uuid查找
      * @param uuid
      * @return
      */
     public T findByUUID(String uuid);
+
+    /**
+     * 查询出所有
+     * @return
+     */
+    public List<T> findAll();
 }

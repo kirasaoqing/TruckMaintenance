@@ -27,7 +27,9 @@ public class AppTest
     public void before() throws IOException {
         System.out.println("before...获取session");
         //a)	读取配置文件；
-        InputStream is = Resources.getResourceAsStream("applicationContext.xml");
+        InputStream is = Resources.getResourceAsStream("classpath*:applicationContext.xml");
+        //InputStream is = this.getClass().getClassLoader().getResourceAsStream("applicationContext.xml"); //拿到资源
+        System.out.println(is);
         //b)	通过SqlSessionFactoryBuilder创建SqlSessionFactory会话工厂。
         SqlSessionFactory sessionFactory = new SqlSessionFactoryBuilder().build(is);
         //c)	通过SqlSessionFactory创建SqlSession。

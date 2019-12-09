@@ -13,9 +13,11 @@
 		http://www.springframework.org/schema/tx
 		http://www.springframework.org/schema/tx/spring-tx-4.3.xsd">
 
-    <context:property-placeholder location="classpath:db.properties"/>
+    <!--自动扫描Service-->
+    <context:component-scan base-package="com.cx.truck"/>
 
     <!-- 配置数据源 -->
+    <context:property-placeholder location="classpath:db.properties"/>
     <bean id="dataSource" class="com.mchange.v2.c3p0.ComboPooledDataSource">
         <property name="driverClass" value="${jdbc.driver}"/>
         <property name="jdbcUrl" value="${jdbc.Url}"/>
@@ -25,33 +27,41 @@
         <property name="minPoolSize" value="2"/>
     </bean>
 
+    <!--配置和mybatis整合-->
     <!-- 配置sessionFactory -->
     <bean class="org.mybatis.spring.SqlSessionFactoryBean" id="sqlSessionFactoryBean">
         <property name="dataSource" ref="dataSource"/>
-        <!-- 指定配置文件位置 -->
-        <!--<property name="configLocation" value="classpath:mybatis.xml"/>-->
         <!--配置别名-->
         <property name="typeAliasesPackage" value="com.cx.truck.model"></property>
 
-        <!--配置加载映射文件 UserMapper.xml-->
+        <!--配置加载映射文件 *Mapper.xml-->
         <property name="mapperLocations" value="classpath:com/cx/truck/mapper/*Mapper.xml"/>
+        <!-- 指定配置文件位置 -->
+        <property name="configLocation" value="classpath:mybatis.xml"/>
     </bean>
 
-    <!-- 自动生成dao,mapper-->
+    <!-- 自动生成dao,mapper
+         配置扫描器，将mybatis接口的实现加入到ioc容器中
+         -->
     <bean class="org.mybatis.spring.mapper.MapperScannerConfigurer">
+        <!--扫描所有dao接口的实现，加入到ioc容器中-->
         <property name="basePackage" value="com.cx.truck.mapper"/>
         <property name="sqlSessionFactoryBeanName" value="sqlSessionFactoryBean"/>
     </bean>
 
-    <!--自动扫描Service-->
-    <context:component-scan base-package="com.cx.truck"/>
+    <!--配置一个可以批量执行的sqlSession-->
+    <bean id="sqlSession" class="org.mybatis.spring.SqlSessionTemplate">
+        <constructor-arg name="sqlSessionFactory" ref="sqlSessionFactoryBean"/>
+        <constructor-arg name="executorType" value="BATCH"/>
+    </bean>
 
 
     <!-- 配置事务-->
     <!-- 5.配置事务管理器 -->
     <bean id="transactionManager" class="org.springframework.jdbc.datasource.DataSourceTransactionManager">
+        <!--控制住数据源-->
         <property name="dataSource" ref="dataSource"/>
     </bean>
-    <!-- 6.开启事务注解-->
+    <!-- 6.开启基于注解的事务-->
     <tx:annotation-driven></tx:annotation-driven>
 </beans>

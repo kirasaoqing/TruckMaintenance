@@ -6,6 +6,8 @@ import com.cx.truck.service.base.BaseServiceImpl;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
+
 @Service
 @Transactional
 public class UserServiceImpl extends BaseServiceImpl<User> implements IUserService {
@@ -18,7 +20,6 @@ public class UserServiceImpl extends BaseServiceImpl<User> implements IUserServi
 
     @Override
     public void insert(User user) {
-
     }
 
     @Override
@@ -44,7 +45,17 @@ public class UserServiceImpl extends BaseServiceImpl<User> implements IUserServi
     }
 
     @Override
+    public boolean findByName(String name) {
+        return false;
+    }
+
+    @Override
     public User findByUUID(String uuid) {
+        return null;
+    }
+
+    @Override
+    public List<User> findAll() {
         return null;
     }
 }
