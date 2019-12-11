@@ -15,6 +15,7 @@ import org.springframework.validation.FieldError;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -135,11 +136,64 @@ public class CustomerController extends BaseController<Customer> {
         }
     }
 
+    /**
+     * 根据id查询
+     *
+     * @param id
+     * @return
+     */
     @RequestMapping(value = "/{id}", method = RequestMethod.GET)
     @ResponseBody
     public Msg getCustomerById(@PathVariable("id") Integer id) {
         Customer customer = customerService.findById(id);
         return Msg.success().add("customer", customer);
+    }
+
+    /**
+     * 如果是ajax-PUT形式的请求，封装的数据除了id=3001，其余=null
+     * 问题：请求体有数据，对象封装不上
+     * 原因：tomcat将请求中的数据，封装一个map，request.getParameter("name")就会中从这个map取值
+     * SpringMVC封装POJO对象的时候，会把每个POJO中每个属性的值，request.getParamter("email")
+     * Tomcat引发的血案：
+     * PUT请求，请求体中的数据，request.getParameter("")拿不到
+     * Tomcat一看是PUT，不会封装请求体中的数据为map，只有POST形式的请求才封装请求体为map
+     * 解决方案：web.xml配置HttpPutFormContentFilter过滤器
+     * <p>
+     * 更新客户
+     *
+     * @param customer
+     * @return
+     */
+    @RequestMapping(value = "/{id}", method = RequestMethod.PUT)
+    @ResponseBody
+    public Msg updateCustomer(Customer customer) {
+        customerService.update(customer);
+        return Msg.success();
+    }
+
+    /**
+     * 批量/单一删除方法
+     * 批量：1-2-3
+     * 单一：1
+     *
+     * @param ids
+     * @return
+     */
+    @RequestMapping(value = "/{ids}", method = RequestMethod.DELETE)
+    @ResponseBody
+    public Msg deleteCustomer(@PathVariable("ids") String ids) {
+        if (ids.contains("-")) {
+            List<Integer> list_ids = new ArrayList<Integer>();
+            String[] arr_ids = ids.split("-");
+            for (String arr_id : arr_ids) {
+                list_ids.add(Integer.parseInt(arr_id));
+            }
+            customerService.deleteBatch(list_ids);
+        } else {
+            customerService.deleteById(Integer.parseInt(ids));
+        }
+
+        return Msg.success();
     }
 
 }

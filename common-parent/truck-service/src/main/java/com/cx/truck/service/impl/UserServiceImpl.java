@@ -58,4 +58,9 @@ public class UserServiceImpl extends BaseServiceImpl<User> implements IUserServi
     public List<User> findAll() {
         return null;
     }
+
+    @Override
+    public void deleteBatch(List<Integer> ids) {
+
+    }
 }

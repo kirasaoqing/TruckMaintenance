@@ -19,7 +19,7 @@ public class CustomerServiceImpl extends BaseServiceImpl<Customer> implements IC
 
     @Override
     public void deleteById(Integer id) {
-
+        customerMapper.deleteByPrimaryKey(id);
     }
 
     @Override
@@ -29,7 +29,7 @@ public class CustomerServiceImpl extends BaseServiceImpl<Customer> implements IC
 
     @Override
     public void update(Customer customer) {
-
+        customerMapper.updateByPrimaryKeySelective(customer);
     }
 
     @Override
@@ -55,5 +55,13 @@ public class CustomerServiceImpl extends BaseServiceImpl<Customer> implements IC
     public List<Customer> findAll() {
         //List<Customer> customerList = customerMapper.findCustomerList();
         return customerMapper.selectByExample(null);
+    }
+
+    @Override
+    public void deleteBatch(List<Integer> ids) {
+        CustomerExample example = new CustomerExample();
+        CustomerExample.Criteria criteria = example.createCriteria();
+        criteria.andIdIn(ids);
+        customerMapper.deleteByExample(example);
     }
 }
