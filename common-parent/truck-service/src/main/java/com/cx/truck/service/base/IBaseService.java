@@ -45,7 +45,16 @@ public interface IBaseService<T> {
      * @param name
      * @return true:不存在 false:存在
      */
-    public boolean findByName(String name);
+    public Boolean findByName(String name);
+
+
+    /**
+     * 通过名称模糊查询
+     *
+     * @param name
+     * @return
+     */
+    public List<T> fuzzyByName(String name);
 
     /**
      * 通过uuid查找

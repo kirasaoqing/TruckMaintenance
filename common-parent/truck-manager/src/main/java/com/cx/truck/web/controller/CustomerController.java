@@ -20,14 +20,13 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import static com.cx.truck.web.controller.base.BaseController.CUSTOMER;
 
 /**
  * 客户操作控制器
  */
 @Controller
-@RequestMapping(CUSTOMER)
-public class CustomerController extends BaseController<Customer> {
+@RequestMapping("customer")
+public class CustomerController {
 
     //创建一个日志对象
     private Logger logger = Logger.getLogger(UserController.class);
@@ -35,16 +34,30 @@ public class CustomerController extends BaseController<Customer> {
     @Autowired
     protected ICustomerService customerService;
 
+    //================================查询===================================
+
     /**
-     * list方法返回json
+     * 查询所有客户json
+     * @return
+     */
+    @RequestMapping(value = "/getAllCustomers", method = RequestMethod.GET)
+    @ResponseBody
+    public Msg getAllCustomers() {
+        List<Customer> customers = customerService.findAll();
+        return Msg.success().add("customers", customers);
+    }
+
+
+    /**
+     * 分页返回json
      *
      * @param pn
      * @return
      */
-    @RequestMapping(LIST)
+    @RequestMapping(value = "/getCustomersWithJson", method = RequestMethod.GET)
     public @ResponseBody
     Msg getCustomersWithJson(@RequestParam(value = "pn", defaultValue = "1") Integer pn) {
-        logger.info("==================list customers, page from:" + pn + "====================");
+        logger.info("==================list customerInfo, page from:" + pn + "====================");
         //这不是一个分页查询
         //List<Customer> customers = customerService.findAll();
         //引入PageHelper分页插件，在查询之前只需要调用
@@ -55,6 +68,62 @@ public class CustomerController extends BaseController<Customer> {
         //封装了详细的分页信息，连续显示5页
         PageInfo page = new PageInfo(customers, 6);
         return Msg.success().add("pageInfo", page);
+    }
+
+    /**
+     * 根据名称查询客户是否存在
+     *
+     * @param name
+     * @return
+     */
+    @RequestMapping(value = "/checkCustomerByName", method = RequestMethod.GET)
+    @ResponseBody
+    public Msg checkCustomerByName(@RequestParam("name") String name) {
+        //先判断用户名是否合法
+        String regx = "(^[a-zA-Z0-9_-]{3,16}$)|(^[\\u2E80-\\u9FFF]{2,30}$)";
+        if (!name.matches(regx)) {
+            return Msg.fail().add("va_msg", "用户名必须是2-5位中文或者6-16位英文和数字的组合");
+        }
+        boolean b = customerService.findByName(name);
+        if (b) {
+            return Msg.success();
+        } else {
+            return Msg.fail().add("va_msg", "用户名不可用");
+        }
+    }
+
+    /**
+     * 根据名称模糊查询
+     *
+     * @param name
+     * @param pn
+     * @return
+     */
+    @RequestMapping(value = "/getCustomersByName", method = RequestMethod.GET)
+    @ResponseBody
+    public Msg getCustomersByName(@RequestParam("name") String name,
+                                  @RequestParam(value = "pn", defaultValue = "1") Integer pn) {
+        PageHelper.startPage(pn, 6);
+        List<Customer> customers = customerService.fuzzyByName(name);
+        if (customers.size() > 0) {
+            PageInfo page = new PageInfo(customers, 6);
+            return Msg.success().add("pageInfo", page);
+        } else {
+            return Msg.fail().add("va_msg", "用户名不可用");
+        }
+    }
+
+    /**
+     * 根据id查询
+     *
+     * @param id
+     * @return
+     */
+    @RequestMapping(value = "/{id}", method = RequestMethod.GET)
+    @ResponseBody
+    public Msg getCustomerById(@PathVariable("id") Integer id) {
+        Customer customer = customerService.findById(id);
+        return Msg.success().add("customer", customer);
     }
 
 
@@ -85,6 +154,8 @@ public class CustomerController extends BaseController<Customer> {
         return CUSTOMER_PAGE;
     }*/
 
+    //==================================新增==============================
+
     /**
      * 新增客户
      * 使用JSR303进行后端校验
@@ -110,44 +181,10 @@ public class CustomerController extends BaseController<Customer> {
             customerService.insert(customer);
             return Msg.success();
         }
-
-
     }
 
-    /**
-     * 根据名称查询客户是否存在
-     *
-     * @param name
-     * @return
-     */
-    @RequestMapping(value = "/checkCustomerByName", method = RequestMethod.GET)
-    @ResponseBody
-    public Msg checkCustomerByName(@RequestParam("name") String name) {
-        //先判断用户名是否合法
-        String regx = "(^[a-zA-Z0-9_-]{3,16}$)|(^[\\u2E80-\\u9FFF]{2,5}$)";
-        if (!name.matches(regx)) {
-            return Msg.fail().add("va_msg", "用户名必须是2-5位中文或者6-16位英文和数字的组合");
-        }
-        boolean b = customerService.findByName(name);
-        if (true == b) {
-            return Msg.success();
-        } else {
-            return Msg.fail().add("va_msg", "用户名不可用");
-        }
-    }
 
-    /**
-     * 根据id查询
-     *
-     * @param id
-     * @return
-     */
-    @RequestMapping(value = "/{id}", method = RequestMethod.GET)
-    @ResponseBody
-    public Msg getCustomerById(@PathVariable("id") Integer id) {
-        Customer customer = customerService.findById(id);
-        return Msg.success().add("customer", customer);
-    }
+    //==================================修改===================================
 
     /**
      * 如果是ajax-PUT形式的请求，封装的数据除了id=3001，其余=null
@@ -171,6 +208,8 @@ public class CustomerController extends BaseController<Customer> {
         return Msg.success();
     }
 
+    //===============================删除================================
+
     /**
      * 批量/单一删除方法
      * 批量：1-2-3
@@ -192,8 +231,6 @@ public class CustomerController extends BaseController<Customer> {
         } else {
             customerService.deleteById(Integer.parseInt(ids));
         }
-
         return Msg.success();
     }
-
 }

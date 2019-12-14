@@ -48,7 +48,7 @@
             <!-- User Info-->
             <div class="sidenav-header-inner text-center">
                 <img src="${pageContext.request.contextPath}/assets/Images/xpic4711.jpg" alt="person"
-                    class="img-fluid rounded-circle">
+                     class="img-fluid rounded-circle">
                 <h2 class="h5">炉洋汽修</h2>
                 <span>LY TruckMaintenance</span>
             </div>
@@ -97,9 +97,12 @@
                 <!-- customerlist-2.jsp跳转方法-->
                 <!-- <li><a href="${pageContext.request.contextPath}/customer/customerlist.do"> <i class="icon-screen"> </i>客户信息</a></li>-->
                 <!-- customerlist.jsp跳转方法-->
-                <li><a href="${pageContext.request.contextPath}/home/customer.do"> <i class="icon-screen"> </i>客户信息</a></li>
-                <li><a href="${pageContext.request.contextPath}/home/truck.do"> <i class="icon-picture"> </i>车辆信息</a></li>
-                <li><a href="${pageContext.request.contextPath}/home/worker.do"> <i class="icon-picture"> </i>员工信息</a></li>
+                <li><a href="${pageContext.request.contextPath}/home/customer.do"> <i class="icon-screen"> </i>客户信息</a>
+                </li>
+                <li><a href="${pageContext.request.contextPath}/home/truck.do"> <i class="icon-picture"> </i>车辆信息</a>
+                </li>
+                <li><a href="${pageContext.request.contextPath}/home/worker.do"> <i class="icon-picture"> </i>员工信息</a>
+                </li>
             </ul>
         </div>
     </div>

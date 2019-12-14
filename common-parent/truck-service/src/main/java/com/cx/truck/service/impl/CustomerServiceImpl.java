@@ -38,12 +38,21 @@ public class CustomerServiceImpl extends BaseServiceImpl<Customer> implements IC
     }
 
     @Override
-    public boolean findByName(String name) {
+    public Boolean findByName(String name) {
         CustomerExample example = new CustomerExample();
         CustomerExample.Criteria criteria = example.createCriteria();
         criteria.andNameEqualTo(name);
         int count = customerMapper.countByExample(example);
         return count == 0;
+    }
+
+    @Override
+    public List<Customer> fuzzyByName(String name) {
+        CustomerExample example = new CustomerExample();
+        CustomerExample.Criteria criteria = example.createCriteria();
+        criteria.andNameLike(name);
+        List<Customer> customers = customerMapper.selectByExample(example);
+        return customers;
     }
 
     @Override

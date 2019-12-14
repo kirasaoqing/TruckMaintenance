@@ -56,6 +56,10 @@
     <!-- Tweaks for older IEs--><!--[if lt IE 9]>
     <script src="https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js"></script>
     <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script><![endif]-->
+
+    <!-- sweetalert-->
+    <script src="${pageContext.request.contextPath}/assets/vendor/sweetalert/sweetalert.min.js"></script>
+    <!-- sweetalert-->
 </head>
 <body>
 <!-- Side Navbar -->
@@ -65,14 +69,14 @@
         <div class="sidenav-header d-flex align-items-center justify-content-center">
             <!-- User Info-->
             <div class="sidenav-header-inner text-center">
-                <img src="${pageContext.request.contextPath}/assets/Images/xpic4711.jpg" alt="person"
+                <img src="${APP_PATH}/assets/Images/xpic4711.jpg" alt="person"
                      class="img-fluid rounded-circle">
                 <h2 class="h5">炉洋汽修</h2>
                 <span>LY TruckMaintenance</span>
             </div>
             <!-- Small Brand information, appears on minimized sidebar-->
             <div class="sidenav-header-logo">
-                <a href="${pageContext.request.contextPath}/home/home.do" class="brand-small text-center">
+                <a href="${APP_PATH}/home/home.do" class="brand-small text-center">
                     <strong>L</strong>
                     <strong class="text-primary">Y</strong>
                 </a>
@@ -83,7 +87,7 @@
             <h5 class="sidenav-heading">基本功能</h5>
             <ul id="side-main-menu" class="side-menu list-unstyled">
                 <li>
-                    <a href="${pageContext.request.contextPath}/home/home.do">
+                    <a href="${APP_PATH}/home/home.do">
                         <i class="icon-home"></i>主页
                     </a>
                 </li>
@@ -112,12 +116,9 @@
         <div class="admin-menu">
             <h5 class="sidenav-heading">系统设置</h5>
             <ul id="side-admin-menu" class="side-menu list-unstyled">
-                <li><a href="${pageContext.request.contextPath}/home/customer.do"> <i class="icon-screen"> </i>客户信息</a>
-                </li>
-                <li><a href="${pageContext.request.contextPath}/home/truck.do"> <i class="icon-picture"> </i>车辆信息</a>
-                </li>
-                <li><a href="${pageContext.request.contextPath}/home/worker.do"> <i class="icon-picture"> </i>员工信息</a>
-                </li>
+                <li class="active"><a href="${APP_PATH}/home/customer.do"><i class="icon-screen"></i>客户信息</a></li>
+                <li><a href="${APP_PATH}/home/truck.do"><i class="icon-picture"></i>车辆列表</a></li>
+                <li><a href="${APP_PATH}/home/worker.do"><i class="icon-picture"></i>员工信息</a></li>
             </ul>
         </div>
     </div>
@@ -143,7 +144,7 @@
                     <ul class="nav-menu list-unstyled d-flex flex-md-row align-items-md-center">
                         <!-- Log out-->
                         <li class="nav-item">
-                            <a href="${pageContext.request.contextPath}/user/logout.do" class="nav-link logout">
+                            <a href="${APP_PATH}/user/logout.do" class="nav-link logout">
                                 <span class="d-none d-sm-inline-block">退出</span>
                                 <i class="fa fa-sign-out"></i>
                             </a>
@@ -158,7 +159,7 @@
         <div class="container-fluid">
             <ul class="breadcrumb">
                 <li class="breadcrumb-item">
-                    <a href="${pageContext.request.contextPath}/home/home.do">主页</a>
+                    <a href="${APP_PATH}/home/home.do">主页</a>
                 </li>
                 <li class="breadcrumb-item active">客户</li>
             </ul>
@@ -174,17 +175,19 @@
                             <h2><span class="fa fa-user-circle-o"></span> 客户列表</h2>
                         </div>
                         <div class="card-deck">
-                            <div class="col-lg-8">
-                                <%--<a href="${pageContext.request.contextPath}/customer/customer.do"--%>
-                                <a id="customer_add_modal_btn" href="#"
-                                   class="btn btn-primary"><span class="fa fa-plus"></span> 新增</a>
+                            <div class="col-lg-6">
+                                <button type="button" class="btn btn-primary" id="customer_add_modal_btn">
+                                    <span class="fa fa-plus"></span> 新增
+                                </button>
                                 <button type="button" class="btn btn-outline-danger" id="customer_delete_btn">
-                                    <span class="fa fa-trash"></span>删除
+                                    <span class="fa fa-trash"></span> 删除
                                 </button>
                             </div>
-                            <div class="col-lg-4">
-                                <input type="text">
-                                <button class="btn btn-dark" type="button"><span class="fa fa-search"></span>搜索</button>
+                            <div class="col-lg-6">
+                                <input type="text" id="search_customer_input" placeholder="请输入客户名称" class="col-9">
+                                <button class="btn btn-dark" type="button" id="search_customer_btn"><span
+                                        class="fa fa-search"></span> 搜索
+                                </button>
                             </div>
                         </div>
                         <div class="card-body">
@@ -199,10 +202,10 @@
                                     <th class="table-title">标题</th>
                                     <th class="table-author">作者</th>
                                     <th class="table-date">修改日期</th>--%>
-                                    <th class="table-name">名称</th>
-                                    <th class="table-address">地址</th>
-                                    <th class="table-phone">联系电话</th>
-                                    <th class="table-btn">操作</th>
+                                    <th class="table-name" style="width: 30%">名称</th>
+                                    <th class="table-address" style="width: 30%">地址</th>
+                                    <th class="table-phone" style="width: 25%">联系电话</th>
+                                    <th class="table-btn" style="width: 15%">操作</th>
                                     </thead>
                                     <tbody>
                                     </tbody>
@@ -211,11 +214,11 @@
                         </div>
                         <div class="row">
                             <!--分页文字信息-->
-                            <div class="col-md-6 offset-0" id="page_info_area">
+                            <div class="col-md-5 pull-left" id="page_info_area">
 
                             </div>
                             <!--分页条信息-->
-                            <div class="col-md-7 offset-md-5">
+                            <div class="col-md-7 pull-right">
                                 <nav aria-label="Page navigation example" id="page_nav_area">
                                 </nav>
                             </div>
@@ -350,18 +353,39 @@
 
 <script type="text/javascript">
 
-    var totalRecord, currentPage;//总记录数
+    /==============================列表展示======================================/
+    var totalRecord, currentPage, search_customerName;//总记录数
     //1.页面加载完成以后，直接去发送ajax请求，要到分页数据
     $(function () {
         //页面加载，去首页
         to_page(1);
+
     });
 
-    //页面跳转
+    //查询出全部数据&数据翻页
     function to_page(pn) {
         $.ajax({
-            url: "${APP_PATH}/customer/list.do",
+            url: "${APP_PATH}/customer/getCustomersWithJson.do",
             data: "pn=" + pn,
+            type: "GET",
+            success: function (result) {
+                //console.log(result);
+                //1.解析并显示员工数据
+                build_customers_table(result);
+                //2.解析并显示分页信息
+                build_page_info(result);
+                //3.解析并显示分页条
+                build_page_nav(result);
+                totalRecord = result.extend.pageInfo.total;
+            }
+        });
+    }
+
+    //搜索数据&数据翻页
+    function search_to_page(pn) {
+        $.ajax({
+            url: "${APP_PATH}/customer/getCustomersByName.do",
+            data: {"pn": pn, "name": search_customerName},
             type: "GET",
             success: function (result) {
                 //console.log(result);
@@ -389,9 +413,10 @@
             //<button type="button" class="btn btn-primary"><span class="fa fa-trash"></span> 修改
             var upadteBtn = $("<button></button>").addClass("btn btn-warning btn-xs update_btn").append($("<sapn></span>").addClass("fa fa-edit")).append("修改");
             //为编辑按钮添加一个自定义属性，来标示当前员工id
-            upadteBtn.attr("update_id", item.id)
-            var copyBtn = $("<button></button>").addClass("btn btn-info btn-xs copy_btn").append($("<sapn></span>").addClass("fa fa-copy")).append("复制");
-            var btn = $("<td></td>").addClass("table-btn").append(upadteBtn).append(" ").append(copyBtn);
+            upadteBtn.attr("update_id", item.id);
+            var lookBtn = $("<button></button>").addClass("btn btn-info btn-xs look_btn").append($("<sapn></span>").addClass("fa fa-search")).append("查看");
+            lookBtn.attr("look_id", item.id);
+            var btn = $("<td></td>").addClass("table-btn").append(lookBtn).append(" ").append(upadteBtn);
             $("<tr></tr>").append("<td><input type='checkbox' class='check_item'></td>").append(id).append(name).append(address).append(phone).append(btn).appendTo("#customer_table tbody");
         });
     }
@@ -404,7 +429,6 @@
         var pageNum = pageInfo.pageNum;
         var pages = pageInfo.pages;
         var total = pageInfo.total;
-        totalRecord = total;
         currentPage = pageNum;
         //当前第${pageInfo.pageNum}页/共${pageInfo.pages}页，共${pageInfo.total}条记录
         $("#page_info_area").append("当前第" + pageNum + "页/共" + pages + "页，共" + total + "条记录");
@@ -428,6 +452,7 @@
             });
             prePageLi.click(function () {
                 to_page(result.extend.pageInfo.pageNum - 1);
+
             });
         }
 
@@ -440,9 +465,11 @@
         } else {
             nextPageLi.click(function () {
                 to_page(result.extend.pageInfo.pageNum + 1);
+
             });
             lastPageLi.click(function () {
                 to_page(result.extend.pageInfo.pages);
+
             });
         }
 
@@ -456,6 +483,7 @@
             }
             numLi.click(function () {
                 to_page(item);
+
             });
             ul.append(numLi);
         });
@@ -470,9 +498,16 @@
     $("#customer_add_modal_btn").click(function () {
         //清除表单数据（表单重置）--dom对象
         reset_form("#customerModal form");
-        $("#name_input").attr("readonly", false);
         $("#customer_add_btn").show();
         $("#customer_update_btn").hide();
+        $("#name_input").attr("readonly", false);
+        $("#address_input").attr("readonly", false);
+        $("#phone_input").attr("readonly", false);
+        $("#contactor_input").attr("readonly", false);
+        $("#telephone_input").attr("readonly", false);
+        $("#taxid_input").attr("readonly", false);
+        $("#bank_input").attr("readonly", false);
+        $("#account_input").attr("readonly", false);
         //显示模态框
         $("#customerModal").modal({
             backdrop: "static"
@@ -482,9 +517,12 @@
     //重置表单
     function reset_form(ele) {
         //$(ele)[0].reset();
-        $(ele).find("*").removeClass("is-invalid is-valid invalid-feedback valid-feedback");
+        /*$(ele).find("*").removeClass("is-invalid is-valid invalid-feedback valid-feedback");
         $(ele).find(".help-block").text("");
-        $(ele).find("*").val("");
+        $(ele).find("*").val("");*/
+        $(ele).removeClass("is-invalid is-valid");
+        $(ele).next("span").text("");
+        $(ele).next("span").removeClass("invalid-feedback valid-feedback");
     }
 
     //点击修改，弹出模态框
@@ -496,6 +534,35 @@
         $("#customer_update_btn").show();
         $("#customer_add_btn").hide();
         $("#customer_update_btn").attr("update_id", $(this).attr("update_id"));
+        $("#name_input").attr("readonly", true);
+        $("#address_input").attr("readonly", false);
+        $("#phone_input").attr("readonly", false);
+        $("#contactor_input").attr("readonly", false);
+        $("#telephone_input").attr("readonly", false);
+        $("#taxid_input").attr("readonly", false);
+        $("#bank_input").attr("readonly", false);
+        $("#account_input").attr("readonly", false);
+        //显示模态框
+        $("#customerModal").modal({
+            backdrop: "static"
+        });
+    });
+
+    //点击查看，弹出模态框
+    $(document).on("click", ".look_btn", function () {
+        //查处客户信息
+        getCustomer($(this).attr("look_id"));
+        $("#customer_update_btn").hide();
+        $("#customer_add_btn").hide();
+        $("#customer_update_btn").hide();
+        $("#name_input").attr("readonly", true);
+        $("#address_input").attr("readonly", true);
+        $("#phone_input").attr("readonly", true);
+        $("#contactor_input").attr("readonly", true);
+        $("#telephone_input").attr("readonly", true);
+        $("#taxid_input").attr("readonly", true);
+        $("#bank_input").attr("readonly", true);
+        $("#account_input").attr("readonly", true);
         //显示模态框
         $("#customerModal").modal({
             backdrop: "static"
@@ -508,7 +575,6 @@
             type: "GET",
             success: function (result) {
                 var customerData = result.extend.customer;
-                $("#name_input").attr("readonly", true);
                 $("#name_input").val(customerData.name);
                 $("#address_input").val(customerData.address);
                 $("#phone_input").val(customerData.phone);
@@ -521,53 +587,19 @@
         });
     }
 
-    $(document).on("click-row.bs.table", "#customer_table", function () {
+    /*$(document).on("click-row.bs.table", "#customer_table", function () {
         //显示模态框
         $("#customerModal").modal({
             backdrop: "static"
         });
     })
 
-    /*$("#customer_table").on("click-row.bs.table",function (e, row, $element) {
+    $("#customer_table").on("click-row.bs.table",function (e, row, $element) {
         //显示模态框
         $("#customerModal").modal({
             backdrop: "static"
         });
     });*/
-
-    //客户名称校验
-    function name_input_validate() {
-        //1.拿到要校验的数据
-        var name = $("#name_input").val();
-        //2.使用正则表达式
-        var nameReg = /(^[a-zA-Z0-9_-]{3,16}$)|(^[\u2E80-\u9FFF]{2,5}$)/;
-        if (nameReg.test(name)) {
-            show_validate_msg("#name_input", "success", "");
-            $("#customer_add_btn").attr("ajax-validate", "success");
-        } else {
-            show_validate_msg("#name_input", "fail", "用户名可以是2-5位中文或者6-16位英文和数字的组合");
-            $("#customer_add_btn").attr("ajax-validate", "fail");
-        }
-    }
-
-    //校验信息显示
-    function show_validate_msg(ele, status, msg) {
-        //清除当前元素的校验状态
-        reset_form(ele)
-        /*$(ele).removeClass("is-invalid is-valid");
-        $(ele).next("span").removeClass("invalid-feedback valid-feedback");*/
-        //添加校验状态
-        if ("success" == status) {
-            $(ele).addClass("is-valid");
-            $(ele).next("span").text(msg);
-            $(ele).next("span").addClass("valid-feedback");
-        } else if ("fail" == status) {
-            $(ele).addClass("is-invalid");
-            $(ele).next("span").text(msg);
-            $(ele).next("span").addClass("invalid-feedback");
-        }
-
-    }
 
     //模态框中填写的表单数据提交给服务器进行保存
     $("#customer_add_btn").click(function () {
@@ -596,6 +628,39 @@
             }
         });
     });
+
+    //客户名称校验
+    function name_input_validate() {
+        //1.拿到要校验的数据
+        var name = $("#name_input").val();
+        //2.使用正则表达式
+        var nameReg = /(^[a-zA-Z0-9_-]{3,16}$)|(^[\u2E80-\u9FFF]{2,30}$)/;
+        if (nameReg.test(name)) {
+            show_validate_msg("#name_input", "success", "");
+            $("#customer_add_btn").attr("ajax-validate", "success");
+        } else {
+            show_validate_msg("#name_input", "fail", "用户名可以是2-5位中文或者6-16位英文和数字的组合");
+            $("#customer_add_btn").attr("ajax-validate", "fail");
+        }
+    }
+
+    //校验信息显示
+    function show_validate_msg(ele, status, msg) {
+        //清除当前元素的校验状态
+        reset_form(ele)
+        /*$(ele).removeClass("is-invalid is-valid");
+        $(ele).next("span").removeClass("invalid-feedback valid-feedback");*/
+        //添加校验状态
+        if ("success" == status) {
+            $(ele).addClass("is-valid");
+            $(ele).next("span").text(msg);
+            $(ele).next("span").addClass("valid-feedback");
+        } else if ("fail" == status) {
+            $(ele).addClass("is-invalid");
+            $(ele).next("span").text(msg);
+            $(ele).next("span").addClass("invalid-feedback");
+        }
+    }
 
     //客户名输入框内容改变后做用户名唯一性校验
     $("#name_input").change(function () {
@@ -628,9 +693,9 @@
             method: "PUT",
             data: $("#customerModal form").serialize(),
             success: function (result) {
-                //1.关闭对话框
+                //2.关闭对话框
                 $("#customerModal").modal("hide");
-                //2.回到列表页面
+                //3.回到列表页面
                 to_page(currentPage);
             }
         });
@@ -655,22 +720,151 @@
             customerNames += $(this).parents("tr").find("td:eq(2)").text() + ",";
         });
         if (customerIds != "") {
-            customerIds.substring(0, customerIds.length - 1);
-            customerNames.substring(0, customerNames.length - 1);
-            if (confirm("确认删除【" + customerNames + "】吗")) {
-                $.ajax({
-                    url: "${APP_PATH}/customer/" + customerIds + ".do",
-                    type: "DELETE",
-                    success: function (result) {
-                        alert(result.msg);
-                        to_page(currentPage);
+            customerIds = customerIds.substring(0, customerIds.length - 1);
+            customerNames = customerNames.substring(0, customerNames.length - 1);
+            swal({
+                title: "确定要删除以下客户吗？",
+                text: customerNames,
+                icon: "warning",
+                buttons: {
+                    cancel: "取消",
+                    confirm: {
+                        text: "确定",
+                        value: "delete"
                     }
-                });
-            }
+                },
+            }).then((value) => {
+                if (value == "delete") {
+                    $.ajax({
+                        url: "${APP_PATH}/customer/" + customerIds + ".do",
+                        type: "DELETE",
+                        success: function (result) {
+                            to_page(currentPage);
+                        }
+                    });
+                }
+            })
         } else {
-            alert("请勾选想要删除的客户");
+            swal({
+                title: "请勾选想要删除的客户",
+                icon: "warning",
+                button: "退出"
+            });
         }
     });
+
+    //搜索
+    $("#search_customer_btn").click(function () {
+        search_customerName = "%" + $("#search_customer_input").val() + "%";
+        search_to_page(1);
+    });
+
+    //搜索数据&数据翻页
+    function search_to_page(pn) {
+        $.ajax({
+            url: "${APP_PATH}/customer/getCustomersByName.do",
+            data: {"pn": pn, "name": search_customerName},
+            type: "GET",
+            success: function (result) {
+                //console.log(result);
+                //1.解析并显示员工数据
+                build_customers_table(result);
+                //2.解析并显示分页信息
+                build_page_info(result);
+                //3.解析并显示分页条
+                build_page_nav(result);
+            }
+        });
+    }
+
+    //解析员工数据
+    function build_customers_table(result) {
+        //清空
+        $("#customer_table tbody").empty();
+        var customers = result.extend.pageInfo.list;
+        $.each(customers, function (index, item) {
+            //alert(item.name);
+            var id = $("<td hidden='true'></td>").append(item.id);
+            var name = $("<td></td>").addClass("table-name").append(item.name);
+            var address = $("<td></td>").addClass("table-address").append(item.address);
+            var phone = $("<td></td>").addClass("table-phone").append(item.phone);
+            //<button type="button" class="btn btn-primary"><span class="fa fa-trash"></span> 修改
+            var upadteBtn = $("<button></button>").addClass("btn btn-warning btn-xs update_btn").append($("<sapn></span>").addClass("fa fa-edit")).append("修改");
+            //为编辑按钮添加一个自定义属性，来标示当前员工id
+            upadteBtn.attr("update_id", item.id);
+            var lookBtn = $("<button></button>").addClass("btn btn-info btn-xs look_btn").append($("<sapn></span>").addClass("fa fa-search")).append("查看");
+            lookBtn.attr("look_id", item.id);
+            var btn = $("<td></td>").addClass("table-btn").append(lookBtn).append(" ").append(upadteBtn);
+            $("<tr></tr>").append("<td><input type='checkbox' class='check_item'></td>").append(id).append(name).append(address).append(phone).append(btn).appendTo("#customer_table tbody");
+        });
+    }
+
+    //解析分页信息
+    function build_page_info(result) {
+        //清空
+        $("#page_info_area").empty();
+        var pageInfo = result.extend.pageInfo;
+        var pageNum = pageInfo.pageNum;
+        var pages = pageInfo.pages;
+        var total = pageInfo.total;
+        currentPage = pageNum;
+        //当前第${pageInfo.pageNum}页/共${pageInfo.pages}页，共${pageInfo.total}条记录
+        $("#page_info_area").append("当前第" + pageNum + "页/共" + pages + "页，共" + total + "条记录");
+    }
+
+    //解析分页条
+    function build_page_nav(result) {
+        //清空
+        $("#page_nav_area").empty();
+        //构建元素
+        var ul = $("<ul></ul>").addClass("pagination");
+        var firstPageLi = $("<li></li>").addClass("page-item").append($("<a></a>").addClass("page-link").append("首页"));
+        var prePageLi = $("<li></li>").addClass("page-item").append($("<a></a>").addClass("page-link").append("&laquo;"));
+        if (result.extend.pageInfo.hasPreviousPage == false) {
+            firstPageLi.addClass("disabled");
+            prePageLi.addClass("disabled");
+        } else {
+            //为元素添加点击翻页事件
+            firstPageLi.click(function () {
+                search_to_page(1);
+            });
+            prePageLi.click(function () {
+                search_to_page(result.extend.pageInfo.pageNum - 1);
+            });
+        }
+
+
+        var nextPageLi = $("<li></li>").addClass("page-item").append($("<a></a>").addClass("page-link").append("&raquo;"));
+        var lastPageLi = $("<li></li>").addClass("page-item").append($("<a></a>").addClass("page-link").append("末页"));
+        if (result.extend.pageInfo.hasNextPage == false) {
+            nextPageLi.addClass("disabled");
+            lastPageLi.addClass("disabled");
+        } else {
+            nextPageLi.click(function () {
+                search_to_page(result.extend.pageInfo.pageNum + 1);
+            });
+            lastPageLi.click(function () {
+                search_to_page(result.extend.pageInfo.pages);
+            });
+        }
+
+        //构造首页和前一页
+        ul.append(firstPageLi).append(prePageLi);
+        //构造页码
+        $.each(result.extend.pageInfo.navigatepageNums, function (index, item) {
+            var numLi = $("<li></li>").addClass("page-item").append($("<a></a>").addClass("page-link").append(item));
+            if (result.extend.pageInfo.pageNum == item) {
+                numLi.addClass("active");
+            }
+            numLi.click(function () {
+                search_to_page(item);
+            });
+            ul.append(numLi);
+        });
+
+        //构造下一页和末页
+        ul.append(nextPageLi).append(lastPageLi).appendTo("#page_nav_area");
+    }
 </script>
 
 </body>

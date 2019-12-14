@@ -1,1 +1,17 @@
 /* your styles go here */
+
+#table-name{
+    width: 30%;
+}
+
+#table-address{
+    width: 30%;
+}
+
+#table-phone{
+    width: 20%;
+}
+
+#table-btn{
+    width: 20%;
+}

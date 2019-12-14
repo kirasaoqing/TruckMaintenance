@@ -21,7 +21,7 @@ import java.io.InputStream;
 public class AppTest
 {
 
-    SqlSession sqlSession;
+    /*SqlSession sqlSession;
 
     @Before
     public void before() throws IOException {
@@ -43,13 +43,13 @@ public class AppTest
         sqlSession.close();
     }
 
-    /**
+    *//**
      * Rigorous Test :-)
-     */
+     *//*
     @Test
     public void test01(){
         UserMapper mapper = sqlSession.getMapper(UserMapper.class);
         User user = mapper.findById(1);
         System.out.println(user);
-    }
+    }*/
 }

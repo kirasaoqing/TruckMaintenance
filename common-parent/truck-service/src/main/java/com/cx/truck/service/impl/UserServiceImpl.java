@@ -45,8 +45,13 @@ public class UserServiceImpl extends BaseServiceImpl<User> implements IUserServi
     }
 
     @Override
-    public boolean findByName(String name) {
-        return false;
+    public Boolean findByName(String name) {
+        return null;
+    }
+
+    @Override
+    public List<User> fuzzyByName(String name) {
+        return null;
     }
 
     @Override

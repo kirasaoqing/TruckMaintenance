@@ -67,10 +67,10 @@ public class UserController extends BaseController<User> {
 
     @RequestMapping(LOGOUT)
     public String logout(HttpServletRequest request) {
-        User user = (User) request.getSession().getAttribute("USER_SESSION");
+        /*User user = (User) request.getSession().getAttribute("USER_SESSION");
         logger.info("==========" + user.getUsername() + ":退出===============");
         //清除session
-        request.getSession().invalidate();
+        request.getSession().invalidate();*/
         return "redirect:/index.jsp";
     }
 
