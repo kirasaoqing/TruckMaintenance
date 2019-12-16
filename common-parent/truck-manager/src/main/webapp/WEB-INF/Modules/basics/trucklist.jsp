@@ -108,7 +108,7 @@
             <h5 class="sidenav-heading">系统设置</h5>
             <ul id="side-admin-menu" class="side-menu list-unstyled">
                 <li><a href="${APP_PATH}/home/customer.do"><i class="icon-screen"></i>客户信息</a></li>
-                <li class="active"><a href="${APP_PATH}/home/truck.do"><i class="icon-picture"></i>车辆列表</a></li>
+                <li class="active"><a href="${APP_PATH}/home/truck.do"><i class="icon-picture"></i>车辆信息</a></li>
                 <li><a href="${APP_PATH}/home/worker.do"><i class="icon-picture"></i>员工信息</a></li>
             </ul>
         </div>
@@ -217,7 +217,7 @@
     </section>
 </div>
 
-<!-- 新增模态框 -->
+<!-- 新增车辆信息模态框 -->
 <div class="modal fade" id="truckModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
     <div class="modal-dialog">
         <div class="modal-content">
@@ -249,9 +249,19 @@
                     </div>
                     <div class="form-group row">
                         <label class="col-sm-3 form-control-label">车型</label>
-                        <div class="col-sm-9">
+                        <div class="col-sm-6">
                             <select class="form-control" id="vehicleType_select" name="vehicletypeId">
                             </select>
+                        </div>
+                        <div class="col-sm-1">
+                            <button type="button" class="btn btn-outline-primary" id="vehicleType_add_modal_btn">
+                                <span class="fa fa-plus"></span>
+                            </button>
+                        </div>
+                        <div class="col-sm-1">
+                            <button type="button" class="btn btn-outline-danger" id="vehicleType_delete_btn">
+                                <span class="fa fa-minus"></span>
+                            </button>
                         </div>
                     </div>
                     <div class="form-group row">
@@ -273,6 +283,41 @@
         </div>
     </div>
 </div>
+
+<!-- 新增车型模态框 -->
+<div class="modal fade" id="vehicleTypeModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+    <div class="modal-dialog">
+        <div class="modal-content">
+
+            <!-- 模态框头部 -->
+            <div class="modal-header">
+                <h4 class="modal-title"><strong class="h1 text-primary">车型信息</strong></h4>
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+            </div>
+
+            <!-- 模态框主体 -->
+            <div class="modal-body">
+                <form>
+                    <div class="form-group row">
+                        <label class="col-sm-3 form-control-label">车辆类型</label>
+                        <div class="col-sm-9">
+                            <input type="text" class="form-control" placeholder="请输入车型" name="name"
+                                   id="vehicleType_input">
+                            <span class="help-block"></span>
+                        </div>
+                    </div>
+                </form>
+            </div>
+
+            <!-- 模态框底部 -->
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">关闭</button>
+                <button type="button" class="btn btn-primary" id="vehicleType_add_btn">保存</button>
+            </div>
+        </div>
+    </div>
+</div>
+
 
 <!-- JavaScript files-->
 <script src="${APP_PATH}/assets/vendor/jquery/jquery.min.js"></script>
@@ -448,7 +493,7 @@
             type: "GET",
             success: function (result) {
                 $.each(result.extend.vehicleTypes, function () {
-                    console.log(result);
+                    //console.log(result);
                     var option = $("<option></option>").append(this.name).attr("value", this.id);
                     option.appendTo("#vehicleType_select");
                 });
@@ -479,7 +524,6 @@
                 } else {
                     show_validate_msg($("#platenumber_input"), "fail", result.extend.name);
                 }
-
             }
         });
     });
@@ -591,7 +635,7 @@
             url: "${APP_PATH}/truck/" + id + ".do",
             type: "GET",
             success: function (result) {
-                console.log(result);
+                //console.log(result);
                 var truckData = result.extend.truck;
                 $("#platenumber_input").val(truckData.platenumber);
                 $("#brand_input").val(truckData.brand);
@@ -784,8 +828,77 @@
         ul.append(nextPageLi).append(lastPageLi).appendTo("#page_nav_area");
     }
 
+    /==================================车型操作====================================/
+    //显示新增车型模态框
+    $("#vehicleType_add_modal_btn").click(function () {
+        //显示模态框
+        $("#vehicleTypeModal").modal({
+            backdrop: "static"
+        });
+    })
+    //点击保存按钮新增车型
+    $("#vehicleType_add_btn").click(function () {
+        vehicleType_input_validate();
+        //1.提交数据校验
+        if ($("#vehicleType_add_btn").attr("ajax-validate") === "fail") {
+            return false;
+        }
 
+        $.ajax({
+            url: "${APP_PATH}/vehicleType/vehicleType.do",
+            type: "POST",
+            data: $("#vehicleTypeModal form").serialize(),
+            success: function (result) {
+                //1.关闭模态框
+                $("#vehicleTypeModal").modal('hide');
+                //2.车辆新增界面重新获取车辆类型
+                getVehicleTypes();
+            }
+        });
+    });
 
+    //车牌号校验
+    function vehicleType_input_validate() {
+        //1.拿到要校验的数据
+        var vehicleType = $("#vehicleType_input").val();
+        //2.使用正则表达式
+        var pnReg = /^[\u2E80-\u9FFF]{1,5}$/;
+        if (pnReg.test(vehicleType)) {
+            show_validate_msg("#vehicleType_input", "success", "");
+            $("#vehicleType_add_btn").attr("ajax-validate", "success");
+        } else {
+            show_validate_msg("#vehicleType_input", "fail", "请输入正确的车辆类型");
+            $("#vehicleType_add_btn").attr("ajax-validate", "fail");
+        }
+    }
+
+    //车辆信息模态框，车型-按钮
+    $("#vehicleType_delete_btn").click(function () {
+        var selectedId = $("#vehicleType_select").val();
+        var selectedName = $("#vehicleType_select option:selected").text();
+        swal({
+            title: "确定要删除以下车型吗？",
+            text: selectedName,
+            icon: "warning",
+            buttons: {
+                cancel: "取消",
+                confirm: {
+                    text: "确定",
+                    value: "delete"
+                }
+            },
+        }).then((value) => {
+            if (value == "delete") {
+                $.ajax({
+                    url: "${APP_PATH}/vehicleType/" + selectedId + ".do",
+                    type: "DELETE",
+                    success: function (result) {
+                        getVehicleTypes();
+                    }
+                });
+            }
+        })
+    });
 </script>
 
 </body>

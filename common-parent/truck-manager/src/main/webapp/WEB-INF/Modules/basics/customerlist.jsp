@@ -117,7 +117,7 @@
             <h5 class="sidenav-heading">系统设置</h5>
             <ul id="side-admin-menu" class="side-menu list-unstyled">
                 <li class="active"><a href="${APP_PATH}/home/customer.do"><i class="icon-screen"></i>客户信息</a></li>
-                <li><a href="${APP_PATH}/home/truck.do"><i class="icon-picture"></i>车辆列表</a></li>
+                <li><a href="${APP_PATH}/home/truck.do"><i class="icon-picture"></i>车辆信息</a></li>
                 <li><a href="${APP_PATH}/home/worker.do"><i class="icon-picture"></i>员工信息</a></li>
             </ul>
         </div>
@@ -192,7 +192,7 @@
                         </div>
                         <div class="card-body">
                             <div class="table-responsive">
-                                <table class="table table-bordered table-hover" id="customer_table">
+                                <table class="table table-hover" id="customer_table">
                                     <thead>
                                     <th>
                                         <input type="checkbox" id="check_all"/>
@@ -624,7 +624,6 @@
                 } else {
                     show_validate_msg($("#name_input"), "fail", result.extend.name);
                 }
-
             }
         });
     });

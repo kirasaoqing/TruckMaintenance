@@ -1,6 +1,7 @@
 package com.cx.truck.service.impl;
 
 import com.cx.truck.model.VehicleType;
+import com.cx.truck.model.VehicleTypeExample;
 import com.cx.truck.service.IVehicleTypeService;
 import com.cx.truck.service.base.BaseServiceImpl;
 import org.springframework.stereotype.Service;
@@ -11,12 +12,12 @@ import java.util.List;
 public class VehicleTypeServiceImpl extends BaseServiceImpl<VehicleType> implements IVehicleTypeService {
     @Override
     public void insert(VehicleType vehicleType) {
-
+        vehicleTypeMapper.insertSelective(vehicleType);
     }
 
     @Override
     public void deleteById(Integer id) {
-
+        vehicleTypeMapper.deleteByPrimaryKey(id);
     }
 
     @Override
@@ -56,6 +57,9 @@ public class VehicleTypeServiceImpl extends BaseServiceImpl<VehicleType> impleme
 
     @Override
     public void deleteBatch(List<Integer> ids) {
-
+        VehicleTypeExample example = new VehicleTypeExample();
+        VehicleTypeExample.Criteria criteria = example.createCriteria();
+        criteria.andIdIn(ids);
+        vehicleTypeMapper.deleteByExample(example);
     }
 }

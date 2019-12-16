@@ -103,7 +103,7 @@
             <ul id="side-admin-menu" class="side-menu list-unstyled">
                 <li><a href="${pageContext.request.contextPath}/home/customer.do"> <i class="icon-screen"> </i>客户信息</a></li>
                 <li><a href="${pageContext.request.contextPath}/home/truck.do"> <i class="icon-picture"> </i>车辆信息</a></li>
-                <li><a href="${pageContext.request.contextPath}/home/worker.do"> <i class="icon-picture"> </i>员工信息</a></li>
+                <li class="active"><a href="${pageContext.request.contextPath}/home/worker.do"> <i class="icon-picture"> </i>员工信息</a></li>
             </ul>
         </div>
     </div>
