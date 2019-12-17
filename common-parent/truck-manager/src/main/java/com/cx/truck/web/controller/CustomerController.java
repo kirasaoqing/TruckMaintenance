@@ -109,7 +109,7 @@ public class CustomerController {
             PageInfo page = new PageInfo(customers, 6);
             return Msg.success().add("pageInfo", page);
         } else {
-            return Msg.fail().add("va_msg", "用户名不可用");
+            return Msg.fail().add("va_msg", "所查询客户不存在");
         }
     }
 

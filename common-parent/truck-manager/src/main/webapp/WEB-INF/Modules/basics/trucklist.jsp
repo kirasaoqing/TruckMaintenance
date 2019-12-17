@@ -192,7 +192,7 @@
                                     <th style="width: 15%">品牌</th>
                                     <th style="width: 15%">车型</th>
                                     <th style="width: 40%">所属客户</th>
-                                    <th class="table-btn" style="width: 15%">操作</th>
+                                    <th style="width: 15%">操作</th>
                                     </thead>
                                     <tbody>
                                     </tbody>
@@ -546,7 +546,7 @@
     //校验信息显示
     function show_validate_msg(ele, status, msg) {
         //清除当前元素的校验状态
-        reset_form(ele)
+        reset_ele(ele)
         /*$(ele).removeClass("is-invalid is-valid");
         $(ele).next("span").removeClass("invalid-feedback valid-feedback");*/
         //添加校验状态
@@ -579,15 +579,19 @@
         });
     });
 
-    //重置表单
-    function reset_form(ele) {
-        //$(ele)[0].reset();
-        /*$(ele).find("*").removeClass("is-invalid is-valid invalid-feedback valid-feedback");
-        $(ele).find(".help-block").text("");
-        $(ele).find("*").val("");*/
+    //重置元素
+    function reset_ele(ele) {
         $(ele).removeClass("is-invalid is-valid");
         $(ele).next("span").text("");
         $(ele).next("span").removeClass("invalid-feedback valid-feedback");
+    }
+
+    //重置表单
+    function reset_form(ele) {
+        //$(ele)[0].reset();
+        $(ele).find("*").removeClass("is-invalid is-valid invalid-feedback valid-feedback");
+        $(ele).find(".help-block").text("");
+        $(ele).find("*").val("");
     }
 
     //点击修改，弹出模态框
@@ -698,6 +702,7 @@
         }
     });
 
+    /================================更新=============================/
     //模态框中修改按钮点击事件
     $("#truck_update_btn").click(function () {
         //1.表单校验
@@ -731,12 +736,23 @@
             type: "GET",
             success: function (result) {
                 //console.log(result);
-                //1.解析并显示员工数据
-                build_search_trucks_table(result);
-                //2.解析并显示分页信息
-                build_search_page_info(result);
-                //3.解析并显示分页条
-                build_search_page_nav(result);
+                if(result.code == 100){
+                    //1.解析并显示员工数据
+                    build_search_trucks_table(result);
+                    //2.解析并显示分页信息
+                    build_search_page_info(result);
+                    //3.解析并显示分页条
+                    build_search_page_nav(result);
+                }else if(result.code == 200){
+                    $("#truck_table tbody").empty();
+                    $("#page_info_area").empty();
+                    $("#page_nav_area").empty();
+                    swal({
+                        title: result.extend.va_msg,
+                        icon: "warning",
+                        button: "退出"
+                    });
+                }
             }
         });
     }

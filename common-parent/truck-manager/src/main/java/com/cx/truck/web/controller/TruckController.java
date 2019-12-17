@@ -54,6 +54,11 @@ public class TruckController {
         return Msg.success().add("pageInfo", page);
     }
 
+    /**
+     * 根据车牌号检查车辆信息是否存在
+     * @param plateNumber
+     * @return
+     */
     @RequestMapping(value = "/checkTruckByPN", method = RequestMethod.GET)
     @ResponseBody
     public Msg checkTruckByPN(@RequestParam("plateNumber")String plateNumber) {
@@ -73,7 +78,7 @@ public class TruckController {
     /**
      * 根据车牌号模糊查询
      *
-     * @param name
+     * @param plateNumber
      * @param pn
      * @return
      */
@@ -87,7 +92,7 @@ public class TruckController {
             PageInfo page = new PageInfo(trucks, 6);
             return Msg.success().add("pageInfo", page);
         } else {
-            return Msg.fail().add("va_msg", "车牌号不可用");
+            return Msg.fail().add("va_msg", "所查询车辆不存在");
         }
     }
 

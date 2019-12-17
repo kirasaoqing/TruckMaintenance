@@ -381,24 +381,6 @@
         });
     }
 
-    //搜索数据&数据翻页
-    function search_to_page(pn) {
-        $.ajax({
-            url: "${APP_PATH}/customer/getCustomersByName.do",
-            data: {"pn": pn, "name": search_customerName},
-            type: "GET",
-            success: function (result) {
-                //console.log(result);
-                //1.解析并显示员工数据
-                build_customers_table(result);
-                //2.解析并显示分页信息
-                build_page_info(result);
-                //3.解析并显示分页条
-                build_page_nav(result);
-            }
-        });
-    }
-
     //解析员工数据
     function build_customers_table(result) {
         //清空
@@ -514,15 +496,19 @@
         });
     });
 
-    //重置表单
-    function reset_form(ele) {
-        //$(ele)[0].reset();
-        /*$(ele).find("*").removeClass("is-invalid is-valid invalid-feedback valid-feedback");
-        $(ele).find(".help-block").text("");
-        $(ele).find("*").val("");*/
+    //重置元素
+    function reset_ele(ele) {
         $(ele).removeClass("is-invalid is-valid");
         $(ele).next("span").text("");
         $(ele).next("span").removeClass("invalid-feedback valid-feedback");
+    }
+
+    //重置表单
+    function reset_form(ele) {
+        //$(ele)[0].reset();
+        $(ele).find("*").removeClass("is-invalid is-valid invalid-feedback valid-feedback");
+        $(ele).find(".help-block").text("");
+        $(ele).find("*").val("");
     }
 
     //点击修改，弹出模态框
@@ -646,7 +632,7 @@
     //校验信息显示
     function show_validate_msg(ele, status, msg) {
         //清除当前元素的校验状态
-        reset_form(ele)
+        reset_ele(ele)
         /*$(ele).removeClass("is-invalid is-valid");
         $(ele).next("span").removeClass("invalid-feedback valid-feedback");*/
         //添加校验状态
@@ -766,12 +752,24 @@
             type: "GET",
             success: function (result) {
                 //console.log(result);
-                //1.解析并显示员工数据
-                build_customers_table(result);
-                //2.解析并显示分页信息
-                build_page_info(result);
-                //3.解析并显示分页条
-                build_page_nav(result);
+                if(result.code == 100){
+                    //1.解析并显示员工数据
+                    build_customers_table(result);
+                    //2.解析并显示分页信息
+                    build_page_info(result);
+                    //3.解析并显示分页条
+                    build_page_nav(result);
+                }
+                else if(result.code == 200){
+                    $("#customer_table tbody").empty();
+                    $("#page_info_area").empty();
+                    $("#page_nav_area").empty();
+                    swal({
+                        title: result.extend.va_msg,
+                        icon: "warning",
+                        button: "退出"
+                    });
+                }
             }
         });
     }
