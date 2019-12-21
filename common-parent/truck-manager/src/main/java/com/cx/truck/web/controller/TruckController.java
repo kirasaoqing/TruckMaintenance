@@ -32,6 +32,13 @@ public class TruckController {
 
     //================================查询===================================
 
+    @RequestMapping(value = "/getAllTrucks", method = RequestMethod.GET)
+    @ResponseBody
+    public Msg getAllTrucks() {
+        List<Truck> trucks = truckService.findAll();
+        return Msg.success().add("trucks",trucks);
+    }
+
     /**
      * list方法返回json
      *
@@ -56,12 +63,13 @@ public class TruckController {
 
     /**
      * 根据车牌号检查车辆信息是否存在
+     *
      * @param plateNumber
      * @return
      */
     @RequestMapping(value = "/checkTruckByPN", method = RequestMethod.GET)
     @ResponseBody
-    public Msg checkTruckByPN(@RequestParam("plateNumber")String plateNumber) {
+    public Msg checkTruckByPN(@RequestParam("plateNumber") String plateNumber) {
         //先判断车牌号的合法性
         String regx = "(^[京津沪渝冀豫云辽黑湘皖鲁新苏浙赣鄂桂甘晋蒙陕吉闽贵粤青藏川宁琼使领A-Z]{1}[A-Z]{1}[A-Z0-9]{4}[A-Z0-9挂学警港澳]{1}$)";
         if (!plateNumber.matches(regx)) {
@@ -85,7 +93,7 @@ public class TruckController {
     @RequestMapping(value = "/getTrucksByPN", method = RequestMethod.GET)
     @ResponseBody
     public Msg getTrucksByPN(@RequestParam("plateNumber") String plateNumber,
-                                  @RequestParam(value = "pn", defaultValue = "1") Integer pn) {
+                             @RequestParam(value = "pn", defaultValue = "1") Integer pn) {
         PageHelper.startPage(pn, 6);
         List<Truck> trucks = truckService.fuzzyByName(plateNumber);
         if (trucks.size() > 0) {
@@ -110,6 +118,7 @@ public class TruckController {
     }
 
     //============================新增==============================
+
     /**
      * 新增车辆
      * 使用JSR303进行后端校验
@@ -136,6 +145,7 @@ public class TruckController {
     }
 
     //============================删除=======================
+
     /**
      * 批量/单一删除方法
      * 批量：1-2-3

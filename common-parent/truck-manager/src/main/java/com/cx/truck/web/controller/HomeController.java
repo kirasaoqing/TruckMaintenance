@@ -51,4 +51,15 @@ public class HomeController {
     public String goCustomerList() {
         return CUSTOMER_PAGE + LIST;
     }
+
+
+    /**
+     * 跳转到维修单列表
+     *
+     * @return
+     */
+    @RequestMapping(MAINTENANCE + BILL)
+    public String goMaintenanceList() {
+        return MAINTENANCEBILL_PAGE + LIST;
+    }
 }

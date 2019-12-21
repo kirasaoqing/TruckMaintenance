@@ -43,7 +43,7 @@ public class MvcTest {
     @Test
     public void testPage() throws Exception {
         //模拟请求拿到返回值
-        MvcResult result = mockMvc.perform(MockMvcRequestBuilders.get("/customer/customerlist.do").param("pn", "20")).andReturn();
+        MvcResult result = mockMvc.perform(MockMvcRequestBuilders.get("/maintenancebill/list.do").param("pn", "1")).andReturn();
 
         //请求成功后，请求域中会有pageInfo，可以取出进行验证
         MockHttpServletRequest request = result.getRequest();
@@ -59,9 +59,9 @@ public class MvcTest {
         System.out.println(" ");
 
         //获取客户数据
-        List<Customer> list = pi.getList();
+        /*List<Customer> list = pi.getList();
         for (Customer customer : list) {
             System.out.println("ID" + customer.getId() + " name:" + customer.getName());
-        }
+        }*/
     }
 }

@@ -35,4 +35,28 @@ public abstract class BaseServiceImpl<T> implements IBaseService<T> {
      */
     @Autowired
     protected WorkerMapper workerMapper;
+
+    /**
+     * 统一管理mapper:MaintenanceBillMapper
+     */
+    @Autowired
+    protected MaintenanceBillMapper maintenanceBillMapper;
+
+    /**
+     * 统一管理mapper:MaintenanceBillStatusMapper
+     */
+    @Autowired
+    protected MaintenanceBillStatusMapper maintenanceBillStatusMapper;
+
+    /**
+     * 统一管理mapper:MaintenanceItemMapper
+     */
+    @Autowired
+    protected MaintenanceItemMapper maintenanceItemMapper;
+
+    /**
+     * 统一管理mapper:MaintenanceMaterialMapper
+     */
+    @Autowired
+    protected MaintenanceMaterialMapper maintenanceMaterialMapper;
 }

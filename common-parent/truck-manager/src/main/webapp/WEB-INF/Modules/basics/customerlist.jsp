@@ -92,14 +92,9 @@
                     </a>
                 </li>
                 <li>
-                    <a href="#exampledropdownDropdown" aria-expanded="false" data-toggle="collapse">
-                        <i class="icon-interface-windows"></i>维修服务
+                    <a href="${APP_PATH}/home/maintenancebill.do">
+                        <i class="icon-home"></i>维修服务
                     </a>
-                    <ul id="exampledropdownDropdown" class="collapse list-unstyled ">
-                        <li><a href="#">Page</a></li>
-                        <li><a href="#">Page</a></li>
-                        <li><a href="#">Page</a></li>
-                    </ul>
                 </li>
                 <li>
                     <a href="charts.html">

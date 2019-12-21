@@ -53,7 +53,7 @@
           href="${APP_PATH}/assets/vendor/datetimepicker/bootstrap-datetimepicker.min.css">
     <!-- sweetalert-->
     <script src="${pageContext.request.contextPath}/assets/vendor/sweetalert/sweetalert.min.js"></script>
-    <!-- sweetalert-->
+
 
 </head>
 <body>
@@ -87,14 +87,9 @@
                     </a>
                 </li>
                 <li>
-                    <a href="#exampledropdownDropdown" aria-expanded="false" data-toggle="collapse">
-                        <i class="icon-interface-windows"></i>维修服务
+                    <a href="${APP_PATH}/home/maintenancebill.do">
+                        <i class="icon-home"></i>维修服务
                     </a>
-                    <ul id="exampledropdownDropdown" class="collapse list-unstyled ">
-                        <li><a href="#">Page</a></li>
-                        <li><a href="#">Page</a></li>
-                        <li><a href="#">Page</a></li>
-                    </ul>
                 </li>
                 <li>
                     <a href="charts.html">
@@ -299,7 +294,7 @@
                                 </span>
                             </div>
                         </div>
-                        <input type="hidden" id="dtp_input" name="entrydate" value=""/><br/>
+                        <input type="hidden" id="dtp_input" name="entrydate" /><br/>
                     </div>
                 </form>
             </div>
@@ -507,7 +502,9 @@
         if ($("#worker_add_btn").attr("ajax-validate") === "fail") {
             return false;
         }
-
+        if($("#dtp_input").val() == ""){
+            $("#dtp_input").removeAttr("name");
+        }
         console.log($("#workerModal form").serialize());
         //2.发送ajax请求保存
         $.ajax({
@@ -515,6 +512,7 @@
             type: "POST",
             data: $("#workerModal form").serialize(),
             success: function (result) {
+                console.log(result);
                 //后端JSR303校验通过
                 if (result.code == 100) {
                     //1.关闭模态框

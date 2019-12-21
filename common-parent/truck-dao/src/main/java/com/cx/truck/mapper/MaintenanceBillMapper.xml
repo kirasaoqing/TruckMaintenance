@@ -1,0 +1,355 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.cx.truck.mapper.MaintenanceBillMapper">
+    <resultMap id="BaseResultMap" type="com.cx.truck.model.MaintenanceBill">
+        <id column="id" property="id" jdbcType="INTEGER"/>
+        <result column="truck_id" property="truckId" jdbcType="INTEGER"/>
+        <result column="enterdate" property="enterdate" jdbcType="TIMESTAMP"/>
+        <result column="appointeddate" property="appointeddate" jdbcType="TIMESTAMP"/>
+        <result column="settingdate" property="settingdate" jdbcType="TIMESTAMP"/>
+        <result column="entrymileage" property="entrymileage" jdbcType="DOUBLE"/>
+        <result column="status_id" property="statusId" jdbcType="INTEGER"/>
+    </resultMap>
+
+    <resultMap id="WithItemsAndMaterialsMap" type="com.cx.truck.model.MaintenanceBill">
+        <id column="id" property="id" jdbcType="INTEGER"/>
+        <result column="truck_id" property="truckId" jdbcType="INTEGER"/>
+        <result column="enterdate" property="enterdate" jdbcType="TIMESTAMP"/>
+        <result column="appointeddate" property="appointeddate" jdbcType="TIMESTAMP"/>
+        <result column="settingdate" property="settingdate" jdbcType="TIMESTAMP"/>
+        <result column="entrymileage" property="entrymileage" jdbcType="DOUBLE"/>
+        <result column="status_id" property="statusId" jdbcType="INTEGER"/>
+        <!--使用联合查询封装车辆和状态信息-->
+        <association property="truck" javaType="com.cx.truck.model.Truck">
+            <id column="truck_id" property="id"/>
+            <result column="platenumber" property="platenumber"/>
+            <association property="customer" javaType="com.cx.truck.model.Customer">
+                <result column="c_id" property="id"/>
+                <result column="customer_name" property="name"/>
+            </association>
+        </association>
+        <association property="maintenanceBillStatus" javaType="com.cx.truck.model.MaintenanceBillStatus">
+            <id column="status_id" property="id"/>
+            <result column="status_name" property="name"/>
+        </association>
+        <!--使用联合查询封装材料和修理项-->
+        <collection property="maintenanceItemList" ofType="com.cx.truck.model.MaintenanceItem">
+            <id column="item_id" property="id"/>
+            <result column="item" property="item"/>
+            <result column="itemfees" property="itemfees"/>
+        </collection>
+        <collection property="maintenanceMaterialList" ofType="com.cx.truck.model.MaintenanceMaterial">
+            <id column="material_id" property="id"/>
+            <result column="material_name" property="name"/>
+            <result column="unit" property="unit"/>
+            <result column="quantity" property="quantity"/>
+            <result column="price" property="price"/>
+            <result column="amount" property="amount"/>
+        </collection>
+    </resultMap>
+
+    <resultMap id="WithTruckAndStatusMap" type="com.cx.truck.model.MaintenanceBill">
+        <id column="id" property="id" jdbcType="INTEGER"/>
+        <result column="truck_id" property="truckId" jdbcType="INTEGER"/>
+        <result column="enterdate" property="enterdate" jdbcType="TIMESTAMP"/>
+        <result column="appointeddate" property="appointeddate" jdbcType="TIMESTAMP"/>
+        <result column="settingdate" property="settingdate" jdbcType="TIMESTAMP"/>
+        <result column="entrymileage" property="entrymileage" jdbcType="DOUBLE"/>
+        <result column="status_id" property="statusId" jdbcType="INTEGER"/>
+        <!--使用联合查询封装车辆和状态信息-->
+        <association property="truck" javaType="com.cx.truck.model.Truck">
+            <id column="truck_id" property="id"/>
+            <result column="platenumber" property="platenumber"/>
+            <association property="customer" javaType="com.cx.truck.model.Customer">
+                <result column="c_id" property="id"/>
+                <result column="customer_name" property="name"/>
+            </association>
+        </association>
+        <association property="maintenanceBillStatus" javaType="com.cx.truck.model.MaintenanceBillStatus">
+            <id column="status_id" property="id"/>
+            <result column="status_name" property="name"/>
+        </association>
+    </resultMap>
+
+    <sql id="Example_Where_Clause">
+        <where>
+            <foreach collection="oredCriteria" item="criteria" separator="or">
+                <if test="criteria.valid">
+                    <trim prefix="(" suffix=")" prefixOverrides="and">
+                        <foreach collection="criteria.criteria" item="criterion">
+                            <choose>
+                                <when test="criterion.noValue">
+                                    and ${criterion.condition}
+                                </when>
+                                <when test="criterion.singleValue">
+                                    and ${criterion.condition} #{criterion.value}
+                                </when>
+                                <when test="criterion.betweenValue">
+                                    and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                                </when>
+                                <when test="criterion.listValue">
+                                    and ${criterion.condition}
+                                    <foreach collection="criterion.value" item="listItem" open="(" close=")"
+                                             separator=",">
+                                        #{listItem}
+                                    </foreach>
+                                </when>
+                            </choose>
+                        </foreach>
+                    </trim>
+                </if>
+            </foreach>
+        </where>
+    </sql>
+    <sql id="Update_By_Example_Where_Clause">
+        <where>
+            <foreach collection="example.oredCriteria" item="criteria" separator="or">
+                <if test="criteria.valid">
+                    <trim prefix="(" suffix=")" prefixOverrides="and">
+                        <foreach collection="criteria.criteria" item="criterion">
+                            <choose>
+                                <when test="criterion.noValue">
+                                    and ${criterion.condition}
+                                </when>
+                                <when test="criterion.singleValue">
+                                    and ${criterion.condition} #{criterion.value}
+                                </when>
+                                <when test="criterion.betweenValue">
+                                    and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                                </when>
+                                <when test="criterion.listValue">
+                                    and ${criterion.condition}
+                                    <foreach collection="criterion.value" item="listItem" open="(" close=")"
+                                             separator=",">
+                                        #{listItem}
+                                    </foreach>
+                                </when>
+                            </choose>
+                        </foreach>
+                    </trim>
+                </if>
+            </foreach>
+        </where>
+    </sql>
+    <sql id="Base_Column_List">
+    id, truck_id, enterdate, appointeddate, settingdate, entrymileage, status_id
+  </sql>
+
+    <sql id="WithTruckAndStatus_Column_List">
+        b.id, b.truck_id, b.enterdate, b.entrymileage, b.appointeddate, b.settingdate, b.status_id,
+                t.platenumber,
+                s.name AS status_name,
+				c.id AS c_id, c.name AS customer_name
+    </sql>
+    <sql id="WithItemAndMaterial_Column_List">
+        b.id, b.truck_id, t.platenumber, b.enterdate, b.entrymileage, b.appointeddate, b.settingdate, b.status_id, s.name AS status_name,
+				i.id AS item_id, i.item,i.itemfees,
+				m.id AS material_id, m.name AS material_name, m.unit, m.quantity, m.price, m.amount,
+				c.id AS c_id, c.name AS customer_name
+    </sql>
+    <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.cx.truck.model.MaintenanceBillExample">
+        select
+        <if test="distinct">
+            distinct
+        </if>
+        <include refid="Base_Column_List"/>
+        from sv_maintenance_bill
+        <if test="_parameter != null">
+            <include refid="Example_Where_Clause"/>
+        </if>
+        <if test="orderByClause != null">
+            order by ${orderByClause}
+        </if>
+    </select>
+
+    <!--复杂查询含维修项及维修材料的维修单信息-->
+    <select id="selectByExampleWithItemsAndMaterials" resultMap="WithTruckAndStatusMap" parameterType="com.cx.truck.model.MaintenanceBillExample">
+        select
+        <if test="distinct">
+            distinct
+        </if>
+        <include refid="WithTruckAndStatus_Column_List"/>
+        FROM sv_maintenance_bill b
+        LEFT JOIN bc_truck t on t.id = b.truck_id
+        LEFT JOIN sv_maintenance_bill_status s on s.id = b.status_id
+        LEFT JOIN bc_customer c on c.id = t.customer_id
+        <if test="_parameter != null">
+            <include refid="Example_Where_Clause"/>
+        </if>
+        <if test="orderByClause != null">
+            order by ${orderByClause}
+        </if>
+    </select>
+
+    <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer">
+        select
+        <include refid="Base_Column_List"/>
+        from sv_maintenance_bill
+        where id = #{id,jdbcType=INTEGER}
+    </select>
+
+    <!--按id复杂查询含维修项及维修材料的维修单信息-->
+    <select id="selectByPrimaryKeyWithItemsAndMaterials" resultMap="WithItemsAndMaterialsMap" parameterType="java.lang.Integer">
+        select
+        <include refid="WithItemAndMaterial_Column_List"/>
+        FROM sv_maintenance_bill b
+        LEFT JOIN sv_maintenance_item i on i.bill_id = b.id
+        LEFT JOIN sv_maintenance_material m on m.bill_id = b.id
+        LEFT JOIN bc_truck t on t.id = b.truck_id
+        LEFT JOIN sv_maintenance_bill_status s on s.id = b.status_id
+        LEFT JOIN bc_customer c on c.id = t.customer_id
+        where b.id = #{id,jdbcType=INTEGER}
+    </select>
+
+
+    <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from sv_maintenance_bill
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+    <delete id="deleteByExample" parameterType="com.cx.truck.model.MaintenanceBillExample">
+        delete from sv_maintenance_bill
+        <if test="_parameter != null">
+            <include refid="Example_Where_Clause"/>
+        </if>
+    </delete>
+    <insert id="insert" parameterType="com.cx.truck.model.MaintenanceBill">
+    insert into sv_maintenance_bill (id, truck_id, enterdate, 
+      appointeddate, settingdate, entrymileage, 
+      status_id)
+    values (#{id,jdbcType=INTEGER}, #{truckId,jdbcType=INTEGER}, #{enterdate,jdbcType=TIMESTAMP}, 
+      #{appointeddate,jdbcType=TIMESTAMP}, #{settingdate,jdbcType=TIMESTAMP}, #{entrymileage,jdbcType=DOUBLE}, 
+      #{statusId,jdbcType=INTEGER})
+  </insert>
+    <insert id="insertSelective" parameterType="com.cx.truck.model.MaintenanceBill" useGeneratedKeys="true" keyProperty="id">
+        insert into sv_maintenance_bill
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="id != null">
+                id,
+            </if>
+            <if test="truckId != null">
+                truck_id,
+            </if>
+            <if test="enterdate != null">
+                enterdate,
+            </if>
+            <if test="appointeddate != null">
+                appointeddate,
+            </if>
+            <if test="settingdate != null">
+                settingdate,
+            </if>
+            <if test="entrymileage != null">
+                entrymileage,
+            </if>
+            <if test="statusId != null">
+                status_id,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="id != null">
+                #{id,jdbcType=INTEGER},
+            </if>
+            <if test="truckId != null">
+                #{truckId,jdbcType=INTEGER},
+            </if>
+            <if test="enterdate != null">
+                #{enterdate,jdbcType=TIMESTAMP},
+            </if>
+            <if test="appointeddate != null">
+                #{appointeddate,jdbcType=TIMESTAMP},
+            </if>
+            <if test="settingdate != null">
+                #{settingdate,jdbcType=TIMESTAMP},
+            </if>
+            <if test="entrymileage != null">
+                #{entrymileage,jdbcType=DOUBLE},
+            </if>
+            <if test="statusId != null">
+                #{statusId,jdbcType=INTEGER},
+            </if>
+        </trim>
+    </insert>
+    <select id="countByExample" parameterType="com.cx.truck.model.MaintenanceBillExample"
+            resultType="java.lang.Integer">
+        select count(*) from sv_maintenance_bill
+        <if test="_parameter != null">
+            <include refid="Example_Where_Clause"/>
+        </if>
+    </select>
+    <update id="updateByExampleSelective" parameterType="map">
+        update sv_maintenance_bill
+        <set>
+            <if test="record.id != null">
+                id = #{record.id,jdbcType=INTEGER},
+            </if>
+            <if test="record.truckId != null">
+                truck_id = #{record.truckId,jdbcType=INTEGER},
+            </if>
+            <if test="record.enterdate != null">
+                enterdate = #{record.enterdate,jdbcType=TIMESTAMP},
+            </if>
+            <if test="record.appointeddate != null">
+                appointeddate = #{record.appointeddate,jdbcType=TIMESTAMP},
+            </if>
+            <if test="record.settingdate != null">
+                settingdate = #{record.settingdate,jdbcType=TIMESTAMP},
+            </if>
+            <if test="record.entrymileage != null">
+                entrymileage = #{record.entrymileage,jdbcType=DOUBLE},
+            </if>
+            <if test="record.statusId != null">
+                status_id = #{record.statusId,jdbcType=INTEGER},
+            </if>
+        </set>
+        <if test="_parameter != null">
+            <include refid="Update_By_Example_Where_Clause"/>
+        </if>
+    </update>
+    <update id="updateByExample" parameterType="map">
+        update sv_maintenance_bill
+        set id = #{record.id,jdbcType=INTEGER},
+        truck_id = #{record.truckId,jdbcType=INTEGER},
+        enterdate = #{record.enterdate,jdbcType=TIMESTAMP},
+        appointeddate = #{record.appointeddate,jdbcType=TIMESTAMP},
+        settingdate = #{record.settingdate,jdbcType=TIMESTAMP},
+        entrymileage = #{record.entrymileage,jdbcType=DOUBLE},
+        status_id = #{record.statusId,jdbcType=INTEGER}
+        <if test="_parameter != null">
+            <include refid="Update_By_Example_Where_Clause"/>
+        </if>
+    </update>
+    <update id="updateByPrimaryKeySelective" parameterType="com.cx.truck.model.MaintenanceBill">
+        update sv_maintenance_bill
+        <set>
+            <if test="truckId != null">
+                truck_id = #{truckId,jdbcType=INTEGER},
+            </if>
+            <if test="enterdate != null">
+                enterdate = #{enterdate,jdbcType=TIMESTAMP},
+            </if>
+            <if test="appointeddate != null">
+                appointeddate = #{appointeddate,jdbcType=TIMESTAMP},
+            </if>
+            <if test="settingdate != null">
+                settingdate = #{settingdate,jdbcType=TIMESTAMP},
+            </if>
+            <if test="entrymileage != null">
+                entrymileage = #{entrymileage,jdbcType=DOUBLE},
+            </if>
+            <if test="statusId != null">
+                status_id = #{statusId,jdbcType=INTEGER},
+            </if>
+        </set>
+        where id = #{id,jdbcType=INTEGER}
+    </update>
+    <update id="updateByPrimaryKey" parameterType="com.cx.truck.model.MaintenanceBill">
+    update sv_maintenance_bill
+    set truck_id = #{truckId,jdbcType=INTEGER},
+      enterdate = #{enterdate,jdbcType=TIMESTAMP},
+      appointeddate = #{appointeddate,jdbcType=TIMESTAMP},
+      settingdate = #{settingdate,jdbcType=TIMESTAMP},
+      entrymileage = #{entrymileage,jdbcType=DOUBLE},
+      status_id = #{statusId,jdbcType=INTEGER}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+</mapper>

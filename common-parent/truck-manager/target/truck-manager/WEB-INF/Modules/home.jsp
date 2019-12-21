@@ -70,6 +70,11 @@
                     </a>
                 </li>
                 <li>
+                    <a href="${pageContext.request.contextPath}/home/maintenancebill.do">
+                        <i class="icon-home"></i>维修服务
+                    </a>
+                </li>
+                <%--<li>
                     <a href="#exampledropdownDropdown" aria-expanded="false" data-toggle="collapse">
                         <i class="icon-interface-windows"></i>维修服务
                     </a>
@@ -78,7 +83,7 @@
                         <li><a href="#">Page</a></li>
                         <li><a href="#">Page</a></li>
                     </ul>
-                </li>
+                </li>--%>
                 <li>
                     <a href="charts.html">
                         <i class="fa fa-bar-chart"></i>图表

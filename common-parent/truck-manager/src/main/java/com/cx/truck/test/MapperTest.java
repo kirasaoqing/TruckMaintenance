@@ -1,11 +1,7 @@
 package com.cx.truck.test;
 
-import com.cx.truck.mapper.CustomerMapper;
-import com.cx.truck.mapper.TruckMapper;
-import com.cx.truck.mapper.UserMapper;
-import com.cx.truck.model.Customer;
-import com.cx.truck.model.Truck;
-import com.cx.truck.model.User;
+import com.cx.truck.mapper.*;
+import com.cx.truck.model.*;
 import org.apache.ibatis.session.SqlSession;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -35,6 +31,10 @@ public class MapperTest {
     @Autowired
     TruckMapper truckMapper;
     @Autowired
+    MaintenanceBillMapper maintenanceBillMapper;
+    @Autowired
+    MaintenanceBillStatusMapper maintenanceBillStatusMapper;
+    @Autowired
     SqlSession sqlSession;
 
     @Test
@@ -44,20 +44,30 @@ public class MapperTest {
         //2.从容器中获取mapper
         CustomerMapper bean = ioc.getBean(CustomerMapper.class);*/
 
-        System.out.println(customerMapper);
+       //======================================maintenanceBillMapper===============================
+       /* System.out.println(maintenanceBillMapper);
 
-        System.out.println(userMapper);
+        List<MaintenanceBill> maintenanceBills = maintenanceBillMapper.selectByExampleWithItemsAndMaterials(null);
+        //List<MaintenanceBill> maintenanceBills = maintenanceBillMapper.selectByExample(null);
+        System.out.println("===================bills:" + maintenanceBills);
+        for (MaintenanceBill maintenanceBill : maintenanceBills) {
+            System.out.println("==================items:" + maintenanceBill.getMaintenanceItemList() + "==================");
+            System.out.println("==================materials:" + maintenanceBill.getMaintenanceMaterialList() + "===============");
+        }*/
 
-        System.out.println(truckMapper);
+        //======================================maintenanceBillStatusMapper===============================
+        List<MaintenanceBillStatus> maintenanceBillStatuses = maintenanceBillStatusMapper.selectByExample(null);
+        System.out.println(maintenanceBillStatuses);
 
+        //======================================truckMapper===============================
         //List<Truck> trucks = truckMapper.selectByExampleWithCusAndVT(null);
-        Truck truck = truckMapper.selectByPrimaryKeyWithCusAndVT(1);
+        /*Truck truck = truckMapper.selectByPrimaryKeyWithCusAndVT(1);
         System.out.println(">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>");
         System.out.println("truck:" + truck.toString());
         System.out.println(">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>");
         System.out.println("viechle:" + truck.getVehicleType().toString());
         System.out.println(">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>");
-        System.out.println("customer:" + truck.getCustomer().toString());
+        System.out.println("customer:" + truck.getCustomer().toString());*/
         /*for (Truck truck : trucks) {
             System.out.println(">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>");
             System.out.println(truck.getViechleType().toString());
