@@ -11,6 +11,7 @@
         <result column="status_id" property="statusId" jdbcType="INTEGER"/>
     </resultMap>
 
+    <!--复杂查询返回结果-->
     <resultMap id="WithItemsAndMaterialsMap" type="com.cx.truck.model.MaintenanceBill">
         <id column="id" property="id" jdbcType="INTEGER"/>
         <result column="truck_id" property="truckId" jdbcType="INTEGER"/>
@@ -47,7 +48,6 @@
             <result column="amount" property="amount"/>
         </collection>
     </resultMap>
-
     <resultMap id="WithTruckAndStatusMap" type="com.cx.truck.model.MaintenanceBill">
         <id column="id" property="id" jdbcType="INTEGER"/>
         <result column="truck_id" property="truckId" jdbcType="INTEGER"/>
@@ -135,6 +135,7 @@
     id, truck_id, enterdate, appointeddate, settingdate, entrymileage, status_id
   </sql>
 
+    <!--复杂查询返回列-->
     <sql id="WithTruckAndStatus_Column_List">
         b.id, b.truck_id, b.enterdate, b.entrymileage, b.appointeddate, b.settingdate, b.status_id,
                 t.platenumber,
@@ -147,6 +148,7 @@
 				m.id AS material_id, m.name AS material_name, m.unit, m.quantity, m.price, m.amount,
 				c.id AS c_id, c.name AS customer_name
     </sql>
+
     <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.cx.truck.model.MaintenanceBillExample">
         select
         <if test="distinct">
@@ -161,9 +163,16 @@
             order by ${orderByClause}
         </if>
     </select>
+    <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer">
+        select
+        <include refid="Base_Column_List"/>
+        from sv_maintenance_bill
+        where id = #{id,jdbcType=INTEGER}
+    </select>
+
 
     <!--复杂查询含维修项及维修材料的维修单信息-->
-    <select id="selectByExampleWithItemsAndMaterials" resultMap="WithTruckAndStatusMap" parameterType="com.cx.truck.model.MaintenanceBillExample">
+    <select id="selectByExampleWithTruckAndStatus" resultMap="WithTruckAndStatusMap" parameterType="com.cx.truck.model.MaintenanceBillExample">
         select
         <if test="distinct">
             distinct
@@ -179,13 +188,6 @@
         <if test="orderByClause != null">
             order by ${orderByClause}
         </if>
-    </select>
-
-    <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer">
-        select
-        <include refid="Base_Column_List"/>
-        from sv_maintenance_bill
-        where id = #{id,jdbcType=INTEGER}
     </select>
 
     <!--按id复杂查询含维修项及维修材料的维修单信息-->
@@ -352,4 +354,5 @@
       status_id = #{statusId,jdbcType=INTEGER}
     where id = #{id,jdbcType=INTEGER}
   </update>
+
 </mapper>

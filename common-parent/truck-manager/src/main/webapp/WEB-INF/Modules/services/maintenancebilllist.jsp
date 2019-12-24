@@ -90,12 +90,12 @@
                     </a>
                 </li>
                 <li>
-                    <a href="charts.html">
+                    <a href="#">
                         <i class="fa fa-bar-chart"></i>图表
                     </a>
                 </li>
                 <li>
-                    <a href="tables.html">
+                    <a href="#">
                         <i class="icon-grid"></i>报表
                     </a>
                 </li>
@@ -222,7 +222,7 @@
                                 </table>
                             </div>
                         </div>
-                        <div class="row">
+                        <div class="card-footer">
                             <!--分页文字信息-->
                             <div class="col-md-5 pull-left" id="page_info_area">
 
@@ -241,7 +241,8 @@
 </div>
 
 <!-- 新增模态框 -->
-<div class="modal fade" id="billsModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+<div class="modal fade" id="billsModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
+     style="overflow:scroll">
     <div class="modal-dialog modal-lg">
         <div class="modal-content">
 
@@ -256,6 +257,13 @@
                 <form>
                     <div class="col-md-12 row">
                         <div class="col-md-6 pull-left">
+                            <div class="form-group row">
+                                <label class="col-sm-3 form-control-label">维修单号</label>
+                                <div class="col-sm-9">
+                                    <input type="text" class="form-control" name="id" id="id_input" readonly>
+                                    <span class="help-block"></span>
+                                </div>
+                            </div>
                             <div class="form-group row">
                                 <label class="col-sm-3 form-control-label">车牌号</label>
                                 <div class="col-sm-9">
@@ -367,7 +375,8 @@
                                 <th>
                                     <input type="checkbox" id="item_check_all"/>
                                 </th>
-                                <th hidden="true">ID</th>
+                                <th hidden='true'>ID</th>
+                                <th hidden='true'>billid</th>
                                 <th style="width: 40%">维修项目</th>
                                 <th style="width: 30%">维修费用</th>
                                 <th style="width: 30%">操作</th>
@@ -382,7 +391,8 @@
                                 <th>
                                     <input type="checkbox" id="material_check_all"/>
                                 </th>
-                                <th hidden="true">ID</th>
+                                <th hidden='true'>ID</th>
+                                <th hidden='true'>billid</th>
                                 <th style="width: 20%">材料名称</th>
                                 <th style="width: 15%">单位</th>
                                 <th style="width: 15%">数量</th>
@@ -402,14 +412,14 @@
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-dismiss="modal">关闭</button>
                 <button type="button" class="btn btn-primary" id="bill_add_btn">保存</button>
-                <button type="button" class="btn btn-primary" id="bill_update_btn">修改</button>
             </div>
         </div>
     </div>
 </div>
 
 <!-- 新增维修项目模态框 -->
-<div class="modal fade" id="itemModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+<div class="modal fade" id="itemModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
+     style="overflow:scroll">
     <div class="modal-dialog">
         <div class="modal-content">
 
@@ -426,6 +436,13 @@
                         <label class="col-sm-3 form-control-label" for="item_billid_input">维修单号</label>
                         <div class="col-sm-9">
                             <input type="text" class="form-control" name="billId" id="item_billid_input" readonly>
+                            <span class="help-block"></span>
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <label class="col-sm-3 form-control-label" for="itemid_input">项目编号</label>
+                        <div class="col-sm-9">
+                            <input type="text" class="form-control" name="id" id="itemid_input" readonly>
                             <span class="help-block"></span>
                         </div>
                     </div>
@@ -451,14 +468,14 @@
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-dismiss="modal">关闭</button>
                 <button type="button" class="btn btn-primary" id="item_add_btn">保存</button>
-                <button type="button" class="btn btn-primary" id="item_update_btn">修改</button>
             </div>
         </div>
     </div>
 </div>
 
 <!-- 新增维修材料模态框 -->
-<div class="modal fade" id="materialModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+<div class="modal fade" id="materialModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
+     style="overflow:scroll">
     <div class="modal-dialog">
         <div class="modal-content">
 
@@ -475,6 +492,13 @@
                         <label class="col-sm-3 form-control-label" for="material_billid_input">维修单号</label>
                         <div class="col-sm-9">
                             <input type="text" class="form-control" name="billId" id="material_billid_input" readonly>
+                            <span class="help-block"></span>
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <label class="col-sm-3 form-control-label" for="materialid_input">材料编号</label>
+                        <div class="col-sm-9">
+                            <input type="text" class="form-control" name="id" id="materialid_input" readonly>
                             <span class="help-block"></span>
                         </div>
                     </div>
@@ -524,7 +548,6 @@
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-dismiss="modal">关闭</button>
                 <button type="button" class="btn btn-primary" id="material_add_btn">保存</button>
-                <button type="button" class="btn btn-primary" id="material_update_btn">修改</button>
             </div>
         </div>
     </div>
@@ -569,17 +592,15 @@
     $(function () {
         //页面加载，去首页
         to_page(1);
-
     });
 
     //查询出全部数据&数据翻页
     function to_page(pn) {
         $.ajax({
-            url: "${APP_PATH}/maintenancebill/list.do",
+            url: "${APP_PATH}/maintenancebill/listAll.do",
             data: "pn=" + pn,
             type: "GET",
             success: function (result) {
-                //console.log(result);
                 //1.解析并显示员工数据
                 build_bills_table(result);
                 //2.解析并显示分页信息
@@ -605,12 +626,12 @@
             /*var appointeddate = $("<td></td>").append(item.appointeddate);
             var settingdate = $("<td></td>").append(item.settingdate);*/
             var status = $("<td></td>").append(item.maintenanceBillStatus.name);
-            var upadteBtn = $("<button></button>").addClass("btn btn-warning btn-xs update_btn").append($("<sapn></span>").addClass("fa fa-edit")).append("修改");
+            /*var upadteBtn = $("<button></button>").addClass("btn btn-warning btn-xs bii_update_btn").append($("<sapn></span>").addClass("fa fa-edit")).append("修改");
             //为编辑按钮添加一个自定义属性，来标示当前车辆id
-            upadteBtn.attr("update_id", item.id);
-            var lookBtn = $("<button></button>").addClass("btn btn-info btn-xs look_btn").append($("<sapn></span>").addClass("fa fa-search")).append("查看");
-            lookBtn.attr("look_id", item.id);
-            var btn = $("<td></td>").addClass("table-btn").append(lookBtn).append(" ").append(upadteBtn);
+            upadteBtn.attr("bill_update_id", item.id);*/
+            var lookBtn = $("<button></button>").addClass("btn btn-info btn-xs bill_look_btn").append($("<sapn></span>").addClass("fa fa-search")).append("查看");
+            lookBtn.attr("bill_look_id", item.id);
+            var btn = $("<td></td>").addClass("table-btn").append(lookBtn);
             $("<tr></tr>").append("<td><input type='checkbox' class='check_item'></td>").append(id).append(billno).append(platenumber).append(customer).append(enterdate).append(status).append(btn).appendTo("#bills_table tbody");
         });
     }
@@ -682,8 +703,8 @@
     }
 
     /=================================查看明细====================================/
-    $(document).on("click", ".look_btn", function () {
-        getBill($(this).attr("look_id"));
+    $(document).on("click", ".bill_look_btn", function () {
+        getBill($(this).attr("bill_look_id"));
         //getCustomers();
         getStatus();
         getTrucks();
@@ -691,22 +712,6 @@
             backdrop: "static"
         });
     });
-
-    //查出所有的客户并显示在下拉列表中
-    /*function getCustomers() {
-        //清空下拉列表
-        $("#customer_select").empty();
-        $.ajax({
-            url: "${APP_PATH}/customer/getAllCustomers.do",
-            type: "GET",
-            success: function (result) {
-                $.each(result.extend.customers, function () {
-                    var option = $("<option></option>").append(this.name).attr("value", this.id);
-                    option.appendTo("#customer_select");
-                });
-            }
-        });
-    }*/
 
     //查出所有的状态并显示在下拉列表中
     function getStatus() {
@@ -745,8 +750,8 @@
             url: "${APP_PATH}/maintenancebill/" + id + ".do",
             type: "GET",
             success: function (result) {
-                //console.log(result);
                 var billData = result.extend.bill;
+                $("#id_input").val(billData.id);
                 $("#status_select").val([billData.statusId]);
                 $("#truck_select").val([billData.truckId]);
                 /*$("#billsModal select[name=status_select]").val([billData.statusId]);
@@ -770,16 +775,17 @@
         $("#bill_item_table tbody").empty();
         var items = billData.maintenanceItemList;
         $.each(items, function (index, item) {
-            var id = $("<td hidden='true'></td>").append(item.id);
+            var id = $("<td  hidden='true'></td>").append(item.id);
+            var billid = $("<td  hidden='true'></td>").append(billData.id);
             var name = $("<td></td>").append(item.item);
             var itemfees = $("<td></td>").append(item.itemfees);
-            var upadteBtn = $("<button></button>").addClass("btn btn-warning btn-xs update_btn").append($("<sapn></span>").addClass("fa fa-edit")).append("修改");
+            /*var upadteBtn = $("<button></button>").addClass("btn btn-warning btn-xs item_update_btn").append($("<sapn></span>").addClass("fa fa-edit")).append("修改");
             //为编辑按钮添加一个自定义属性，来标示当前车辆id
-            upadteBtn.attr("update_id", item.id);
-            /*var lookBtn = $("<button></button>").addClass("btn btn-info btn-xs look_btn").append($("<sapn></span>").addClass("fa fa-search")).append("查看");
-            lookBtn.attr("look_id", item.id);*/
-            var btn = $("<td></td>").addClass("table-btn").append(upadteBtn);
-            $("<tr></tr>").append("<td><input type='checkbox' class='check_item'></td>").append(id).append(name).append(itemfees).append(btn).appendTo("#bill_item_table tbody");
+            upadteBtn.attr("item_update_id", item.id);*/
+            var lookBtn = $("<button></button>").attr("type", "button").addClass("btn btn-info btn-xs item_look_btn").append($("<sapn></span>").addClass("fa fa-search")).append("查看");
+            lookBtn.attr("item_look_id", item.id);
+            var btn = $("<td></td>").addClass("table-btn").append(lookBtn);
+            $("<tr></tr>").append("<td><input type='checkbox' class='item_check_item'></td>").append(id).append(billid).append(name).append(itemfees).append(btn).appendTo("#bill_item_table tbody");
         });
     }
 
@@ -789,25 +795,28 @@
         $("#bill_material_table tbody").empty();
         var materials = billData.maintenanceMaterialList;
         $.each(materials, function (index, item) {
-            var id = $("<td hidden='true'></td>").append(item.id);
+            var id = $("<td  hidden='true'></td>").append(item.id);
+            var billid = $("<td  hidden='true'></td>").append(billData.id);
             var name = $("<td></td>").append(item.name);
             var unit = $("<td></td>").append(item.unit);
             var quantity = $("<td></td>").append(item.quantity);
             var price = $("<td></td>").append(item.price);
             var amount = $("<td></td>").append(item.amount);
-            var upadteBtn = $("<button></button>").addClass("btn btn-warning btn-xs update_btn").append($("<sapn></span>").addClass("fa fa-edit")).append("修改");
+            /*var upadteBtn = $("<button></button>").addClass("btn btn-warning btn-xs material_update_btn").append($("<sapn></span>").addClass("fa fa-edit")).append("修改");
             //为编辑按钮添加一个自定义属性，来标示当前车辆id
-            upadteBtn.attr("update_id", item.id);
-            /*var lookBtn = $("<button></button>").addClass("btn btn-info btn-xs look_btn").append($("<sapn></span>").addClass("fa fa-search")).append("查看");
-            lookBtn.attr("look_id", item.id);*/
-            var btn = $("<td></td>").addClass("table-btn").append(upadteBtn);
-            $("<tr></tr>").append("<td><input type='checkbox' class='check_item'></td>").append(id).append(name).append(unit).append(quantity).append(price).append(amount).append(btn).appendTo("#bill_material_table tbody");
+            upadteBtn.attr("material_update_id", item.id);*/
+            var lookBtn = $("<button></button>").attr("type", "button").addClass("btn btn-info btn-xs material_look_btn").append($("<sapn></span>").addClass("fa fa-search")).append("查看");
+            lookBtn.attr("material_look_id", item.id);
+            var btn = $("<td></td>").addClass("table-btn").append(lookBtn);
+            $("<tr></tr>").append("<td><input type='checkbox' class='material_check_item'></td>").append(id).append(billid).append(name).append(unit).append(quantity).append(price).append(amount).append(btn).appendTo("#bill_material_table tbody");
         });
     }
 
     /=============================新增表单===============================/
     $("#bill_add_modal_btn").click(function () {
         reset_form("#billsModal form");
+        $("#bill_material_table tbody").empty();
+        $("#bill_item_table tbody").empty();
         $("#bill_add_btn").show();
         $("#bill_update_btn").hide();
         getStatus();
@@ -824,7 +833,6 @@
             url: "${APP_PATH}/truck/" + id + ".do",
             type: "GET",
             success: function (result) {
-                console.log(result);
                 var truckData = result.extend.truck;
                 $("#customer_input").val(truckData.customer.name);
             }
@@ -843,20 +851,49 @@
         }
 
         var bills = $("#billsModal form").serialize();
-        $.ajax({
-            url: "${APP_PATH}/maintenancebill/maintenancebill.do",
-            type: "POST",
-            data: $("#billsModal form").serialize(),
-            success: function (result) {
-                $("#item_billid_input").val(result.extend.billid);
-                $("#material_billid_input").val(result.extend.billid);
-                swal({
-                    title: "车辆信息保存成功",
-                    icon: "success",
-                    button: "确定"
-                });
-            }
-        });
+
+        //如果维修单号不存在，则新增维修单
+        if ($("#id_input").val() == "") {
+            $.ajax({
+                url: "${APP_PATH}/maintenancebill/maintenancebill.do",
+                type: "POST",
+                data: bills,
+                success: function (result) {
+                    $("#id_input").val(result.extend.billid);
+                    $("#item_billid_input").val(result.extend.billid);
+                    $("#material_billid_input").val(result.extend.billid);
+                    if (result.code == 100) {
+                        $("#billsModal").modal("hide");
+                        to_page(currentPage);
+                    } else if (result.code == 200) {
+                        swal({
+                            title: "车辆信息保存失败",
+                            icon: "error",
+                            button: "确定"
+                        });
+                    }
+                }
+            });
+        } else {//否则更新
+            $.ajax({
+                url: "${APP_PATH}/maintenancebill/maintenancebill.do",
+                type: "PUT",
+                data: bills,
+                success: function (result) {
+                    if (result.code == 100) {
+                        $("#billsModal").modal("hide");
+                        to_page(currentPage);
+                    } else if (result.code == 200) {
+                        swal({
+                            title: "车辆信息修改失败",
+                            icon: "error",
+                            button: "确定"
+                        });
+                    }
+                }
+            })
+
+        }
     });
 
     //重置表单
@@ -869,51 +906,120 @@
 
     $("#item-tab").click(function () {
         $("#item_material_add_modal_btn").attr("tab-type", "item");
+        $("#item_material_delete_btn").attr("tab-type", "item");
     });
 
     $("#material-tab").click(function () {
         $("#item_material_add_modal_btn").attr("tab-type", "material");
+        $("#item_material_delete_btn").attr("tab-type", "material");
     });
 
     $("#item_material_add_modal_btn").click(function () {
         var tabtype = $(this).attr("tab-type");
         if (tabtype == "item") {
-            $("#item_update_btn").hide();
+            //$("#item_update_btn").hide();
+            //reset_form("#itemModal form");
             $("#itemModal").modal({
                 backdrop: "static"
             });
         } else if (tabtype == "material") {
-            $("#material_update_btn").hide();
+            //$("#material_update_btn").hide();
+            //reset_form("#materialModal form");
             $("#materialModal").modal({
                 backdrop: "static"
             });
         }
     });
 
-    /============================维修项目================================/
-    $("#item_add_btn").click(function () {
+
+    $(document).on("click", ".item_look_btn", function () {
         $.ajax({
-            url: "${APP_PATH}/maintenanceitem/maintenanceitem.do",
-            type: "POST",
-            data: $("#itemModal form").serialize(),
+            url: "${APP_PATH}/maintenanceitem/" + $(this).attr("item_look_id") + ".do",
+            type: "GET",
             success: function (result) {
-                swal({
-                    title: "维修项目保存成功",
-                    icon: "success",
-                    button: "确定"
+                var itemData = result.extend.item;
+                $("#item_billid_input").val(itemData.billId);
+                $("#itemid_input").val(itemData.id);
+                $("#item_input").val(itemData.item);
+                $("#itemfees_input").val(itemData.itemfees);
+                $("#itemModal").modal({
+                    backdrop: "static"
                 });
-                $("#itemModal").modal("hide");
-                build_items_table();
             }
         });
     });
 
+    $(document).on("click", ".material_look_btn", function () {
+        $.ajax({
+            url: "${APP_PATH}/maintenancematerial/" + $(this).attr("material_look_id") + ".do",
+            type: "GET",
+            success: function (result) {
+                var materialData = result.extend.material;
+                $("#material_billid_input").val(materialData.billId);
+                $("#materialid_input").val(materialData.id);
+                $("#material_input").val(materialData.name);
+                $("#unit_input").val(materialData.unit);
+                $("#quantity_input").val(materialData.quantity);
+                $("#price_input").val(materialData.price);
+                $("#amount_input").val(materialData.amount);
+                $("#materialModal").modal({
+                    backdrop: "static"
+                });
+            }
+        });
+    });
+
+    /============================维修项目================================/
+    //新增
+    $("#item_add_btn").click(function () {
+        if ($("#itemid_input").val() == "") {
+            $.ajax({
+                url: "${APP_PATH}/maintenanceitem/maintenanceitem.do",
+                type: "POST",
+                data: $("#itemModal form").serialize(),
+                success: function (result) {
+                    if (result.code == 100) {
+                        $("#itemModal").modal("hide");
+                        build_items_table();
+                    } else if (result.code == 200) {
+                        swal({
+                            title: "维修项目保存失败",
+                            icon: "eroor",
+                            button: "确定"
+                        });
+                    }
+                }
+            });
+        } else {
+            $.ajax({
+                url: "${APP_PATH}/maintenanceitem/maintenanceitem.do",
+                type: "PUT",
+                data: $("#itemModal form").serialize(),
+                success: function (result) {
+                    if (result.code == 100) {
+                        $("#itemModal").modal("hide");
+                        build_items_table();
+                    } else if (result.code == 200) {
+                        swal({
+                            title: "维修项目修改失败",
+                            icon: "success",
+                            button: "确定"
+                        });
+                    }
+                }
+            });
+        }
+    });
+
+    //返回展示项目列表
     function build_items_table() {
         $.ajax({
             url: "${APP_PATH}/maintenanceitem/getItemsByBillId.do",
-            data: "billId=" + $("#item_billid_input").val(),
+            data: "billId=" + $("#id_input").val(),
             type: "GET",
             success: function (result) {
+                console.log(result);
+
                 //清空
                 $("#bill_item_table tbody").empty();
                 var items = result.extend.maintenanceItems;
@@ -921,40 +1027,72 @@
                     var id = $("<td hidden='true'></td>").append(item.id);
                     var name = $("<td></td>").append(item.item);
                     var itemfees = $("<td></td>").append(item.itemfees);
-                    var upadteBtn = $("<button></button>").addClass("btn btn-warning btn-xs update_btn").append($("<sapn></span>").addClass("fa fa-edit")).append("修改");
+                    /*var upadteBtn = $("<button></button>").addClass("btn btn-warning btn-xs item_update_btn").append($("<sapn></span>").addClass("fa fa-edit")).append("修改");
                     //为编辑按钮添加一个自定义属性，来标示当前车辆id
-                    upadteBtn.attr("update_id", item.id);
-                    /*var lookBtn = $("<button></button>").addClass("btn btn-info btn-xs look_btn").append($("<sapn></span>").addClass("fa fa-search")).append("查看");
-                    lookBtn.attr("look_id", item.id);*/
-                    var btn = $("<td></td>").addClass("table-btn").append(upadteBtn);
-                    $("<tr></tr>").append("<td><input type='checkbox' class='check_item'></td>").append(id).append(name).append(itemfees).append(btn).appendTo("#bill_item_table tbody");
+                    upadteBtn.attr("item_update_id", item.id);*/
+                    var lookBtn = $("<button></button>").attr("type", "button").addClass("btn btn-info btn-xs item_look_btn").append($("<sapn></span>").addClass("fa fa-search")).append("查看");
+                    lookBtn.attr("item_look_id", item.id);
+                    var btn = $("<td></td>").addClass("table-btn").append(lookBtn);
+                    $("<tr></tr>").append("<td><input type='checkbox' class='item_check_item'></td>").append(id).append(name).append(itemfees).append(btn).appendTo("#bill_item_table tbody");
                 });
             }
         });
     }
 
-    /==========================维修材料=======================/
-    $("#material_add_btn").click(function () {
-        $.ajax({
-            url: "${APP_PATH}/maintenancematerial/maintenancematerial.do",
-            type: "POST",
-            data: $("#materialModal form").serialize(),
-            success: function (result) {
-                swal({
-                    title: "维修材料保存成功",
-                    icon: "success",
-                    button: "确定"
-                });
-                $("#materialModal").modal("hide");
-                build_materials_table();
-            }
-        });
+    $("#item_check_all").click(function () {
+        $(".item_check_item").prop("checked", $("#item_check_all").prop("checked"));
+    });
+    $(document).on("click", ".item_check_item", function () {
+        $("#item_check_all").prop("checked", $(".item_check_item:checked").length == $(".item_check_item").length);
     });
 
+    /==========================维修材料=======================/
+    //新增
+    $("#material_add_btn").click(function () {
+        if ($("#materialid_input") == "") {
+            $.ajax({
+                url: "${APP_PATH}/maintenancematerial/maintenancematerial.do",
+                type: "POST",
+                data: $("#materialModal form").serialize(),
+                success: function (result) {
+                    if (result.code == 100) {
+                        $("#materialModal").modal("hide");
+                        build_materials_table();
+                    } else if (result.code == 200) {
+                        swal({
+                            title: "维修材料保存失败",
+                            icon: "success",
+                            button: "确定"
+                        });
+                    }
+                }
+            });
+        } else {
+            $.ajax({
+                url: "${APP_PATH}/maintenancematerial/maintenancematerial.do",
+                type: "PUT",
+                data: $("#materialModal form").serialize(),
+                success: function (result) {
+                    if (result.code == 100) {
+                        $("#materialModal").modal("hide");
+                        build_materials_table();
+                    } else if (result.code == 200) {
+                        swal({
+                            title: "维修材料保存失败",
+                            icon: "success",
+                            button: "确定"
+                        });
+                    }
+                }
+            });
+        }
+    });
+
+    //返回展示材料列表
     function build_materials_table() {
         $.ajax({
             url: "${APP_PATH}/maintenancematerial/getMaterialsByBillId.do",
-            data: "billId=" + $("#material_billid_input").val(),
+            data: "billId=" + $("#id_input").val(),
             type: "GET",
             success: function (result) {
                 //清空
@@ -967,18 +1105,191 @@
                     var quantity = $("<td></td>").append(item.quantity);
                     var price = $("<td></td>").append(item.price);
                     var amount = $("<td></td>").append(item.amount);
-                    var upadteBtn = $("<button></button>").addClass("btn btn-warning btn-xs update_btn").append($("<sapn></span>").addClass("fa fa-edit")).append("修改");
+                    /*var upadteBtn = $("<button></button>").addClass("btn btn-warning btn-xs material_update_btn").append($("<sapn></span>").addClass("fa fa-edit")).append("修改");
                     //为编辑按钮添加一个自定义属性，来标示当前车辆id
-                    upadteBtn.attr("update_id", item.id);
-                    /*var lookBtn = $("<button></button>").addClass("btn btn-info btn-xs look_btn").append($("<sapn></span>").addClass("fa fa-search")).append("查看");
-                    lookBtn.attr("look_id", item.id);*/
-                    var btn = $("<td></td>").addClass("table-btn").append(upadteBtn);
-                    $("<tr></tr>").append("<td><input type='checkbox' class='check_item'></td>").append(id).append(name).append(unit).append(quantity).append(price).append(amount).append(btn).appendTo("#bill_material_table tbody");
+                    upadteBtn.attr("material_update_id", item.id);*/
+                    var lookBtn = $("<button></button>").attr("type", "button").addClass("btn btn-info btn-xs material_look_btn").append($("<sapn></span>").addClass("fa fa-search")).append("查看");
+                    lookBtn.attr("material_look_id", item.id);
+                    var btn = $("<td></td>").addClass("table-btn").append(lookBtn);
+                    $("<tr></tr>").append("<td><input type='checkbox' class='material_check_item'></td>").append(id).append(name).append(unit).append(quantity).append(price).append(amount).append(btn).appendTo("#bill_material_table tbody");
                 });
             }
         });
     }
-</script>
 
+    $("#material_check_all").click(function () {
+        $(".material_check_item").prop("checked", $("#material_check_all").prop("checked"));
+    });
+    $(document).on("click", ".material_check_item", function () {
+        $("#material_check_all").prop("checked", $(".material_check_item:checked").length == $(".material_check_item").length);
+    });
+
+    $("#item_material_delete_btn").click(function () {
+        var tabtype = $(this).attr("tab-type");
+        if (tabtype == "item") {
+            var itemIds = "";
+            var items = "";
+            $.each($(".item_check_item:checked"), function () {
+                itemIds += $(this).parents("tr").find("td:eq(1)").text() + "-";
+                items += $(this).parents("tr").find("td:eq(2)").text() + ",";
+            });
+            if (itemIds != "") {
+                itemIds = itemIds.substring(0, itemIds.length - 1);
+                items = items.substring(0, items.length - 1);
+                swal({
+                    title: "确定要删除以下维修项目吗？",
+                    text: items,
+                    icon: "warning",
+                    buttons: {
+                        cancel: "取消",
+                        confirm: {
+                            text: "确定",
+                            value: "delete"
+                        }
+                    },
+                }).then((value) => {
+                    if (value == "delete") {
+                        $.ajax({
+                            url: "${APP_PATH}/maintenanceitem/" + itemIds + ".do",
+                            type: "DELETE",
+                            success: function (result) {
+                                build_items_table();
+                            }
+                        });
+                    }
+                })
+            } else {
+                swal({
+                    title: "请勾选想要删除的维修项目",
+                    icon: "warning",
+                    button: "退出"
+                });
+            }
+        } else if (tabtype == "material") {
+            var materialIds = "";
+            var materials = "";
+            $.each($(".material_check_item:checked"), function () {
+                materialIds += $(this).parents("tr").find("td:eq(1)").text() + "-";
+                materials += $(this).parents("tr").find("td:eq(2)").text() + ",";
+            });
+            if (materialIds != "") {
+                materialIds = materialIds.substring(0, materialIds.length - 1);
+                materials = materials.substring(0, materials.length - 1);
+                swal({
+                    title: "确定要删除以下维修材料吗？",
+                    text: materials,
+                    icon: "warning",
+                    buttons: {
+                        cancel: "取消",
+                        confirm: {
+                            text: "确定",
+                            value: "delete"
+                        }
+                    },
+                }).then((value) => {
+                    if (value == "delete") {
+                        $.ajax({
+                            url: "${APP_PATH}/maintenancematerial/" + materialIds + ".do",
+                            type: "DELETE",
+                            success: function (result) {
+                                build_materials_table();
+                            }
+                        });
+                    }
+                })
+            } else {
+                swal({
+                    title: "请勾选想要删除的维修材料",
+                    icon: "warning",
+                    button: "退出"
+                });
+            }
+        }
+    });
+
+    /============================删除维修单===============================/
+    $("#check_all").click(function () {
+        $(".check_item").prop("checked", $("#check_all").prop("checked"));
+    });
+    $(document).on("click", ".check_item", function () {
+        $("#check_all").prop("checked", $(".check_item:checked").length == $(".check_item").length);
+    });
+
+    $("#bill_delete_btn").click(function () {
+        var billIds = "";
+        var platenumbers = "";
+        $.each($(".check_item:checked"), function () {
+            billIds += $(this).parents("tr").find("td:eq(1)").text() + "-";
+            platenumbers += $(this).parents("tr").find("td:eq(3)").text() + ",";
+        });
+        if (billIds != "") {
+            billIds = billIds.substring(0, billIds.length - 1);
+            platenumbers = platenumbers.substring(0, platenumbers.length - 1);
+            swal({
+                title: "确定要删除以下车牌号的维修单吗？",
+                text: platenumbers,
+                icon: "warning",
+                buttons: {
+                    cancel: "取消",
+                    confirm: {
+                        text: "确定",
+                        value: "delete"
+                    }
+                },
+            }).then((value) => {
+                if (value == "delete") {
+                    $.ajax({
+                        url: "${APP_PATH}/maintenancebill/" + billIds + ".do",
+                        type: "DELETE",
+                        success: function (result) {
+                            to_page(currentPage);
+                        }
+                    });
+                }
+            })
+        } else {
+            swal({
+                title: "请勾选想要删除的维修单",
+                icon: "warning",
+                button: "退出"
+            });
+        }
+    });
+
+
+    /=================================查找==================================/
+    $("#search_mt_btn").click(function () {
+        var platenumber = $("#mt_platenumber_input").val();
+        var beginDate = $("#mt_begindate_input").val();
+        var endDate = $("#mt_enddate_input").val();
+        var truckId;
+        $.ajax({
+            url: "${APP_PATH}/truck/getTruckByPN.do",
+            type: "GET",
+            data: "platenumber=" + platenumber,
+            success: function (result) {
+                if(result.code == 100 && result.extend.truck != null){
+                    truckId = result.extend.truck.id;
+                }
+                $.ajax({
+                    url: "${APP_PATH}/maintenancebill/list.do",
+                    type: "GET",
+                    data: {"beginDate": beginDate, "endDate": endDate, "truckId": truckId},
+                    success: function (result) {
+                        console.log(result);
+                        if(result.code == 100 && result.extend.pageInfo != null){
+                            //1.解析并显示员工数据
+                            build_bills_table(result);
+                            //2.解析并显示分页信息
+                            build_page_info(result);
+                            //3.解析并显示分页条
+                            build_page_nav(result);
+                        }
+                    }
+                });
+            }
+        });
+    })
+</script>
 </body>
 </html>

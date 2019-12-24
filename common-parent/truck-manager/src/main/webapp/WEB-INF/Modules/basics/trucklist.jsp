@@ -88,12 +88,12 @@
                     </a>
                 </li>
                 <li>
-                    <a href="charts.html">
+                    <a href="#">
                         <i class="fa fa-bar-chart"></i>图表
                     </a>
                 </li>
                 <li>
-                    <a href="tables.html">
+                    <a href="#">
                         <i class="icon-grid"></i>报表
                     </a>
                 </li>
@@ -194,7 +194,7 @@
                                 </table>
                             </div>
                         </div>
-                        <div class="row">
+                        <div class="card-footer">
                             <!--分页文字信息-->
                             <div class="col-md-5 pull-left" id="page_info_area">
 
@@ -459,7 +459,9 @@
         getVehicleTypes();
         //显示模态框
         $("#truckModal").modal({
-            backdrop: "static"
+            backdrop: "static",
+            draggable: true,
+            overflow: "hidden"
         });
     });
 
@@ -606,7 +608,9 @@
         getVehicleTypes();
         //显示模态框
         $("#truckModal").modal({
-            backdrop: "static"
+            backdrop: "static",
+            draggable: true,
+            overflow: "hidden"
         });
     });
 
@@ -625,7 +629,9 @@
         getVehicleTypes();
         //显示模态框
         $("#truckModal").modal({
-            backdrop: "static"
+            backdrop: "static",
+            draggable: true,
+            overflow: "hidden"
         });
     });
 

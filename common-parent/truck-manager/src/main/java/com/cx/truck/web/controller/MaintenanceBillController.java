@@ -11,6 +11,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Controller
@@ -31,9 +32,9 @@ public class MaintenanceBillController extends BaseController<MaintenanceBill> {
      * @param pn
      * @return
      */
-    @RequestMapping(value = "/list", method = RequestMethod.GET)
+    @RequestMapping(value = "/listAll", method = RequestMethod.GET)
     public @ResponseBody
-    Msg getMTBillsWithJson(@RequestParam(value = "pn", defaultValue = "1") Integer pn) {
+    Msg getAllBillsWithJson(@RequestParam(value = "pn", defaultValue = "1") Integer pn) {
         logger.info("==================list billInfo, page from:" + pn + "====================");
         //这不是一个分页查询
         //List<Customer> customers = customerService.findAll();
@@ -59,18 +60,67 @@ public class MaintenanceBillController extends BaseController<MaintenanceBill> {
         return Msg.success().add("bill", maintenanceBill);
     }
 
+    @RequestMapping(value = "/list", method = RequestMethod.GET)
+    @ResponseBody
+    public Msg getBillsWithJson(@RequestParam(value = "pn", defaultValue = "1") Integer pn,
+                                @RequestParam(value = "beginDate", defaultValue = "2000年01月01日") String beginDate,
+                                @RequestParam(value = "endDate", defaultValue = "2888年01月01日") String endDate,
+                                @RequestParam(value = "truckId", defaultValue = "0") Integer truckId) {
+        //引入PageHelper分页插件，在查询之前只需要调用
+        PageHelper.startPage(pn, 6);
+        //startPage后面紧跟的这个查询就是一个分页查询
+        List<MaintenanceBill> maintenanceBills = maintenanceBillService.findByCondition(beginDate, endDate, truckId);
+        //使用pageInfo包装查询后的结果，只需要将pageInfo交给页面就行了
+        //封装了详细的分页信息，连续显示5页
+        PageInfo page = new PageInfo(maintenanceBills, 6);
+        return Msg.success().add("pageInfo", page);
+    }
+
     //==============================新增==============================
 
     /**
      * 新增
+     *
      * @param maintenanceBill
      * @return
      */
-    @RequestMapping(value = "/maintenancebill",method = RequestMethod.POST)
+    @RequestMapping(value = "/maintenancebill", method = RequestMethod.POST)
     @ResponseBody
-    public Msg saveBills(MaintenanceBill maintenanceBill){
+    public Msg saveBills(MaintenanceBill maintenanceBill) {
         //maintenanceBillService.insert(maintenanceBill);
         Integer id = maintenanceBillService.insertSelective(maintenanceBill);
-        return Msg.success().add("billid",id);
+        return Msg.success().add("billid", id);
+    }
+
+    //==============================删除===============================
+
+    /**
+     * 根据维修单id单个或批量删除
+     *
+     * @param billIds
+     * @return
+     */
+    @RequestMapping(value = "/{billIds}", method = RequestMethod.DELETE)
+    @ResponseBody
+    public Msg deleteBills(@PathVariable("billIds") String billIds) {
+        if (billIds.contains("-")) {
+            List<Integer> list_billIds = new ArrayList<Integer>();
+            String[] arr_billIds = billIds.split("-");
+            for (String arr_billId : arr_billIds) {
+                list_billIds.add(Integer.parseInt(arr_billId));
+            }
+            maintenanceBillService.deleteBatch(list_billIds);
+        } else {
+            maintenanceBillService.deleteById(Integer.parseInt(billIds));
+        }
+        return Msg.success();
+    }
+
+    //===============================更新===============================
+    @RequestMapping(value = "/maintenancebill", method = RequestMethod.PUT)
+    @ResponseBody
+    public Msg updateBill(MaintenanceBill maintenanceBill) {
+        maintenanceBillService.update(maintenanceBill);
+        return Msg.success();
     }
 }

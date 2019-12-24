@@ -16,6 +16,11 @@ public class WorkerServiceImpl extends BaseServiceImpl<Worker> implements IWorke
     }
 
     @Override
+    public Integer insertSelective(Worker worker) {
+        return null;
+    }
+
+    @Override
     public void deleteById(Integer id) {
         workerMapper.deleteByPrimaryKey(id);
     }

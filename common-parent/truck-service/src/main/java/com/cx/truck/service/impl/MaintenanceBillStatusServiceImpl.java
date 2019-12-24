@@ -15,6 +15,11 @@ public class MaintenanceBillStatusServiceImpl extends BaseServiceImpl<Maintenanc
     }
 
     @Override
+    public Integer insertSelective(MaintenanceBillStatus maintenanceBillStatus) {
+        return null;
+    }
+
+    @Override
     public void deleteById(Integer id) {
 
     }

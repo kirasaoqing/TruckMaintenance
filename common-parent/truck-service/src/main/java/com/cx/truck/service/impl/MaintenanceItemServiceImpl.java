@@ -16,8 +16,14 @@ public class MaintenanceItemServiceImpl extends BaseServiceImpl<MaintenanceItem>
     }
 
     @Override
-    public void deleteById(Integer id) {
+    public Integer insertSelective(MaintenanceItem maintenanceItem) {
+        maintenanceItemMapper.insertSelective(maintenanceItem);
+        return maintenanceItem.getId();
+    }
 
+    @Override
+    public void deleteById(Integer id) {
+        maintenanceItemMapper.deleteByPrimaryKey(id);
     }
 
     @Override
@@ -27,12 +33,12 @@ public class MaintenanceItemServiceImpl extends BaseServiceImpl<MaintenanceItem>
 
     @Override
     public void update(MaintenanceItem maintenanceItem) {
-
+        maintenanceItemMapper.updateByPrimaryKeySelective(maintenanceItem);
     }
 
     @Override
     public MaintenanceItem findById(Integer id) {
-        return null;
+        return maintenanceItemMapper.selectByPrimaryKey(id);
     }
 
     @Override
@@ -57,14 +63,25 @@ public class MaintenanceItemServiceImpl extends BaseServiceImpl<MaintenanceItem>
 
     @Override
     public void deleteBatch(List<Integer> ids) {
-
+        MaintenanceItemExample example = new MaintenanceItemExample();
+        MaintenanceItemExample.Criteria criteria = example.createCriteria();
+        criteria.andIdIn(ids);
+        maintenanceItemMapper.deleteByExample(example);
     }
 
     @Override
-    public List<MaintenanceItem> findByBillId(String billId) {
+    public List<MaintenanceItem> findByBillId(Integer billId) {
         MaintenanceItemExample example = new MaintenanceItemExample();
         MaintenanceItemExample.Criteria criteria = example.createCriteria();
-        criteria.andBillIdEqualTo(Integer.parseInt(billId));
+        criteria.andBillIdEqualTo(billId);
         return maintenanceItemMapper.selectByExample(example);
+    }
+
+    @Override
+    public void deleteBatchByBillId(List<Integer> billIds) {
+        MaintenanceItemExample example = new MaintenanceItemExample();
+        MaintenanceItemExample.Criteria criteria = example.createCriteria();
+        criteria.andBillIdIn(billIds);
+        maintenanceItemMapper.deleteByExample(example);
     }
 }

@@ -18,6 +18,11 @@ public class CustomerServiceImpl extends BaseServiceImpl<Customer> implements IC
     }
 
     @Override
+    public Integer insertSelective(Customer customer) {
+        return null;
+    }
+
+    @Override
     public void deleteById(Integer id) {
         customerMapper.deleteByPrimaryKey(id);
     }

@@ -6,5 +6,13 @@ import com.cx.truck.service.base.IBaseService;
 import java.util.List;
 
 public interface IMaintenanceMaterialService extends IBaseService<MaintenanceMaterial> {
-    List<MaintenanceMaterial> findByBillId(String billId);
+
+    /**
+     * 根据维修单id查询出维修材料
+     * @param billId
+     * @return
+     */
+    List<MaintenanceMaterial> findByBillId(Integer billId);
+
+    void deleteBatchByBillId(List<Integer> billIds);
 }

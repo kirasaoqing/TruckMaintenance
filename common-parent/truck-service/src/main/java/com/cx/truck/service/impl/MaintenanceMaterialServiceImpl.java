@@ -16,8 +16,14 @@ public class MaintenanceMaterialServiceImpl extends BaseServiceImpl<MaintenanceM
     }
 
     @Override
-    public void deleteById(Integer id) {
+    public Integer insertSelective(MaintenanceMaterial maintenanceMaterial) {
+        maintenanceMaterialMapper.insertSelective(maintenanceMaterial);
+        return maintenanceMaterial.getId();
+    }
 
+    @Override
+    public void deleteById(Integer id) {
+        maintenanceMaterialMapper.deleteByPrimaryKey(id);
     }
 
     @Override
@@ -27,12 +33,12 @@ public class MaintenanceMaterialServiceImpl extends BaseServiceImpl<MaintenanceM
 
     @Override
     public void update(MaintenanceMaterial maintenanceMaterial) {
-
+        maintenanceMaterialMapper.updateByPrimaryKeySelective(maintenanceMaterial);
     }
 
     @Override
     public MaintenanceMaterial findById(Integer id) {
-        return null;
+        return maintenanceMaterialMapper.selectByPrimaryKey(id);
     }
 
     @Override
@@ -57,14 +63,25 @@ public class MaintenanceMaterialServiceImpl extends BaseServiceImpl<MaintenanceM
 
     @Override
     public void deleteBatch(List<Integer> ids) {
-
+        MaintenanceMaterialExample example = new MaintenanceMaterialExample();
+        MaintenanceMaterialExample.Criteria criteria = example.createCriteria();
+        criteria.andIdIn(ids);
+        maintenanceMaterialMapper.deleteByExample(example);
     }
 
     @Override
-    public List<MaintenanceMaterial> findByBillId(String billId) {
+    public List<MaintenanceMaterial> findByBillId(Integer billId) {
         MaintenanceMaterialExample example = new MaintenanceMaterialExample();
         MaintenanceMaterialExample.Criteria criteria = example.createCriteria();
-        criteria.andBillIdEqualTo(Integer.parseInt(billId));
+        criteria.andBillIdEqualTo(billId);
         return maintenanceMaterialMapper.selectByExample(example);
+    }
+
+    @Override
+    public void deleteBatchByBillId(List<Integer> billIds) {
+        MaintenanceMaterialExample example = new MaintenanceMaterialExample();
+        MaintenanceMaterialExample.Criteria criteria = example.createCriteria();
+        criteria.andBillIdIn(billIds);
+        maintenanceMaterialMapper.deleteByExample(example);
     }
 }

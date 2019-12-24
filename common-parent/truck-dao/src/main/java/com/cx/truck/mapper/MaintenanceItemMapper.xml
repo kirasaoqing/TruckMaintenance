@@ -104,7 +104,7 @@
     values (#{id,jdbcType=INTEGER}, #{billId,jdbcType=INTEGER}, #{item,jdbcType=VARCHAR}, 
       #{itemfees,jdbcType=DOUBLE})
   </insert>
-  <insert id="insertSelective" parameterType="com.cx.truck.model.MaintenanceItem" >
+  <insert id="insertSelective" parameterType="com.cx.truck.model.MaintenanceItem" useGeneratedKeys="true" keyProperty="id">
     insert into sv_maintenance_item
     <trim prefix="(" suffix=")" suffixOverrides="," >
       <if test="id != null" >

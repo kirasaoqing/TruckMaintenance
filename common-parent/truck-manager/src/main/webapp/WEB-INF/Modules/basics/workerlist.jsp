@@ -92,12 +92,12 @@
                     </a>
                 </li>
                 <li>
-                    <a href="charts.html">
+                    <a href="#">
                         <i class="fa fa-bar-chart"></i>图表
                     </a>
                 </li>
                 <li>
-                    <a href="tables.html">
+                    <a href="#">
                         <i class="icon-grid"></i>报表
                     </a>
                 </li>
@@ -204,7 +204,7 @@
                                 </table>
                             </div>
                         </div>
-                        <div class="row">
+                        <div class="card-footer">
                             <!--分页文字信息-->
                             <div class="col-md-5 pull-left" id="page_info_area">
 
@@ -463,7 +463,9 @@
         //发送ajax请求，查出所有的车型和客户信息，显示在下拉列表中
         //显示模态框
         $("#workerModal").modal({
-            backdrop: "static"
+            backdrop: "static",
+            draggable: true,
+            overflow: "hidden"
         });
     });
 
@@ -650,7 +652,9 @@
         $("#address_input").attr("readonly", false);
         //显示模态框
         $("#workerModal").modal({
-            backdrop: "static"
+            backdrop: "static",
+            draggable: true,
+            overflow: "hidden"
         });
     });
 
@@ -667,7 +671,9 @@
         $("#address_input").attr("readonly", true);
         //显示模态框
         $("#workerModal").modal({
-            backdrop: "static"
+            backdrop: "static",
+            draggable: true,
+            overflow: "hidden"
         });
     });
 

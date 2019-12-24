@@ -110,7 +110,7 @@
       #{type,jdbcType=VARCHAR}, #{unit,jdbcType=VARCHAR}, #{quantity,jdbcType=DOUBLE}, 
       #{price,jdbcType=DOUBLE}, #{amount,jdbcType=DOUBLE})
   </insert>
-  <insert id="insertSelective" parameterType="com.cx.truck.model.MaintenanceMaterial" >
+  <insert id="insertSelective" parameterType="com.cx.truck.model.MaintenanceMaterial" useGeneratedKeys="true" keyProperty="id">
     insert into sv_maintenance_material
     <trim prefix="(" suffix=")" suffixOverrides="," >
       <if test="id != null" >

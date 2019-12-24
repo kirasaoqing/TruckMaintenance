@@ -11,6 +11,9 @@ import org.springframework.context.support.ClassPathXmlApplicationContext;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
@@ -38,7 +41,7 @@ public class MapperTest {
     SqlSession sqlSession;
 
     @Test
-    public void testCRUD() {
+    public void testCRUD() throws ParseException {
        /* //1.创建springIOC容器
         ApplicationContext ioc = new ClassPathXmlApplicationContext("classpath:applicationContest.xml");
         //2.从容器中获取mapper
@@ -56,8 +59,8 @@ public class MapperTest {
         }*/
 
         //======================================maintenanceBillStatusMapper===============================
-        List<MaintenanceBillStatus> maintenanceBillStatuses = maintenanceBillStatusMapper.selectByExample(null);
-        System.out.println(maintenanceBillStatuses);
+        /*List<MaintenanceBillStatus> maintenanceBillStatuses = maintenanceBillStatusMapper.selectByExample(null);
+        System.out.println(maintenanceBillStatuses);*/
 
         //======================================truckMapper===============================
         //List<Truck> trucks = truckMapper.selectByExampleWithCusAndVT(null);
@@ -75,6 +78,20 @@ public class MapperTest {
             System.out.println(truck.getCustomerId());
             System.out.println(truck.getCustomer().getId());
         }*/
+
+        //======================================maintenanceBillMapper=========================
+
+        MaintenanceBillExample example = new MaintenanceBillExample();
+        MaintenanceBillExample.Criteria criteria = example.createCriteria();
+        SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
+        criteria.andEnterdateGreaterThanOrEqualTo(format.parse("2019-12-24"));
+        ArrayList<Integer> list = new ArrayList<>();
+        list.add(3);
+        list.add(9);
+        criteria.andTruckIdIn(list);
+        //criteria.andEnterdateBetween("","");
+        List<MaintenanceBill> maintenanceBills = maintenanceBillMapper.selectByExampleWithTruckAndStatus(example);
+        System.out.println(maintenanceBills);
 
         //批量生成
         /*for(){

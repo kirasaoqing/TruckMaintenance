@@ -24,7 +24,7 @@ public interface MaintenanceBillMapper {
      * @param example
      * @return
      */
-    List<MaintenanceBill> selectByExampleWithItemsAndMaterials(MaintenanceBillExample example);
+    List<MaintenanceBill> selectByExampleWithTruckAndStatus(MaintenanceBillExample example);
 
     MaintenanceBill selectByPrimaryKey(Integer id);
 

@@ -11,6 +11,14 @@ public interface IBaseService<T> {
     public void insert(T t);
 
     /**
+     * 新增并返回id
+     *
+     * @param t
+     * @return
+     */
+    public Integer insertSelective(T t);
+
+    /**
      * 通过id删除
      *
      * @param id

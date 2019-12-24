@@ -23,6 +23,11 @@ public class UserServiceImpl extends BaseServiceImpl<User> implements IUserServi
     }
 
     @Override
+    public Integer insertSelective(User user) {
+        return null;
+    }
+
+    @Override
     public void deleteById(Integer id) {
 
     }

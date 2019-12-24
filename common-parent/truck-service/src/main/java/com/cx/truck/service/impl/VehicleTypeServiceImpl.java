@@ -16,6 +16,11 @@ public class VehicleTypeServiceImpl extends BaseServiceImpl<VehicleType> impleme
     }
 
     @Override
+    public Integer insertSelective(VehicleType vehicleType) {
+        return null;
+    }
+
+    @Override
     public void deleteById(Integer id) {
         vehicleTypeMapper.deleteByPrimaryKey(id);
     }

@@ -16,6 +16,11 @@ public class TruckServiceImpl extends BaseServiceImpl<Truck> implements ITruckSe
     }
 
     @Override
+    public Integer insertSelective(Truck truck) {
+        return null;
+    }
+
+    @Override
     public void deleteById(Integer id) {
         truckMapper.deleteByPrimaryKey(id);
     }
@@ -68,11 +73,15 @@ public class TruckServiceImpl extends BaseServiceImpl<Truck> implements ITruckSe
     }
 
     @Override
-    public Boolean findByPlateNumber(String plateNumber) {
+    public Truck findByPlateNumber(String plateNumber) {
         TruckExample example = new TruckExample();
         TruckExample.Criteria criteria = example.createCriteria();
         criteria.andPlatenumberEqualTo(plateNumber);
-        int count = truckMapper.countByExample(example);
-        return count == 0;
+        List<Truck> trucks = truckMapper.selectByExample(example);
+        if (trucks.size() > 0) {
+            return trucks.get(0);
+        }else{
+            return null;
+        }
     }
 }

@@ -97,12 +97,12 @@
                     </a>
                 </li>
                 <li>
-                    <a href="charts.html">
+                    <a href="#">
                         <i class="fa fa-bar-chart"></i>图表
                     </a>
                 </li>
                 <li>
-                    <a href="tables.html">
+                    <a href="#">
                         <i class="icon-grid"></i>报表
                     </a>
                 </li>
@@ -207,7 +207,7 @@
                                 </table>
                             </div>
                         </div>
-                        <div class="row">
+                        <div class="card-footer">
                             <!--分页文字信息-->
                             <div class="col-md-5 pull-left" id="page_info_area">
 
@@ -354,7 +354,6 @@
     $(function () {
         //页面加载，去首页
         to_page(1);
-
     });
 
     //查询出全部数据&数据翻页
@@ -487,7 +486,9 @@
         $("#account_input").attr("readonly", false);
         //显示模态框
         $("#customerModal").modal({
-            backdrop: "static"
+            backdrop: "static",
+            draggable: true,
+            overflow: "hidden"
         });
     });
 
@@ -525,7 +526,9 @@
         $("#account_input").attr("readonly", false);
         //显示模态框
         $("#customerModal").modal({
-            backdrop: "static"
+            backdrop: "static",
+            draggable: true,
+            overflow: "hidden"
         });
     });
 
@@ -546,7 +549,9 @@
         $("#account_input").attr("readonly", true);
         //显示模态框
         $("#customerModal").modal({
-            backdrop: "static"
+            backdrop: "static",
+            draggable: true,
+            overflow: "hidden"
         });
     });
 
@@ -747,15 +752,14 @@
             type: "GET",
             success: function (result) {
                 //console.log(result);
-                if(result.code == 100){
+                if (result.code == 100) {
                     //1.解析并显示员工数据
                     build_customers_table(result);
                     //2.解析并显示分页信息
                     build_page_info(result);
                     //3.解析并显示分页条
                     build_page_nav(result);
-                }
-                else if(result.code == 200){
+                } else if (result.code == 200) {
                     $("#customer_table tbody").empty();
                     $("#page_info_area").empty();
                     $("#page_nav_area").empty();
@@ -857,6 +861,7 @@
         //构造下一页和末页
         ul.append(nextPageLi).append(lastPageLi).appendTo("#page_nav_area");
     }
+
 </script>
 
 </body>

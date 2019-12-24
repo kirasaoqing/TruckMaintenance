@@ -75,8 +75,8 @@ public class TruckController {
         if (!plateNumber.matches(regx)) {
             return Msg.fail().add("va_msg", "请输入正确的车牌号码");
         }
-        Boolean b = truckService.findByPlateNumber(plateNumber);
-        if (b) {
+        Truck truck = truckService.findByPlateNumber(plateNumber);
+        if (truck == null) {
             return Msg.success();
         } else {
             return Msg.fail().add("va_msg", "该车辆为老客户");
@@ -115,6 +115,13 @@ public class TruckController {
     public Msg getTruckById(@PathVariable("id") Integer id) {
         Truck truck = truckService.findById(id);
         return Msg.success().add("truck", truck);
+    }
+
+    @RequestMapping(value = "/getTruckByPN",method = RequestMethod.GET)
+    @ResponseBody
+    public Msg getTruckByPN(@RequestParam("platenumber")String platenumber){
+        Truck truck = truckService.findByPlateNumber(platenumber);
+        return Msg.success().add("truck",truck);
     }
 
     //============================新增==============================
