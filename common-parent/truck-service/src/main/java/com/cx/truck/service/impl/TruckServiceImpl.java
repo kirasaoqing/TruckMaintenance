@@ -21,8 +21,8 @@ public class TruckServiceImpl extends BaseServiceImpl<Truck> implements ITruckSe
     }
 
     @Override
-    public void deleteById(Integer id) {
-        truckMapper.deleteByPrimaryKey(id);
+    public Integer deleteById(Integer id) {
+        return truckMapper.deleteByPrimaryKey(id);
     }
 
     @Override
@@ -65,11 +65,11 @@ public class TruckServiceImpl extends BaseServiceImpl<Truck> implements ITruckSe
     }
 
     @Override
-    public void deleteBatch(List<Integer> ids) {
+    public Integer deleteBatch(List<Integer> ids) {
         TruckExample example = new TruckExample();
         TruckExample.Criteria criteria = example.createCriteria();
         criteria.andIdIn(ids);
-        truckMapper.deleteByExample(example);
+        return truckMapper.deleteByExample(example);
     }
 
     @Override
@@ -83,5 +83,13 @@ public class TruckServiceImpl extends BaseServiceImpl<Truck> implements ITruckSe
         }else{
             return null;
         }
+    }
+
+    @Override
+    public Integer countByCustomer(Integer CustomerId) {
+        TruckExample example = new TruckExample();
+        TruckExample.Criteria criteria = example.createCriteria();
+        criteria.andCustomerIdEqualTo(CustomerId);
+        return truckMapper.countByExample(example);
     }
 }

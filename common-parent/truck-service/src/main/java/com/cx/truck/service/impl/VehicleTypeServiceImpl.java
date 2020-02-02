@@ -21,8 +21,8 @@ public class VehicleTypeServiceImpl extends BaseServiceImpl<VehicleType> impleme
     }
 
     @Override
-    public void deleteById(Integer id) {
-        vehicleTypeMapper.deleteByPrimaryKey(id);
+    public Integer deleteById(Integer id) {
+        return vehicleTypeMapper.deleteByPrimaryKey(id);
     }
 
     @Override
@@ -61,10 +61,10 @@ public class VehicleTypeServiceImpl extends BaseServiceImpl<VehicleType> impleme
     }
 
     @Override
-    public void deleteBatch(List<Integer> ids) {
+    public Integer deleteBatch(List<Integer> ids) {
         VehicleTypeExample example = new VehicleTypeExample();
         VehicleTypeExample.Criteria criteria = example.createCriteria();
         criteria.andIdIn(ids);
-        vehicleTypeMapper.deleteByExample(example);
+        return vehicleTypeMapper.deleteByExample(example);
     }
 }

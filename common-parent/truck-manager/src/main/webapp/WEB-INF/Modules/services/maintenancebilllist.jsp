@@ -172,8 +172,8 @@
                             </div>
                             <div class="form-inline col-sm-9">
                                 <div class="form-group">
-                                    <div class="input-group date form_date" data-date="" data-date-format="yyyy年mm月dd日">
-                                        <input class="form-control" type="text" value="" id="mt_begindate_input"
+                                    <div class="input-group" data-date="" data-date-format="yyyy年mm月dd日">
+                                        <input class="form-control date form_date" type="text" value="" id="mt_begindate_input"
                                                placeholder="起始日">
                                         <span class="input-group-addon sr-only"><span
                                                 class="glyphicon glyphicon-remove"></span></span>
@@ -182,8 +182,8 @@
                                     </div>
                                 </div>
                                 <div class="form-group">
-                                    <div class="input-group date form_date" data-date="" data-date-format="yyyy年mm月dd日">
-                                        <input class="form-control" type="text" value="" id="mt_enddate_input"
+                                    <div class="input-group date" data-date="" data-date-format="yyyy年mm月dd日">
+                                        <input class="form-control date form_date" type="text" value="" id="mt_enddate_input"
                                                placeholder="截止日">
                                         <span class="input-group-addon sr-only"><span
                                                 class="glyphicon glyphicon-remove"></span></span>
@@ -581,8 +581,7 @@
         todayHighlight: 1,
         startView: 2,
         minView: 2,
-        forceParse: 0,
-        pickerPosition: 'top-right'
+        forceParse: 0
     });
 
 

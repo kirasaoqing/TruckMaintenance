@@ -25,8 +25,8 @@ public class MaintenanceBillServiceImpl extends BaseServiceImpl<MaintenanceBill>
     }
 
     @Override
-    public void deleteById(Integer id) {
-        maintenanceBillMapper.deleteByPrimaryKey(id);
+    public Integer deleteById(Integer id) {
+         return maintenanceBillMapper.deleteByPrimaryKey(id);
     }
 
     @Override
@@ -66,11 +66,11 @@ public class MaintenanceBillServiceImpl extends BaseServiceImpl<MaintenanceBill>
     }
 
     @Override
-    public void deleteBatch(List<Integer> ids) {
+    public Integer deleteBatch(List<Integer> ids) {
         MaintenanceBillExample example = new MaintenanceBillExample();
         MaintenanceBillExample.Criteria criteria = example.createCriteria();
         criteria.andIdIn(ids);
-        maintenanceBillMapper.deleteByExample(example);
+        return maintenanceBillMapper.deleteByExample(example);
     }
 
 

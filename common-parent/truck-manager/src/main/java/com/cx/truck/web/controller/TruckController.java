@@ -1,10 +1,14 @@
 package com.cx.truck.web.controller;
 
 import com.cx.truck.model.Customer;
+import com.cx.truck.model.JsonResult;
 import com.cx.truck.model.Msg;
 import com.cx.truck.model.Truck;
 import com.cx.truck.service.ITruckService;
 import com.cx.truck.service.impl.TruckServiceImpl;
+import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import org.apache.log4j.Logger;
@@ -19,6 +23,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.jar.JarOutputStream;
 
 @Service
 @RequestMapping("truck")
@@ -117,11 +122,32 @@ public class TruckController {
         return Msg.success().add("truck", truck);
     }
 
+    /**
+     * 根据车牌号获取车辆
+     * @param platenumber
+     * @return
+     */
     @RequestMapping(value = "/getTruckByPN",method = RequestMethod.GET)
     @ResponseBody
     public Msg getTruckByPN(@RequestParam("platenumber")String platenumber){
         Truck truck = truckService.findByPlateNumber(platenumber);
         return Msg.success().add("truck",truck);
+    }
+
+    /**
+     * 根据客户id统计车辆数量
+     * @param customerId
+     * @return
+     */
+    @RequestMapping(value = "/countByCustomerId",method = RequestMethod.GET)
+    @ResponseBody
+    public JsonResult countByCustomerId(@RequestParam("customerId")Integer customerId){
+        int trucks = truckService.countByCustomer(customerId);
+        if(trucks > 0){
+            return JsonResult.fail().add("va_msg","客户信息已被车辆使用");
+        }else {
+            return JsonResult.success();
+        }
     }
 
     //============================新增==============================

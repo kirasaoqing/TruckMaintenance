@@ -22,8 +22,8 @@ public class MaintenanceItemServiceImpl extends BaseServiceImpl<MaintenanceItem>
     }
 
     @Override
-    public void deleteById(Integer id) {
-        maintenanceItemMapper.deleteByPrimaryKey(id);
+    public Integer deleteById(Integer id) {
+         return maintenanceItemMapper.deleteByPrimaryKey(id);
     }
 
     @Override
@@ -62,11 +62,11 @@ public class MaintenanceItemServiceImpl extends BaseServiceImpl<MaintenanceItem>
     }
 
     @Override
-    public void deleteBatch(List<Integer> ids) {
+    public Integer deleteBatch(List<Integer> ids) {
         MaintenanceItemExample example = new MaintenanceItemExample();
         MaintenanceItemExample.Criteria criteria = example.createCriteria();
         criteria.andIdIn(ids);
-        maintenanceItemMapper.deleteByExample(example);
+        return maintenanceItemMapper.deleteByExample(example);
     }
 
     @Override

@@ -28,8 +28,8 @@ public class UserServiceImpl extends BaseServiceImpl<User> implements IUserServi
     }
 
     @Override
-    public void deleteById(Integer id) {
-
+    public Integer deleteById(Integer id) {
+        return 0;
     }
 
     @Override
@@ -70,7 +70,7 @@ public class UserServiceImpl extends BaseServiceImpl<User> implements IUserServi
     }
 
     @Override
-    public void deleteBatch(List<Integer> ids) {
-
+    public Integer deleteBatch(List<Integer> ids) {
+        return 0;
     }
 }

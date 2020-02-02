@@ -1,15 +1,15 @@
 package com.cx.truck.web.controller;
 
 import com.cx.truck.model.Customer;
-import com.cx.truck.model.Msg;
+import com.cx.truck.model.JsonResult;
 import com.cx.truck.service.ICustomerService;
-import com.cx.truck.web.controller.base.BaseController;
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.FieldError;
 import org.springframework.web.bind.annotation.*;
@@ -20,11 +20,10 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-
 /**
  * 客户操作控制器
  */
-@Controller
+@RestController
 @RequestMapping("customer")
 public class CustomerController {
 
@@ -37,137 +36,79 @@ public class CustomerController {
     //================================查询===================================
 
     /**
-     * 查询所有客户json
+     * 查询全部
+     *
+     * @param rows
+     * @param page
      * @return
+     * @throws JsonProcessingException
      */
-    @RequestMapping(value = "/getAllCustomers", method = RequestMethod.GET)
+    @GetMapping
     @ResponseBody
-    public Msg getAllCustomers() {
+    public JsonResult list(int rows, int page) throws JsonProcessingException {
+        //userList查询要放到startPage下面
+        PageHelper.startPage(page, rows);
         List<Customer> customers = customerService.findAll();
-        return Msg.success().add("customers", customers);
-    }
+        PageInfo<Customer> pageInfo = new PageInfo<>(customers);
+        //取出查询结果
+        List<Customer> rowInfo = pageInfo.getList();
+        int total = (int) pageInfo.getTotal();
 
+        //fastjson转换为json数据
+        /*JSONObject result = new JSONObject();
+        result.put("rows",rows);
+        result.put("total",total);
+        System.out.println(result.toJSONString());
+        //map形式
+        ObjectMapper mapper = new ObjectMapper();
+        Map<String, Object> map = new HashMap<>();
+        map.put("total", total);
+        map.put("rows", rowInfo);*/
 
-    /**
-     * 分页返回json
-     *
-     * @param pn
-     * @return
-     */
-    @RequestMapping(value = "/getCustomersWithJson", method = RequestMethod.GET)
-    public @ResponseBody
-    Msg getCustomersWithJson(@RequestParam(value = "pn", defaultValue = "1") Integer pn) {
-        logger.info("==================list customerInfo, page from:" + pn + "====================");
-        //这不是一个分页查询
-        //List<Customer> customers = customerService.findAll();
-        //引入PageHelper分页插件，在查询之前只需要调用
-        PageHelper.startPage(pn, 6);
-        //startPage后面紧跟的这个查询就是一个分页查询
-        List<Customer> customers = customerService.findAll();
-        //使用pageInfo包装查询后的结果，只需要将pageInfo交给页面就行了
-        //封装了详细的分页信息，连续显示5页
-        PageInfo page = new PageInfo(customers, 6);
-        return Msg.success().add("pageInfo", page);
+        JsonResult result = JsonResult.success();
+        result.setTotal(total);
+        result.setRows(rowInfo);
+
+        return result;
+        //return mapper.writeValueAsString(map);
     }
 
     /**
-     * 根据名称查询客户是否存在
-     *
+     * 根据客户名称模糊查询
      * @param name
+     * @param rows
+     * @param page
      * @return
      */
-    @RequestMapping(value = "/checkCustomerByName", method = RequestMethod.GET)
+    @GetMapping("/{name}")
     @ResponseBody
-    public Msg checkCustomerByName(@RequestParam("name") String name) {
-        //先判断用户名是否合法
-        String regx = "(^[a-zA-Z0-9_-]{3,16}$)|(^[\\u2E80-\\u9FFF]{2,30}$)";
-        if (!name.matches(regx)) {
-            return Msg.fail().add("va_msg", "用户名必须是2-5位中文或者6-16位英文和数字的组合");
-        }
-        boolean b = customerService.findByName(name);
-        if (b) {
-            return Msg.success();
-        } else {
-            return Msg.fail().add("va_msg", "用户名不可用");
-        }
-    }
-
-    /**
-     * 根据名称模糊查询
-     *
-     * @param name
-     * @param pn
-     * @return
-     */
-    @RequestMapping(value = "/getCustomersByName", method = RequestMethod.GET)
-    @ResponseBody
-    public Msg getCustomersByName(@RequestParam("name") String name,
-                                  @RequestParam(value = "pn", defaultValue = "1") Integer pn) {
-        PageHelper.startPage(pn, 6);
-        List<Customer> customers = customerService.fuzzyByName(name);
+    public JsonResult listByName(@PathVariable("name") String name,
+                                 int rows, int page) {
+        PageHelper.startPage(page, rows);
+        List<Customer> customers = customerService.fuzzyByName("%" + name + "%");
         if (customers.size() > 0) {
-            PageInfo page = new PageInfo(customers, 6);
-            return Msg.success().add("pageInfo", page);
+            PageInfo<Customer> pageInfo = new PageInfo<Customer>(customers);
+            List<Customer> rowInfo = pageInfo.getList();
+            int total = (int) pageInfo.getTotal();
+            JsonResult result = JsonResult.success();
+            result.setTotal(total);
+            result.setRows(rowInfo);
+            return result;
         } else {
-            return Msg.fail().add("va_msg", "所查询客户不存在");
+            return JsonResult.fail().add("va_msg","所查询客户不存在");
         }
     }
 
+    //================================新增===================================
     /**
-     * 根据id查询
-     *
-     * @param id
-     * @return
-     */
-    @RequestMapping(value = "/{id}", method = RequestMethod.GET)
-    @ResponseBody
-    public Msg getCustomerById(@PathVariable("id") Integer id) {
-        Customer customer = customerService.findById(id);
-        return Msg.success().add("customer", customer);
-    }
-
-
-    /*直接跳转页面，使用Model返回PageInfo方法
-    @RequestMapping(CUSTOMER + LIST)
-    public String getCustomers(@RequestParam(value = "pn", defaultValue = "1") Integer pn,
-                               Model model) {
-        //这不是一个分页查询
-        //List<Customer> customers = customerService.findAll();
-        //引入PageHelper分页插件，在查询之前只需要调用
-        PageHelper.startPage(pn, 6);
-        //startPage后面紧跟的这个查询就是一个分页查询
-        List<Customer> customers = customerService.findAll();
-        //使用pageInfo包装查询后的结果，只需要将pageInfo交给页面就行了
-        //封装了详细的分页信息，连续显示5页
-        PageInfo page = new PageInfo(customers, 6);
-        model.addAttribute("pageInfo", page);
-        return CUSTOMER_PAGE + LIST;
-    }*/
-
-    /**
-     * 跳转到客户单据
-     *
-     * @return
-     */
-    /*@RequestMapping(CUSTOMER)
-    public String goCustomer() {
-        return CUSTOMER_PAGE;
-    }*/
-
-    //==================================新增==============================
-
-    /**
-     * 新增客户
-     * 使用JSR303进行后端校验
-     * 需导入hibernate-validator
-     *
+     * 使用JSR303进行后端校验，校验通过保存
      * @param customer
+     * @param result
      * @return
      */
-    @RequestMapping(value = "/customer", method = RequestMethod.POST)
+    @PostMapping
     @ResponseBody
-    //@RequestMapping(ADD)
-    public Msg saveCustomers(@Valid Customer customer, BindingResult result) {
+    public JsonResult save(@Valid Customer customer, BindingResult result){
         if (result.hasErrors()) {
             logger.info("==================add new customer fail:" + result.getFieldErrors() + "====================");
             Map<String, Object> map = new HashMap<String, Object>();
@@ -175,41 +116,29 @@ public class CustomerController {
             for (FieldError fieldError : fieldErrors) {
                 map.put(fieldError.getField(), fieldError.getDefaultMessage());
             }
-            return Msg.fail().add("failFileds", map);
+            return JsonResult.fail().add("failFileds", map);
         } else {
             logger.info("==================add new customer:" + customer + "====================");
             customerService.insert(customer);
-            return Msg.success();
+            return JsonResult.success();
         }
     }
 
-
-    //==================================修改===================================
+    //================================更新===================================
 
     /**
-     * 如果是ajax-PUT形式的请求，封装的数据除了id=3001，其余=null
-     * 问题：请求体有数据，对象封装不上
-     * 原因：tomcat将请求中的数据，封装一个map，request.getParameter("name")就会中从这个map取值
-     * SpringMVC封装POJO对象的时候，会把每个POJO中每个属性的值，request.getParamter("email")
-     * Tomcat引发的血案：
-     * PUT请求，请求体中的数据，request.getParameter("")拿不到
-     * Tomcat一看是PUT，不会封装请求体中的数据为map，只有POST形式的请求才封装请求体为map
-     * 解决方案：web.xml配置HttpPutFormContentFilter过滤器
-     * <p>
-     * 更新客户
-     *
+     * 更新
      * @param customer
      * @return
      */
-    @RequestMapping(value = "/{id}", method = RequestMethod.PUT)
+    @PutMapping
     @ResponseBody
-    public Msg updateCustomer(Customer customer) {
+    public JsonResult update(Customer customer) {
         customerService.update(customer);
-        return Msg.success();
+        return JsonResult.success();
     }
 
-    //===============================删除================================
-
+    //================================删除===================================
     /**
      * 批量/单一删除方法
      * 批量：1-2-3
@@ -218,19 +147,29 @@ public class CustomerController {
      * @param ids
      * @return
      */
-    @RequestMapping(value = "/{ids}", method = RequestMethod.DELETE)
+    @DeleteMapping("/{ids}")
+    //@RequestMapping(value = "/{ids}", method = RequestMethod.DELETE)
     @ResponseBody
-    public Msg deleteCustomer(@PathVariable("ids") String ids) {
+    public JsonResult delete(@PathVariable("ids") String ids) {
+        int isSuccess = 0;
         if (ids.contains("-")) {
             List<Integer> list_ids = new ArrayList<Integer>();
             String[] arr_ids = ids.split("-");
             for (String arr_id : arr_ids) {
                 list_ids.add(Integer.parseInt(arr_id));
             }
-            customerService.deleteBatch(list_ids);
+            isSuccess = customerService.deleteBatch(list_ids);
         } else {
-            customerService.deleteById(Integer.parseInt(ids));
+            isSuccess = customerService.deleteById(Integer.parseInt(ids));
         }
-        return Msg.success();
+        if(isSuccess == 1){
+            return JsonResult.success();
+        }else{
+            return JsonResult.fail();
+        }
     }
+
+    //================================查询===================================
+
+
 }

@@ -23,7 +23,7 @@ public interface IBaseService<T> {
      *
      * @param id
      */
-    public void deleteById(Integer id);
+    public Integer deleteById(Integer id);
 
     /**
      * 通过uuid删除
@@ -82,5 +82,5 @@ public interface IBaseService<T> {
     /**
      * 批量删除
      */
-    public void deleteBatch(List<Integer> ids);
+    public Integer deleteBatch(List<Integer> ids);
 }

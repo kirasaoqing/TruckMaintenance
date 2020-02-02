@@ -21,8 +21,8 @@ public class WorkerServiceImpl extends BaseServiceImpl<Worker> implements IWorke
     }
 
     @Override
-    public void deleteById(Integer id) {
-        workerMapper.deleteByPrimaryKey(id);
+    public Integer deleteById(Integer id) {
+        return workerMapper.deleteByPrimaryKey(id);
     }
 
     @Override
@@ -64,11 +64,11 @@ public class WorkerServiceImpl extends BaseServiceImpl<Worker> implements IWorke
     }
 
     @Override
-    public void deleteBatch(List<Integer> ids) {
+    public Integer deleteBatch(List<Integer> ids) {
         WorkerExample example = new WorkerExample();
         WorkerExample.Criteria criteria = example.createCriteria();
         criteria.andIdIn(ids);
-        workerMapper.deleteByExample(example);
+        return workerMapper.deleteByExample(example);
     }
 
     @Override
