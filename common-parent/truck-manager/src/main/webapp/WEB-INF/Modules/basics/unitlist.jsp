@@ -120,7 +120,7 @@
                 <!-- customerlist-2.jsp跳转方法-->
                 <!-- <li><a href="${APP_PATH}/customer/customerlist.do"> <i class="icon-screen"> </i>客户信息</a></li>-->
                 <!-- customerlist.jsp跳转方法-->
-                <li class="active"><a href="${APP_PATH}/home/customer.do"> <i class="icon-screen"> </i>客户信息</a>
+                <li><a href="${APP_PATH}/home/customer.do"> <i class="icon-screen"> </i>客户信息</a>
                 </li>
                 <li><a href="${APP_PATH}/home/truck.do"> <i class="icon-flask"> </i>车辆信息</a>
                 </li>
@@ -132,7 +132,7 @@
                     </a>
                     <ul id="materialdropdown" class="collapse list-unstyled ">
                         <li><a href="${APP_PATH}/home/material.do"><i class="icon-padnote"></i>材料信息</a></li>
-                        <li><a href="${APP_PATH}/home/unit.do"><i class="icon-padnote"></i>单位信息</a></li>
+                        <li class="active"><a href="${APP_PATH}/home/unit.do"><i class="icon-padnote"></i>单位信息</a></li>
                     </ul>
                 </li>
             </ul>
@@ -178,15 +178,15 @@
                     <div class="card">
                         <div class="card-header">
                             <div class="float-left">
-                                <h2><span class="fa fa-user-circle-o"></span> 客户列表</h2>
+                                <h2><span class="fa fa-user-circle-o"></span> 单位列表</h2>
                             </div>
                         </div>
                         <div class="card-body">
                             <div id="toolbar" class="btn-group">
-                                <input type="text" id="search_input" placeholder="请输入客户名称">
+                                <%--<input type="text" id="search_input" placeholder="请输入客户名称">
                                 <button id="search_btn" type="button" class="btn btn-dark">
                                     <span class="fa fa-search"></span> 搜索
-                                </button>
+                                </button>--%>
                                 <button id="add_btn" type="button" class="btn btn-primary">
                                     <span class="fa fa-plus" aria-hidden="true"></span> 新增
                                 </button>

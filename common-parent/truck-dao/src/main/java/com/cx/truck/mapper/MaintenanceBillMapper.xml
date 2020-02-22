@@ -149,6 +149,23 @@
 				c.id AS c_id, c.name AS customer_name
     </sql>
 
+    <select id="getTruckAndFinish" resultType="java.util.HashMap">
+        SELECT * FROM
+            (SELECT COUNT(DISTINCT(customer_id)) AS day_customer FROM bc_truck WHERE id IN
+            (SELECT DISTINCT(truck_id) FROM sv_maintenance_bill WHERE enterdate = #{nowDate})) A_day,
+            (SELECT COUNT(*) AS day_truck FROM sv_maintenance_bill WHERE enterdate = #{nowDate}) B_day,
+            (SELECT COUNT(*) AS day_finish FROM  sv_maintenance_bill WHERE appointeddate = #{nowDate})C_day,
+            (SELECT COUNT(DISTINCT(customer_id)) AS week_customer FROM bc_truck WHERE id IN
+            (SELECT DISTINCT(truck_id) FROM sv_maintenance_bill WHERE enterdate between #{beginDateW} AND #{endDateW})) A_week,
+            (SELECT COUNT(*) AS week_truck FROM sv_maintenance_bill WHERE enterdate between #{beginDateW} AND #{endDateW}) B_week,
+            (SELECT COUNT(*) AS week_finish FROM sv_maintenance_bill  WHERE appointeddate between #{beginDateW} AND #{endDateW})C_week,
+            (SELECT COUNT(DISTINCT(customer_id)) AS month_customer FROM bc_truck WHERE id IN
+            (SELECT DISTINCT(truck_id) FROM sv_maintenance_bill WHERE enterdate between #{beginDateM} AND #{endDateM})) A_month,
+            (SELECT COUNT(*) AS month_truck FROM sv_maintenance_bill WHERE enterdate between #{beginDateM} AND #{endDateM}) B_month,
+            (SELECT COUNT(*) AS month_finish FROM sv_maintenance_bill  WHERE appointeddate between #{beginDateM} AND #{endDateM})C_month
+    </select>
+
+
     <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.cx.truck.model.MaintenanceBillExample">
         select
         <if test="distinct">
@@ -172,7 +189,8 @@
 
 
     <!--复杂查询含维修项及维修材料的维修单信息-->
-    <select id="selectByExampleWithTruckAndStatus" resultMap="WithTruckAndStatusMap" parameterType="com.cx.truck.model.MaintenanceBillExample">
+    <select id="selectByExampleWithTruckAndStatus" resultMap="WithTruckAndStatusMap"
+            parameterType="com.cx.truck.model.MaintenanceBillExample">
         select
         <if test="distinct">
             distinct
@@ -191,7 +209,8 @@
     </select>
 
     <!--按id复杂查询含维修项及维修材料的维修单信息-->
-    <select id="selectByPrimaryKeyWithItemsAndMaterials" resultMap="WithItemsAndMaterialsMap" parameterType="java.lang.Integer">
+    <select id="selectByPrimaryKeyWithItemsAndMaterials" resultMap="WithItemsAndMaterialsMap"
+            parameterType="java.lang.Integer">
         select
         <include refid="WithItemAndMaterial_Column_List"/>
         FROM sv_maintenance_bill b
@@ -222,7 +241,8 @@
       #{appointeddate,jdbcType=TIMESTAMP}, #{settingdate,jdbcType=TIMESTAMP}, #{entrymileage,jdbcType=DOUBLE}, 
       #{statusId,jdbcType=INTEGER})
   </insert>
-    <insert id="insertSelective" parameterType="com.cx.truck.model.MaintenanceBill" useGeneratedKeys="true" keyProperty="id">
+    <insert id="insertSelective" parameterType="com.cx.truck.model.MaintenanceBill" useGeneratedKeys="true"
+            keyProperty="id">
         insert into sv_maintenance_bill
         <trim prefix="(" suffix=")" suffixOverrides=",">
             <if test="id != null">

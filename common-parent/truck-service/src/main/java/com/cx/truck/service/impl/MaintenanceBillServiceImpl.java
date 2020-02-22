@@ -8,8 +8,7 @@ import org.springframework.stereotype.Service;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.Date;
-import java.util.List;
+import java.util.*;
 
 @Service
 public class MaintenanceBillServiceImpl extends BaseServiceImpl<MaintenanceBill> implements IMaintenanceBillService {
@@ -26,7 +25,7 @@ public class MaintenanceBillServiceImpl extends BaseServiceImpl<MaintenanceBill>
 
     @Override
     public Integer deleteById(Integer id) {
-         return maintenanceBillMapper.deleteByPrimaryKey(id);
+        return maintenanceBillMapper.deleteByPrimaryKey(id);
     }
 
     @Override
@@ -78,7 +77,7 @@ public class MaintenanceBillServiceImpl extends BaseServiceImpl<MaintenanceBill>
     public List<MaintenanceBill> findByCondition(String beginDate, String endDate, Integer truckId) {
         MaintenanceBillExample example = new MaintenanceBillExample();
         MaintenanceBillExample.Criteria criteria = example.createCriteria();
-        SimpleDateFormat format = new SimpleDateFormat("yyyy年MM月dd日");
+        SimpleDateFormat format = new SimpleDateFormat("yyyy/MM/dd");
         try {
             if (beginDate != null && endDate != null) {
                 criteria.andEnterdateBetween(format.parse(beginDate), format.parse(endDate));
@@ -96,5 +95,53 @@ public class MaintenanceBillServiceImpl extends BaseServiceImpl<MaintenanceBill>
             criteria.andTruckIdEqualTo(truckId);
         }
         return maintenanceBillMapper.selectByExampleWithTruckAndStatus(example);
+    }
+
+    @Override
+    public Integer countByTruck(Integer truckId) {
+        MaintenanceBillExample example = new MaintenanceBillExample();
+        MaintenanceBillExample.Criteria criteria = example.createCriteria();
+        criteria.andTruckIdEqualTo(truckId);
+        return maintenanceBillMapper.countByExample(example);
+    }
+
+    @Override
+    public HashMap<String, Integer> getTruckCounts(String date) {
+        String nowDate, beginDateW, endDateW, beginDateM, endDateM;
+        nowDate = date;
+        beginDateW = date;
+        endDateW = date;
+        beginDateM = date;
+        endDateM = date;
+        // 获取当月第一天和最后一天
+        SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
+        // 指定一个日期
+        try {
+            Date dates = format.parse(date);
+            // 对 calendar 设置为 date 所定的日期
+            Calendar cale = Calendar.getInstance(Locale.CHINA);
+            cale.setFirstDayOfWeek(Calendar.MONDAY);
+            // 获取当前周的第一天
+            cale.setTime(dates);
+            cale.set(Calendar.DAY_OF_WEEK, Calendar.MONDAY);//周一
+            beginDateW = format.format(cale.getTime());
+            // 获取当前周的最后一天
+            cale.setTime(dates);
+            cale.set(Calendar.DAY_OF_WEEK, Calendar.SUNDAY);//周一
+            endDateW = format.format(cale.getTime());
+            // 获取当前月的第一天
+            cale.setTime(dates);
+            cale.add(Calendar.MONTH, 0);
+            cale.set(Calendar.DAY_OF_MONTH, 1);
+            beginDateM = format.format(cale.getTime());
+            // 获取当前月的最后一天
+            cale.setTime(dates);
+            cale.add(Calendar.MONTH, 1);
+            cale.set(Calendar.DAY_OF_MONTH, 0);
+            endDateM = format.format(cale.getTime());
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+        return maintenanceBillMapper.getTruckAndFinish(nowDate,beginDateW,endDateW,beginDateM,endDateM);
     }
 }

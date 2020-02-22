@@ -1,11 +1,9 @@
 package com.cx.truck.web.controller;
 
-import com.cx.truck.model.JsonResult;
 import com.cx.truck.model.MaintenanceMaterial;
+import com.cx.truck.model.Msg;
 import com.cx.truck.service.IMaintenanceMaterialService;
 import com.cx.truck.web.controller.base.BaseController;
-import com.github.pagehelper.PageHelper;
-import com.github.pagehelper.PageInfo;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -14,9 +12,9 @@ import org.springframework.web.bind.annotation.*;
 import java.util.ArrayList;
 import java.util.List;
 
-@Controller
-@RequestMapping("maintenancematerial")
-public class MaintenanceMaterialController extends BaseController<MaintenanceMaterial> {
+//@Controller
+//@RequestMapping("maintenancematerial")
+public class MaintenanceMaterialController1 extends BaseController<MaintenanceMaterial> {
     //创建一个日志对象
     private Logger logger = Logger.getLogger(TruckController1.class);
 
@@ -30,26 +28,11 @@ public class MaintenanceMaterialController extends BaseController<MaintenanceMat
      * @param billId
      * @return
      */
-    @GetMapping("/bill/{billId}")
+    @RequestMapping(value = "/getMaterialsByBillId", method = RequestMethod.GET)
     @ResponseBody
-    public JsonResult getMaterialsByBillId(@PathVariable("billId") Integer billId) {
-        //List查询要放到startPage下面
-        PageHelper.startPage(1, 10);
-        List<MaintenanceMaterial> materials = maintenanceMaterialService.findByBillId(billId);
-        PageInfo<MaintenanceMaterial> pageInfo = new PageInfo<>(materials);
-        //取出查询结果
-        List<MaintenanceMaterial> rowInfo = pageInfo.getList();
-        int total = (int) pageInfo.getTotal();
-
-        JsonResult result = JsonResult.success();
-        result.setTotal(total);
-        result.setRows(rowInfo);
-
-        return result;
-
-
-        /*List<MaintenanceMaterial> maintenanceMaterials = maintenanceMaterialService.findByBillId(billId);
-        return JsonResult.success().add("maintenanceMaterials", maintenanceMaterials);*/
+    public Msg getMaterialsByBillId(@RequestParam("billId") Integer billId) {
+        List<MaintenanceMaterial> maintenanceMaterials = maintenanceMaterialService.findByBillId(billId);
+        return Msg.success().add("maintenanceMaterials", maintenanceMaterials);
     }
 
     /**
@@ -57,11 +40,11 @@ public class MaintenanceMaterialController extends BaseController<MaintenanceMat
      *
      * @return
      */
-    @GetMapping("/{id}")
+    @RequestMapping(value = "/{id}", method = RequestMethod.GET)
     @ResponseBody
-    public JsonResult getMaterialById(@PathVariable("id") Integer id) {
+    public Msg getMaterialById(@PathVariable("id") Integer id) {
         MaintenanceMaterial material = maintenanceMaterialService.findById(id);
-        return JsonResult.success().add("material", material);
+        return Msg.success().add("material", material);
     }
 
     //===============================新增=============================
@@ -71,11 +54,11 @@ public class MaintenanceMaterialController extends BaseController<MaintenanceMat
      * @param maintenanceMaterial
      * @return
      */
-    @PostMapping
+    @RequestMapping(value = "maintenancematerial", method = RequestMethod.POST)
     @ResponseBody
-    public JsonResult saveBillMaterials(MaintenanceMaterial maintenanceMaterial) {
+    public Msg saveBillMaterials(MaintenanceMaterial maintenanceMaterial) {
         Integer id = maintenanceMaterialService.insertSelective(maintenanceMaterial);
-        return JsonResult.success().add("materialid", id);
+        return Msg.success().add("materialid", id);
     }
 
     //==============================删除===============================
@@ -86,9 +69,9 @@ public class MaintenanceMaterialController extends BaseController<MaintenanceMat
      * @param materials
      * @return
      */
-    @DeleteMapping("/{materials}")
+    @RequestMapping(value = "/{materials}", method = RequestMethod.DELETE)
     @ResponseBody
-    public JsonResult deleteMaterials(@PathVariable("materials") String materials) {
+    public Msg deleteMaterials(@PathVariable("materials") String materials) {
         if (materials.contains("-")) {
             List<Integer> list_materials = new ArrayList<Integer>();
             String[] arr_materials = materials.split("-");
@@ -99,7 +82,7 @@ public class MaintenanceMaterialController extends BaseController<MaintenanceMat
         } else {
             maintenanceMaterialService.deleteById(Integer.parseInt(materials));
         }
-        return JsonResult.success();
+        return Msg.success();
     }
 
     /**
@@ -108,16 +91,16 @@ public class MaintenanceMaterialController extends BaseController<MaintenanceMat
      * @param billIds
      * @return
      */
-    @DeleteMapping("/material/{billIds}")
+    @RequestMapping(value = "material/{billIds}", method = RequestMethod.DELETE)
     @ResponseBody
-    public JsonResult deleteMaterialsByBillId(@PathVariable("billIds") String billIds) {
+    public Msg deleteMaterialsByBillId(@PathVariable("billIds") String billIds) {
         List<Integer> list_billIds = new ArrayList<Integer>();
         String[] arr_billIds = billIds.split("-");
         for (String arr_billId : arr_billIds) {
             list_billIds.add(Integer.parseInt(arr_billId));
         }
         maintenanceMaterialService.deleteBatchByBillId(list_billIds);
-        return JsonResult.success();
+        return Msg.success();
     }
 
     //===============================更新===============================
@@ -128,11 +111,11 @@ public class MaintenanceMaterialController extends BaseController<MaintenanceMat
      * @param maintenanceMaterial
      * @return
      */
-    @PutMapping
+    @RequestMapping(value = "/maintenancematerial", method = RequestMethod.PUT)
     @ResponseBody
-    public JsonResult updateMaterial(MaintenanceMaterial maintenanceMaterial) {
+    public Msg updateMaterial(MaintenanceMaterial maintenanceMaterial) {
         maintenanceMaterialService.update(maintenanceMaterial);
-        return JsonResult.success();
+        return Msg.success();
     }
 
 }

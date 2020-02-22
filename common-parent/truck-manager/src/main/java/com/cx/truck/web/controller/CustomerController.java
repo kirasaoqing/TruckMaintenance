@@ -46,7 +46,7 @@ public class CustomerController {
     @GetMapping
     @ResponseBody
     public JsonResult list(int rows, int page) throws JsonProcessingException {
-        //userList查询要放到startPage下面
+        //List查询要放到startPage下面
         PageHelper.startPage(page, rows);
         List<Customer> customers = customerService.findAll();
         PageInfo<Customer> pageInfo = new PageInfo<>(customers);
@@ -97,6 +97,17 @@ public class CustomerController {
         } else {
             return JsonResult.fail().add("va_msg","所查询客户不存在");
         }
+    }
+
+    /**
+     * 查询所有客户json
+     * @return
+     */
+    @GetMapping("/getAllCustomers")
+    @ResponseBody
+    public JsonResult getAllCustomers() {
+        List<Customer> customers = customerService.findAll();
+        return JsonResult.success().add("customers", customers);
     }
 
     //================================新增===================================
@@ -168,8 +179,6 @@ public class CustomerController {
             return JsonResult.fail();
         }
     }
-
-    //================================查询===================================
 
 
 }

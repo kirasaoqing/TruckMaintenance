@@ -45,16 +45,15 @@
     <!-- Favicon-->
     <link rel="shortcut icon"
           href="${APP_PATH}/assets/vendor/img/favicon.ico">
+    <!-- bootstrap-table -->
+    <link rel="stylesheet"
+          href="${APP_PATH}/assets/vendor/bootstrap-table/bootstrap-table.min.css">
     <!-- Tweaks for older IEs--><!--[if lt IE 9]>
     <script src="https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js"></script>
     <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script><![endif]-->
     <!-- datetimepicker-->
     <link rel="stylesheet"
           href="${APP_PATH}/assets/vendor/datetimepicker/bootstrap-datetimepicker.min.css">
-    <!-- sweetalert-->
-    <script src="${pageContext.request.contextPath}/assets/vendor/sweetalert/sweetalert.min.js"></script>
-
-
 </head>
 <body>
 <!-- Side Navbar -->
@@ -87,31 +86,57 @@
                     </a>
                 </li>
                 <li>
-                    <a href="${APP_PATH}/home/maintenancebill.do">
-                        <i class="icon-home"></i>维修服务
+                    <a href="${APP_PATH}/home/purchasebill.do">
+                        <i class="icon-interface-windows"></i>材料采购
                     </a>
                 </li>
                 <li>
-                    <a href="#">
+                    <a href="${APP_PATH}/home/maintenancebill.do">
+                        <i class="icon-bill"></i>维修服务
+                    </a>
+                </li>
+                <li>
+                    <a href="#tabledropdown" aria-expanded="false" data-toggle="collapse">
+                        <i class="icon-list"></i>报表查询
+                    </a>
+                    <ul id="tabledropdown" class="collapse list-unstyled ">
+                        <li><a href="#"><i class="icon-grid"></i>库存查询</a></li>
+                        <%--<li><a href="#"><i class="icon-flask"></i>材料信息</a></li>--%>
+                    </ul>
+                </li>
+                <%--<li>
+                    <a href="charts.html">
                         <i class="fa fa-bar-chart"></i>图表
                     </a>
                 </li>
                 <li>
-                    <a href="#">
+                    <a href="tables.html">
                         <i class="icon-grid"></i>报表
                     </a>
-                </li>
+                </li>--%>
             </ul>
         </div>
         <div class="admin-menu">
             <h5 class="sidenav-heading">系统设置</h5>
             <ul id="side-admin-menu" class="side-menu list-unstyled">
+                <!-- customerlist-2.jsp跳转方法-->
+                <!-- <li><a href="${APP_PATH}/customer/customerlist.do"> <i class="icon-screen"> </i>客户信息</a></li>-->
+                <!-- customerlist.jsp跳转方法-->
                 <li><a href="${APP_PATH}/home/customer.do"> <i class="icon-screen"> </i>客户信息</a>
                 </li>
-                <li><a href="${APP_PATH}/home/truck.do"> <i class="icon-picture"> </i>车辆信息</a>
+                <li><a href="${APP_PATH}/home/truck.do"> <i class="icon-flask"> </i>车辆信息</a>
                 </li>
-                <li class="active"><a href="${pageContext.request.contextPath}/home/worker.do"> <i
-                        class="icon-picture"> </i>员工信息</a></li>
+                <li class="active"><a href="${APP_PATH}/home/worker.do"> <i class="icon-picture"> </i>员工信息</a>
+                </li>
+                <li>
+                    <a href="#materialdropdown" aria-expanded="false" data-toggle="collapse">
+                        <i class="icon-list"></i>材料设置
+                    </a>
+                    <ul id="materialdropdown" class="collapse list-unstyled ">
+                        <li><a href="${APP_PATH}/home/material.do"><i class="icon-padnote"></i>材料信息</a></li>
+                        <li><a href="${APP_PATH}/home/unit.do"><i class="icon-padnote"></i>单位信息</a></li>
+                    </ul>
+                </li>
             </ul>
         </div>
     </div>
@@ -148,16 +173,6 @@
         </nav>
     </header>
     <!-- content start -->
-    <div class="breadcrumb-holder">
-        <div class="container-fluid">
-            <ul class="breadcrumb">
-                <li class="breadcrumb-item">
-                    <a href="${pageContext.request.contextPath}/home/home.do">主页</a>
-                </li>
-                <li class="breadcrumb-item active">员工</li>
-            </ul>
-        </div>
-    </div>
     <section class="dashboard-counts section-padding">
         <div class="container-fluid">
             <div class="row">
@@ -166,54 +181,20 @@
                         <div class="card-header">
                             <h2><span class="fa fa-user-circle-o"></span> 员工列表</h2>
                         </div>
-                        <div class="card-deck">
-                            <div class="col-lg-6">
-                                <button type="button" class="btn btn-primary" id="worker_add_modal_btn">
+                        <div class="card-body">
+                            <div id="toolbar" class="btn-group">
+                                <input type="text" id="search_input" placeholder="请输入员工姓名">
+                                <button class="btn btn-dark" type="button" id="search_btn">
+                                    <span class="fa fa-search"></span> 搜索
+                                </button>
+                                <button type="button" class="btn btn-primary" id="add_btn">
                                     <span class="fa fa-plus"></span> 新增
                                 </button>
-                                <button type="button" class="btn btn-outline-danger" id="worker_delete_btn">
+                                <button type="button" class="btn btn-outline-danger" id="delete_selected_btn">
                                     <span class="fa fa-trash"></span> 删除
                                 </button>
                             </div>
-                            <div class="col-lg-6">
-                                <input type="text" id="search_worker_input" placeholder="请输入员工姓名" class="col-9">
-                                <button class="btn btn-dark" type="button" id="search_worker_btn">
-                                    <span class="fa fa-search"></span> 搜索
-                                </button>
-                            </div>
-                        </div>
-                        <div class="card-body">
-                            <div class="table-responsive">
-                                <table class="table table-hover" id="worker_table">
-                                    <thead>
-                                    <th>
-                                        <input type="checkbox" id="check_all"/>
-                                    </th>
-                                    <th hidden="true">ID</th>
-                                    <th hidden="true">身份证号</th>
-                                    <th style="width: 15%">姓名</th>
-                                    <th style="width: 10%">性别</th>
-                                    <th style="width: 15%">电话</th>
-                                    <th style="width: 30%">家庭地址</th>
-                                    <th style="width: 15%">入职时间</th>
-                                    <th style="width: 15%">操作</th>
-                                    </thead>
-                                    <tbody>
-
-                                    </tbody>
-                                </table>
-                            </div>
-                        </div>
-                        <div class="card-footer">
-                            <!--分页文字信息-->
-                            <div class="col-md-5 pull-left" id="page_info_area">
-
-                            </div>
-                            <!--分页条信息-->
-                            <div class="col-md-7 pull-right">
-                                <nav aria-label="Page navigation example" id="page_nav_area">
-                                </nav>
-                            </div>
+                            <table id="table"></table>
                         </div>
                     </div>
                 </div>
@@ -236,6 +217,12 @@
             <!-- 模态框主体 -->
             <div class="modal-body">
                 <form>
+                    <div class="form-group row">
+                        <label class="col-sm-3 form-control-label" for="name_input">编号</label>
+                        <div class="col-sm-9">
+                            <input type="text" class="form-control" name="id" id="id_input" readonly="readonly">
+                        </div>
+                    </div>
                     <div class="form-group row">
                         <label class="col-sm-3 form-control-label" for="name_input">姓名</label>
                         <div class="col-sm-9">
@@ -282,7 +269,7 @@
                         <label for="dtp_input" class="col-sm-3 form-control-label">入职时间</label>
                         <div class="input-group date form_date col-sm-8" data-date="" data-date-format="yyyy年mm月dd日"
                              data-link-field="dtp_input" data-link-format="yyyy/mm/dd">
-                            <input class="form-control col-sm-8" type="text" id="entrydate" value="" readonly>
+                            <input class="form-control col-sm-8" type="text" id="entrydate_input" value="" readonly>
                             <div class="col-sm-2">
                                 <span class="input-group-addon btn btn-outline-secondary">
                                     <span class="glyphicon glyphicon-remove fa fa-trash"></span>
@@ -294,7 +281,7 @@
                                 </span>
                             </div>
                         </div>
-                        <input type="hidden" id="dtp_input" name="entrydate" /><br/>
+                        <input type="hidden" id="dtp_input" name="entrydate"/><br/>
                     </div>
                 </form>
             </div>
@@ -302,8 +289,7 @@
             <!-- 模态框底部 -->
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-dismiss="modal">关闭</button>
-                <button type="button" class="btn btn-primary" id="worker_add_btn">保存</button>
-                <button type="button" class="btn btn-primary" id="worker_update_btn">修改</button>
+                <button type="button" class="btn btn-primary" id="save_or_update_btn">保存</button>
             </div>
         </div>
     </div>
@@ -311,163 +297,228 @@
 
 
 <!-- JavaScript files-->
-<script src="${pageContext.request.contextPath}/assets/vendor/jquery/jquery.min.js"></script>
-<script src="${pageContext.request.contextPath}/assets/vendor/popper.js/umd/popper.min.js"></script>
-<script src="${pageContext.request.contextPath}/assets/vendor/bootstrap/js/bootstrap.min.js"></script>
-<script src="${pageContext.request.contextPath}/assets/vendor/js/grasp_mobile_progress_circle-1.0.0.min.js"></script>
-<script src="${pageContext.request.contextPath}/assets/vendor/jquery.cookie/jquery.cookie.js"></script>
-<script src="${pageContext.request.contextPath}/assets/vendor/chart.js/Chart.min.js"></script>
-<script src="${pageContext.request.contextPath}/assets/vendor/jquery-validation/jquery.validate.min.js"></script>
-<script src="${pageContext.request.contextPath}/assets/vendor/malihu-custom-scrollbar-plugin/jquery.mCustomScrollbar.concat.min.js"></script>
-<script src="${pageContext.request.contextPath}/assets/vendor/js/charts-home.js"></script>
+<script src="${APP_PATH}/assets/vendor/jquery/jquery.min.js"></script>
+<script src="${APP_PATH}/assets/vendor/popper.js/umd/popper.min.js"></script>
+<script src="${APP_PATH}/assets/vendor/bootstrap/js/bootstrap.min.js"></script>
+<script src="${APP_PATH}/assets/vendor/js/grasp_mobile_progress_circle-1.0.0.min.js"></script>
+<script src="${APP_PATH}/assets/vendor/jquery.cookie/jquery.cookie.js"></script>
+<script src="${APP_PATH}/assets/vendor/chart.js/Chart.min.js"></script>
+<script src="${APP_PATH}/assets/vendor/jquery-validation/jquery.validate.min.js"></script>
+<script src="${APP_PATH}/assets/vendor/malihu-custom-scrollbar-plugin/jquery.mCustomScrollbar.concat.min.js"></script>
+<script src="${APP_PATH}/assets/vendor/js/charts-home.js"></script>
 <script src="${APP_PATH}/assets/vendor/datetimepicker/bootstrap-datetimepicker.min.js"></script>
 <script src="${APP_PATH}/assets/vendor/datetimepicker/bootstrap-datetimepicker.zh-CN.js"></script>
 <!-- Main File-->
-<script src="${pageContext.request.contextPath}/assets/vendor/js/front.js"></script>
-
+<script src="${APP_PATH}/assets/vendor/js/front.js"></script>
+<!-- sweetalert-->
+<script src="${APP_PATH}/assets/vendor/sweetalert/sweetalert.min.js"></script>
+<!-- bootstrap-table -->
+<script src="${APP_PATH}/assets/vendor/bootstrap-table/bootstrap-table.min.js"></script>
+<script src="${APP_PATH}/assets/vendor/bootstrap-table/bootstrap-table-zh-CN.min.js"></script>
+<!-- bootstrap-table-export -->
+<script src="${APP_PATH}/assets/vendor/bootstrap-table/bootstrap-table-export.min.js"></script>
+<script src="${APP_PATH}/assets/vendor/bootstrap-table/tableExport.min.js"></script>
 <script type="text/javascript">
-
-    /==============================列表展示===========================/
-    var totalRecord, currentPage, search_workerName;//总记录数
-    //1.页面加载完成以后，直接去发送ajax请求，要到分页数据
     $(function () {
-        //页面加载，去首页
-        to_page(1);
+        //======================初始化========================
+        //1.初始化Table
+        var url = "${APP_PATH}/worker";
+        var oTable = new TableInit();
+        oTable.Init(url);
+        //2.初始化Button的点击事件
+        /*var oButtonInit = new ButtonInit();
+        oButtonInit.Init();*/
 
-    });
+        //======================查找=========================
+        $("#search_btn").click(function () {
+            var url = "${APP_PATH}/worker/list/" + $("#search_input").val();
+            oTable.Init(url);
+        });
 
-    //查询出全部数据&数据翻页
-    function to_page(pn) {
-        $.ajax({
-            url: "${APP_PATH}/worker/list.do",
-            data: "pn=" + pn,
-            type: "GET",
-            success: function (result) {
-                //1.解析并显示员工数据
-                build_workers_table(result);
-                //2.解析并显示分页信息
-                build_page_info(result);
-                //3.解析并显示分页条
-                build_page_nav(result);
-                totalRecord = result.extend.pageInfo.total;
+        //=====================新增和修改==========================
+        $("#add_btn").click(function () {
+            reset_form("#workerModal");
+            $("#workerModal").modal({
+                backdrop: "static",
+                draggable: true,
+                overflow: "hidden"
+            });
+        });
+
+        $("#save_or_update_btn").click(function () {
+            identity_input_validate();
+            //1.提交数据校验
+            if ($("#save_or_update_btn").attr("ajax-validate") === "fail") {
+                return false;
+            }
+            //2.判断id是否存在,如果不存在新增
+            if ($("#id_input").val() == "") {
+                //2-1.发送ajax请求保存
+                $.ajax({
+                    url: "${APP_PATH}/worker",
+                    type: "POST",
+                    data: $("#workerModal form").serialize(),
+                    success: function (result) {
+                        //后端JSR303校验通过
+                        if (result.code == 100) {
+                            //1.关闭模态框
+                            $("#workerModal").modal('hide');
+                            //2.来到最后一页，显示新添加数据，也就是发送ajax请求显示最后一页数据
+                            $("#table").bootstrapTable('refresh');
+                        } else {
+                            show_validate_msg($("#identity_input"), "fail", result.extend.name);
+                        }
+                    }
+                });
+            } else {
+                //2-1.发送ajax请求更新
+                $.ajax({
+                    url: "${APP_PATH}/worker",
+                    type: "PUT",
+                    data: $("#workerModal form").serialize(),
+                    success: function (result) {
+                        //后端JSR303校验通过
+                        if (result.code == 100) {
+                            //1.关闭模态框
+                            $("#workerModal").modal('hide');
+                            //2.来到最后一页，显示新添加数据，也就是发送ajax请求显示最后一页数据
+                            $("#table").bootstrapTable('refresh');
+                        } else {
+                            show_validate_msg($("#identity_input"), "fail", result.extend.name);
+                        }
+                    }
+                });
             }
         });
-    }
 
-    //解析员工数据
-    function build_workers_table(result) {
-        //清空
-        $("#worker_table tbody").empty();
-        var workers = result.extend.pageInfo.list;
-        $.each(workers, function (index, item) {
-            //alert(item.name);
-            var id = $("<td hidden='true'></td>").append(item.id)
-            var identity = $("<td hidden='true'></td>").append(item.identity);
-            var name = $("<td></td>").append(item.name);
-            var gender = $("<td></td>").append(item.gender == "M" ? "男" : "女");
-            var telephone = $("<td></td>").append(item.telephone);
-            var address = $("<td></td>").append(item.address);
-            var entryDate = $("<td></td>").append(item.entrydate);
-            var upadteBtn = $("<button></button>").addClass("btn btn-warning btn-xs update_btn").append($("<sapn></span>").addClass("fa fa-edit")).append("修改");
-            //为编辑按钮添加一个自定义属性，来标示当前员工id
-            upadteBtn.attr("update_id", item.id);
-            var lookBtn = $("<button></button>").addClass("btn btn-info btn-xs look_btn").append($("<sapn></span>").addClass("fa fa-search")).append("查看");
-            lookBtn.attr("look_id", item.id);
-            var btn = $("<td></td>").addClass("table-btn").append(lookBtn).append(" ").append(upadteBtn);
-            $("<tr></tr>").append("<td><input type='checkbox' class='check_item'></td>").append(id).append(identity).append(name).append(gender).append(telephone).append(address).append(entryDate).append(btn).appendTo("#worker_table tbody");
-        });
-    }
-
-    //解析分页信息
-    function build_page_info(result) {
-        //清空
-        $("#page_info_area").empty();
-        var pageInfo = result.extend.pageInfo;
-        var pageNum = pageInfo.pageNum;
-        var pages = pageInfo.pages;
-        var total = pageInfo.total;
-        currentPage = pageNum;
-        //当前第${pageInfo.pageNum}页/共${pageInfo.pages}页，共${pageInfo.total}条记录
-        $("#page_info_area").append("当前第" + pageNum + "页/共" + pages + "页，共" + total + "条记录");
-    }
-
-    //解析分页条
-    function build_page_nav(result) {
-        //清空
-        $("#page_nav_area").empty();
-        //构建元素
-        var ul = $("<ul></ul>").addClass("pagination");
-        var firstPageLi = $("<li></li>").addClass("page-item").append($("<a></a>").addClass("page-link").append("首页"));
-        var prePageLi = $("<li></li>").addClass("page-item").append($("<a></a>").addClass("page-link").append("&laquo;"));
-        if (result.extend.pageInfo.hasPreviousPage == false) {
-            firstPageLi.addClass("disabled");
-            prePageLi.addClass("disabled");
-        } else {
-            //为元素添加点击翻页事件
-            firstPageLi.click(function () {
-                to_page(1);
+        //=====================删除==========================
+        $("#delete_selected_btn").click(function () {
+            //使用getSelections即可获得，row是json格式的数据
+            var rows = $.map($('#table').bootstrapTable('getSelections'), function (rows) {
+                return rows;
             });
-            prePageLi.click(function () {
-                to_page(result.extend.pageInfo.pageNum - 1);
-
+            var workerIds = "";
+            var workerNames = "";
+            $.each(rows, function (index, row) {
+                workerIds += row.id + "-";
+                workerNames += row.name + ",";
             });
-        }
-
-
-        var nextPageLi = $("<li></li>").addClass("page-item").append($("<a></a>").addClass("page-link").append("&raquo;"));
-        var lastPageLi = $("<li></li>").addClass("page-item").append($("<a></a>").addClass("page-link").append("末页"));
-        if (result.extend.pageInfo.hasNextPage == false) {
-            nextPageLi.addClass("disabled");
-            lastPageLi.addClass("disabled");
-        } else {
-            nextPageLi.click(function () {
-                to_page(result.extend.pageInfo.pageNum + 1);
-
-            });
-            lastPageLi.click(function () {
-                to_page(result.extend.pageInfo.pages);
-
-            });
-        }
-
-        //构造首页和前一页
-        ul.append(firstPageLi).append(prePageLi);
-        //构造页码
-        $.each(result.extend.pageInfo.navigatepageNums, function (index, item) {
-            var numLi = $("<li></li>").addClass("page-item").append($("<a></a>").addClass("page-link").append(item));
-            if (result.extend.pageInfo.pageNum == item) {
-                numLi.addClass("active");
+            if (workerIds != "") {
+                workerIds = workerIds.substring(0, workerIds.length - 1);
+                workerNames = workerNames.substring(0, workerNames.length - 1);
+                swal({
+                    title: "确定要删除以下员工吗？",
+                    text: workerNames,
+                    icon: "warning",
+                    buttons: {
+                        cancel: "取消",
+                        confirm: {
+                            text: "确定",
+                            value: "delete"
+                        }
+                    },
+                }).then((value) => {
+                    if (value == "delete") {
+                        $.ajax({
+                            url: "${APP_PATH}/worker/" + workerIds,
+                            type: "DELETE",
+                            success: function (result) {
+                                console.log(result);
+                                $("#table").bootstrapTable('refresh');
+                            }
+                        });
+                    }
+                })
             }
-            numLi.click(function () {
-                to_page(item);
 
-            });
-            ul.append(numLi);
-        });
-
-        //构造下一页和末页
-        ul.append(nextPageLi).append(lastPageLi).appendTo("#page_nav_area");
-    }
-
-    /================================新增===================================/
-    $("#worker_add_modal_btn").click(function () {
-        //清除表单数据（表单重置）--dom对象
-        reset_form("#workerModal form");
-        $("#worker_add_btn").show();
-        $("#worker_update_btn").hide();
-        $("#name_input").attr("readonly", false);
-        $("#identity_input").attr("readonly", false);
-        $("#telephone_input").attr("readonly", false);
-        $("#address_input").attr("readonly", false);
-
-        //发送ajax请求，查出所有的车型和客户信息，显示在下拉列表中
-        //显示模态框
-        $("#workerModal").modal({
-            backdrop: "static",
-            draggable: true,
-            overflow: "hidden"
+            /*$.ajax({
+                url: "
+            ${APP_PATH}/truck/check/" + customerIds,
+                type: "GET",
+                success: function (result) {
+                    console.log(result);
+                    if (result.code == 100) {
+                        if (customerIds != "") {
+                            customerIds = customerIds.substring(0, customerIds.length - 1);
+                            customerNames = customerNames.substring(0, customerNames.length - 1);
+                            swal({
+                                title: "确定要删除以下客户吗？",
+                                text: customerNames,
+                                icon: "warning",
+                                buttons: {
+                                    cancel: "取消",
+                                    confirm: {
+                                        text: "确定",
+                                        value: "delete"
+                                    }
+                                },
+                            }).then((value) => {
+                                if (value == "delete") {
+                                    $.ajax({
+                                        url: "
+            ${APP_PATH}/customer/" + customerIds,
+                                        type: "DELETE",
+                                        success: function (result) {
+                                            console.log(result);
+                                            $("#table").bootstrapTable('refresh');
+                                        }
+                                    });
+                                }
+                            })
+                        } else {
+                            swal({
+                                title: "请勾选想要删除的客户",
+                                icon: "warning",
+                                button: "退出"
+                            });
+                        }
+                    } else if (result.code == 200) {
+                        var va_ids = "";
+                        $.each(result.extend.va_msg, function (index, value) {
+                            va_ids += value + " ";
+                        });
+                        swal({
+                            title: "客户:" + va_ids + "已经被使用，无法删除",
+                            icon: "warning",
+                            button: "退出"
+                        });
+                    }
+                }
+            });*/
         });
     });
+
+    //=====================校验==========================
+    //客户名称校验
+    function identity_input_validate() {
+        //1.拿到要校验的数据
+        var identity = $("#identity_input").val();
+        //2.使用正则表达式
+        var IDReg = /^[1-9]\d{5}(18|19|20)\d{2}((0[1-9])|(1[0-2]))(([0-2][1-9])|10|20|30|31)\d{3}[0-9Xx]$/;
+        if (IDReg.test(identity)) {
+            show_validate_msg("#identity_input", "success", "");
+            $("#save_or_update_btn").attr("ajax-validate", "success");
+        } else {
+            show_validate_msg("#identity_input", "fail", "请输入正确的身份证号码");
+            $("#save_or_update_btn").attr("ajax-validate", "fail");
+        }
+    }
+
+    //校验信息显示
+    function show_validate_msg(ele, status, msg) {
+        //清除当前元素的校验状态
+        reset_ele(ele)
+        //添加校验状态
+        if ("success" == status) {
+            $(ele).addClass("is-valid");
+            $(ele).next("span").text(msg);
+            $(ele).next("span").addClass("valid-feedback");
+        } else if ("fail" == status) {
+            $(ele).addClass("is-invalid");
+            $(ele).next("span").text(msg);
+            $(ele).next("span").addClass("invalid-feedback");
+        }
+    }
 
     //重置元素
     function reset_ele(ele) {
@@ -484,6 +535,236 @@
         $(ele).find("*").val("");
     }
 
+    var TableInit = function () {
+        //=============================删除===================================
+        //操作栏的格式化
+        function actionFormatter(value, row, index) {
+            return [
+                /*'<button id="look_btn" type="button" class="btn btn-outline-dark">查看</button>',*/
+                '<button id="delete_one_btn" type="button" class="btn btn-outline-danger">删除</button>',
+            ].join('');
+        }
+
+        window.operateEvents = {
+            'click #delete_one_btn': function (e, value, row, index) {
+                swal({
+                    title: "确定要删除以下员工吗？",
+                    text: row.name,
+                    icon: "warning",
+                    buttons: {
+                        cancel: "取消",
+                        confirm: {
+                            text: "确定",
+                            value: "delete"
+                        }
+                    },
+                }).then((value) => {
+                    if (value == "delete") {
+                        /*$.ajax({
+                            url: "
+                        ${APP_PATH}/truck/check/" + row.id,
+                            type: "GET",
+                            success: function (result) {
+                                console.log(result);
+                                if (result.code == 100) {
+                                    $.ajax({
+                                        url: "
+                        ${APP_PATH}/customer/" + row.id.toString(),
+                                        type: "DELETE",
+                                        success: function (result) {
+                                            $("#table").bootstrapTable('refresh');
+                                            swal({
+                                                title: "删除成功",
+                                                icon: "success",
+                                                button: "退出"
+                                            });
+                                        }
+                                    });
+                                } else if (result.code == 200) {
+                                    swal({
+                                        title: "客户信息已经被使用，无法删除",
+                                        icon: "warning",
+                                        button: "退出"
+                                    });
+                                }
+                            }
+                        });*/
+                        $.ajax({
+                            url: "${APP_PATH}/worker/" + row.id.toString(),
+                            type: "DELETE",
+                            success: function (result) {
+                                $("#table").bootstrapTable('refresh');
+                                swal({
+                                    title: "删除成功",
+                                    icon: "success",
+                                    button: "退出"
+                                });
+                            }
+                        });
+                    }
+                })
+            }
+        };
+        var oTableInit = new Object();
+        //初始化Table
+        oTableInit.Init = function (url) {
+            //先销毁表格
+            $('#table').bootstrapTable("destroy");
+            //加载表格
+            $('#table').bootstrapTable({
+                url: url,
+                method: "GET",                      //请求方式（*）
+                dataType: "json",
+                contentType: "application/x-www-form-urlencoded", //适配POST请求
+                showHeader: true,                   //是否显示列头
+                showLoading: true,
+                showFullscreen: true,
+                sidePagination: "server",          //分页方式：client客户端分页，server服务端分页（*）
+                toolbar: "#toolbar",                //工具按钮用哪个容器
+                striped: true,                      //是否显示行间隔色
+                cache: false,                       //是否使用缓存，默认为true，所以一般情况下需要设置一下这个属性（*）
+                pagination: true,                   //是否显示分页（*）
+                sortable: true,                     //是否启用排序
+                sortOrder: "asc",                   //排序方式
+                queryParams: oTableInit.queryParams,//传递参数（*）
+                sidePagination: "server",           //分页方式：client客户端分页，server服务端分页（*）
+                pageNumber: 1,                      //初始化加载第一页，默认第一页
+                pageSize: 10,                       //每页的记录行数（*）
+                pageList: [10, 25, 50, 100],        //可供选择的每页的行数（*）
+                search: false,                      //是否显示表格搜索，此搜索是客户端搜索，不会进服务端，所以，个人感觉意义不大
+                strictSearch: true,
+                showColumns: true,                  //是否显示所有的列
+                showRefresh: false,                 //是否显示刷新按钮
+                minimumCountColumns: 2,             //最少允许的列数
+                clickToSelect: true,                //是否启用点击选中行
+                //height: 500,                      //行高，如果没有设置height属性，表格自动根据记录条数觉得表格高度
+                uniqueId: "id",                     //每一行的唯一标识，一般为主键列
+                showToggle: true,                   //是否显示详细视图和列表视图的切换按钮
+                cardView: false,                    //是否显示详细视图
+                paginationLoop: false,              //是否无限循环
+
+                detailView: true,                  //是否显示父子表
+                detailFormatter: function (index, row) {
+                    var html = []
+                    $.each(row, function (key, value) {
+                        if (key != "0") {
+                            html.push('<p><b>' + key + ':</b> ' + value + '</p>')
+                        }
+                    })
+                    return html.join('')
+                },
+
+                exportDataType: "selected",         //导出checkbox选中的行数
+                showExport: true,  //工具栏上显示导出按钮
+                //exportTypes: ['json', 'xml', 'png', 'csv', 'txt', 'sql', 'doc', 'excel', 'xlsx', 'pdf'],//导出格式
+                exportTypes: ['excel'],//导出格式
+                exportOptions: {//导出设置
+                    ignoreColumn: [0],  //忽略某一列的索引
+                    fileName: '客户信息',  //文件名称设置
+                    worksheetName: 'sheet1',  //表格工作区名称
+                    tableName: '客户信息',
+                    //excelstyles: ['background-color:red', 'color', 'font-size', 'font-weight'],
+                },
+                //得到查询的参数
+                queryParams: function (params) {
+                    //这里的键的名字和控制器的变量名必须一致，这边改动，控制器也需要改成一样的
+                    var temp = {
+                        rows: params.limit,    //页面大小
+                        page: (params.offset / params.limit) + 1,   //页码
+                        sort: params.sort,      //排序列名
+                        sortOrder: params.order //排位命令（desc，asc）
+                    };
+                    return temp;
+                },
+                columns: [
+                    {
+                        checkbox: true,
+                        visible: true,
+                        align: 'center'
+                    }, {
+                        field: 'id',
+                        title: '编号',
+                        align: 'center'
+                    }, {
+                        field: 'name',
+                        title: '姓名',
+                        align: 'center'
+                    }, {
+                        field: 'identity',
+                        title: '身份证号',
+                        align: 'center'
+                    }, {
+                        field: 'gender',
+                        title: '性别',
+                        align: 'center',
+                        formatter: function (value, item, index) {
+                            if (value == "M") {
+                                return '男';
+                            } else if (value == "F") {
+                                return '女';
+                            }
+                        }
+                    }, {
+                        field: 'telephone',
+                        title: '电话',
+                        align: 'center'
+                    }, {
+                        field: 'address',
+                        title: '家庭住址',
+                        align: 'center'
+                    }, {
+                        field: 'entrydate',
+                        title: '入职时间',
+                        align: 'center'
+                    }, {
+                        field: 'operate',
+                        title: '操作',
+                        width: 100,
+                        align: 'center',
+                        valign: 'middle',
+                        events: operateEvents,//给按钮注册事件
+                        formatter: actionFormatter//表格中增加按钮
+                    }
+                ],
+                onLoadSuccess: function () {
+
+                },
+                onLoadError: function () {
+
+                },
+
+                onDblClickRow: function (row, $element) {
+                    //console.log(row);
+                    //console.log($element);
+                    $("#id_input").val(row.id);
+                    $("#name_input").val(row.name);
+                    $("#identity_input").val(row.identity);
+                    $("#workerModal input[name='gender']").val([row.gender]);
+                    $("#telephone_input").val(row.telephone);
+                    $("#address_input").val(row.address);
+                    $("#entrydate_input").val(row.entrydate);
+                    $("#dtp_input").val(row.entrydate);
+                    $("#workerModal").modal({
+                        backdrop: "static",
+                        draggable: true,
+                        overflow: "hidden"
+                    });
+                },
+            });
+        };
+        return oTableInit;
+    };
+
+    var ButtonInit = function () {
+        var oInit = new Object();
+        var postdata = {};
+
+        oInit.Init = function () {
+            //初始化页面上面的按钮事件
+        };
+        return oInit;
+    };
+
     //datetimepicker控件
     $(".form_date").datetimepicker({
         fontAwesome: 'font-awesome',//解决bootstrap4左右箭头不显示
@@ -496,347 +777,6 @@
         minView: 2,
         forceParse: 0
     });
-
-    //模态框中填写的表单数据提交给服务器进行保存
-    $("#worker_add_btn").click(function () {
-        identity_input_validate();
-        //1.提交数据校验
-        if ($("#worker_add_btn").attr("ajax-validate") === "fail") {
-            return false;
-        }
-        if($("#dtp_input").val() == ""){
-            $("#dtp_input").removeAttr("name");
-        }
-        console.log($("#workerModal form").serialize());
-        //2.发送ajax请求保存
-        $.ajax({
-            url: "${APP_PATH}/worker/worker.do",
-            type: "POST",
-            data: $("#workerModal form").serialize(),
-            success: function (result) {
-                console.log(result);
-                //后端JSR303校验通过
-                if (result.code == 100) {
-                    //1.关闭模态框
-                    $("#workerModal").modal('hide');
-                    //2.来到最后一页，显示新添加数据，也就是发送ajax请求显示最后一页数据
-                    to_page(totalRecord);
-                } else {
-                    show_validate_msg($("#identity_input"), "fail", result.extend.name);
-                }
-            }
-        });
-    });
-
-    //车牌号校验
-    function identity_input_validate() {
-        //1.拿到要校验的数据
-        var identity = $("#identity_input").val();
-        //2.使用正则表达式
-        var pnReg = /^[1-9]\d{5}(18|19|20)\d{2}((0[1-9])|(1[0-2]))(([0-2][1-9])|10|20|30|31)\d{3}[0-9Xx]$/;
-        if (pnReg.test(identity)) {
-            show_validate_msg("#identity_input", "success", "");
-            $("#worker_add_btn").attr("ajax-validate", "success");
-        } else {
-            show_validate_msg("#identity_input", "fail", "请输入正确的身份证号码");
-            $("#worker_add_btn").attr("ajax-validate", "fail");
-        }
-    }
-
-    //校验信息显示
-    function show_validate_msg(ele, status, msg) {
-        //清除当前元素的校验状态
-        reset_form(ele)
-        /*$(ele).removeClass("is-invalid is-valid");
-        $(ele).next("span").removeClass("invalid-feedback valid-feedback");*/
-        //添加校验状态
-        if ("success" == status) {
-            $(ele).addClass("is-valid");
-            $(ele).next("span").text(msg);
-            $(ele).next("span").addClass("valid-feedback");
-        } else if ("fail" == status) {
-            $(ele).addClass("is-invalid");
-            $(ele).next("span").text(msg);
-            $(ele).next("span").addClass("invalid-feedback");
-        }
-    }
-
-    //车牌号输入框内容改变后做用户名唯一性校验
-    $("#identity_input").change(function () {
-        $.ajax({
-            url: "${APP_PATH}/worker/checkWorkerByIdentity.do",
-            type: "GET",
-            data: "identity=" + $("#identity_input").val(),
-            success: function (result) {
-                if (result.code == 100) {
-                    show_validate_msg("#identity_input", "success", "新员工");
-                    $("#worker_add_btn").attr("ajax-validate", "success");
-                } else {
-                    show_validate_msg("#identity_input", "fail", result.extend.va_msg);
-                    $("#worker_add_btn").attr("ajax-validate", "fail");
-                }
-            }
-        });
-    });
-
-    /================================删除===================================/
-    //checkbox全选全不选
-    $("#check_all").click(function () {
-        //原生属性用prop，自定义属性用attr
-        $(".check_item").prop("checked", $("#check_all").prop("checked"));
-    });
-    $(document).on("click", ".check_item", function () {
-        var flag = $(".check_item:checked").length == $(".check_item").length;
-        $("#check_all").prop("checked", flag);
-    });
-
-    //删除按钮事件
-    $("#worker_delete_btn").click(function () {
-        var workerIds = "";
-        var workerIdentity = "";
-        var workerNames = "";
-        $.each($(".check_item:checked"), function () {
-            workerIds += $(this).parents("tr").find("td:eq(1)").text() + "-";
-            workerIdentity += $(this).parents("tr").find("td:eq(2)").text() + ",";
-            workerNames += $(this).parents("tr").find("td:eq(3)").text() + ",";
-        });
-        if (workerIds != "") {
-            workerIds = workerIds.substring(0, workerIds.length - 1);
-            workerIdentity = workerIdentity.substring(0, workerIdentity.length - 1);
-            workerNames = workerNames.substring(0, workerNames.length - 1);
-            swal({
-                title: "确定要删除以下员工信息吗？",
-                text: workerNames,
-                icon: "warning",
-                buttons: {
-                    cancel: "取消",
-                    confirm: {
-                        text: "确定",
-                        value: "delete"
-                    }
-                },
-            }).then((value) => {
-                if (value == "delete") {
-                    $.ajax({
-                        url: "${APP_PATH}/worker/" + workerIds + ".do",
-                        type: "DELETE",
-                        success: function (result) {
-                            to_page(currentPage);
-                        }
-                    });
-                }
-            })
-        } else {
-            swal({
-                title: "请勾选想要删除的员工",
-                icon: "warning",
-                button: "退出"
-            });
-        }
-    });
-
-
-    /==========================查看&修改============================/
-    //点击修改，弹出模态框
-    //我们在按钮创建之前就绑定了click，所以绑定不上
-    //绑定点击.live()，jquery新版没有live，使用on代替
-    $(document).on("click", ".update_btn", function () {
-        //查处客户信息
-        getWorker($(this).attr("update_id"));
-        $("#worker_update_btn").show();
-        $("#worker_add_btn").hide();
-        $("#worker_update_btn").attr("update_id", $(this).attr("update_id"));
-        $("#name_input").attr("readonly", true);
-        $("#identity_input").attr("readonly", true);
-        $("#telephone_input").attr("readonly", false);
-        $("#address_input").attr("readonly", false);
-        //显示模态框
-        $("#workerModal").modal({
-            backdrop: "static",
-            draggable: true,
-            overflow: "hidden"
-        });
-    });
-
-    //点击查看，弹出模态框
-    $(document).on("click", ".look_btn", function () {
-        //查处客户信息
-        getWorker($(this).attr("look_id"));
-        $("#worker_update_btn").hide();
-        $("#worker_add_btn").hide();
-        $("#worker_update_btn").hide();
-        $("#name_input").attr("readonly", true);
-        $("#identity_input").attr("readonly", true);
-        $("#telephone_input").attr("readonly", true);
-        $("#address_input").attr("readonly", true);
-        //显示模态框
-        $("#workerModal").modal({
-            backdrop: "static",
-            draggable: true,
-            overflow: "hidden"
-        });
-    });
-
-    function getWorker(id) {
-        $.ajax({
-            url: "${APP_PATH}/worker/" + id + ".do",
-            type: "GET",
-            success: function (result) {
-                //console.log(result);
-                var workerData = result.extend.worker;
-                $("#name_input").val(workerData.name);
-                $("#identity_input").val(workerData.identity);
-                $("#workerModal radio[name=gender]").val([workerData.gender]);
-                $("#telephone_input").val(workerData.telephone);
-                $("#address_input").val(workerData.address);
-                $("#entrydate").val(workerData.entrydate);
-            }
-        });
-    }
-
-    //模态框中修改按钮点击事件
-    $("#worker_update_btn").click(function () {
-        //1.表单校验
-        //2。数据提交
-        $.ajax({
-            url: "${APP_PATH}/worker/" + $(this).attr("update_id") + ".do",
-            method: "PUT",
-            data: $("#workerModal form").serialize(),
-            success: function (result) {
-                //2.关闭对话框
-                $("#workerModal").modal("hide");
-                //3.回到列表页面
-                to_page(currentPage);
-            }
-        });
-    });
-
-    /=========================查找=======================/
-    //搜索
-    $("#search_worker_btn").click(function () {
-        search_workerName = "%" + $("#search_worker_input").val() + "%";
-        search_to_page(1);
-    });
-
-    //搜索数据&数据翻页
-    function search_to_page(pn) {
-        $.ajax({
-            url: "${APP_PATH}/worker/getWorksByName.do",
-            data: {"pn": pn, "name": search_workerName},
-            type: "GET",
-            success: function (result) {
-                if(result.code == 100){
-                    //1.解析并显示员工数据
-                    build_search_workers_table(result);
-                    //2.解析并显示分页信息
-                    build_search_page_info(result);
-                    //3.解析并显示分页条
-                    build_search_page_nav(result);
-                }else if(result.code == 200){
-                    $("#worker_table tbody").empty();
-                    $("#page_info_area").empty();
-                    $("#page_nav_area").empty();
-                    swal({
-                        title: result.extend.va_msg,
-                        icon: "warning",
-                        button: "退出"
-                    });
-                }
-
-            }
-        });
-    }
-
-    //解析员工数据
-    function build_search_workers_table(result) {
-        //清空
-        $("#worker_table tbody").empty();
-        var workers = result.extend.pageInfo.list;
-        $.each(workers, function (index, item) {
-            //alert(item.name);
-            var id = $("<td hidden='true'></td>").append(item.id)
-            var identity = $("<td hidden='true'></td>").append(item.identity);
-            var name = $("<td></td>").append(item.name);
-            var gender = $("<td></td>").append(item.gender == "M" ? "男" : "女");
-            var telephone = $("<td></td>").append(item.telephone);
-            var address = $("<td></td>").append(item.address);
-            var entryDate = $("<td></td>").append(item.entrydate);
-            var upadteBtn = $("<button></button>").addClass("btn btn-warning btn-xs update_btn").append($("<sapn></span>").addClass("fa fa-edit")).append("修改");
-            //为编辑按钮添加一个自定义属性，来标示当前员工id
-            upadteBtn.attr("update_id", item.id);
-            var lookBtn = $("<button></button>").addClass("btn btn-info btn-xs look_btn").append($("<sapn></span>").addClass("fa fa-search")).append("查看");
-            lookBtn.attr("look_id", item.id);
-            var btn = $("<td></td>").addClass("table-btn").append(lookBtn).append(" ").append(upadteBtn);
-            $("<tr></tr>").append("<td><input type='checkbox' class='check_item'></td>").append(id).append(identity).append(name).append(gender).append(telephone).append(address).append(entryDate).append(btn).appendTo("#worker_table tbody");
-        });
-    }
-
-    //解析分页信息
-    function build_search_page_info(result) {
-        //清空
-        $("#page_info_area").empty();
-        var pageInfo = result.extend.pageInfo;
-        var pageNum = pageInfo.pageNum;
-        var pages = pageInfo.pages;
-        var total = pageInfo.total;
-        currentPage = pageNum;
-        //当前第${pageInfo.pageNum}页/共${pageInfo.pages}页，共${pageInfo.total}条记录
-        $("#page_info_area").append("当前第" + pageNum + "页/共" + pages + "页，共" + total + "条记录");
-    }
-
-    //解析分页条
-    function build_search_page_nav(result) {
-        //清空
-        $("#page_nav_area").empty();
-        //构建元素
-        var ul = $("<ul></ul>").addClass("pagination");
-        var firstPageLi = $("<li></li>").addClass("page-item").append($("<a></a>").addClass("page-link").append("首页"));
-        var prePageLi = $("<li></li>").addClass("page-item").append($("<a></a>").addClass("page-link").append("&laquo;"));
-        if (result.extend.pageInfo.hasPreviousPage == false) {
-            firstPageLi.addClass("disabled");
-            prePageLi.addClass("disabled");
-        } else {
-            //为元素添加点击翻页事件
-            firstPageLi.click(function () {
-                search_to_page(1);
-            });
-            prePageLi.click(function () {
-                search_to_page(result.extend.pageInfo.pageNum - 1);
-            });
-        }
-
-        var nextPageLi = $("<li></li>").addClass("page-item").append($("<a></a>").addClass("page-link").append("&raquo;"));
-        var lastPageLi = $("<li></li>").addClass("page-item").append($("<a></a>").addClass("page-link").append("末页"));
-        if (result.extend.pageInfo.hasNextPage == false) {
-            nextPageLi.addClass("disabled");
-            lastPageLi.addClass("disabled");
-        } else {
-            nextPageLi.click(function () {
-                search_to_page(result.extend.pageInfo.pageNum + 1);
-            });
-            lastPageLi.click(function () {
-                search_to_page(result.extend.pageInfo.pages);
-            });
-        }
-
-        //构造首页和前一页
-        ul.append(firstPageLi).append(prePageLi);
-        //构造页码
-        $.each(result.extend.pageInfo.navigatepageNums, function (index, item) {
-            var numLi = $("<li></li>").addClass("page-item").append($("<a></a>").addClass("page-link").append(item));
-            if (result.extend.pageInfo.pageNum == item) {
-                numLi.addClass("active");
-            }
-            numLi.click(function () {
-                search_to_page(item);
-            });
-            ul.append(numLi);
-        });
-
-        //构造下一页和末页
-        ul.append(nextPageLi).append(lastPageLi).appendTo("#page_nav_area");
-    }
 </script>
-
 </body>
 </html>

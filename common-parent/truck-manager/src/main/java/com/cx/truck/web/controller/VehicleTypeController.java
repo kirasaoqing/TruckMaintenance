@@ -5,10 +5,7 @@ import com.cx.truck.model.VehicleType;
 import com.cx.truck.service.IVehicleTypeService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -30,7 +27,7 @@ public class VehicleTypeController {
      *
      * @return
      */
-    @RequestMapping(value = "/getAllVehicleTypes", method = RequestMethod.GET)
+    @GetMapping
     @ResponseBody
     public Msg getAllVehicleTypes() {
         List<VehicleType> vehicleTypes = vehicleTypeService.findAll();
@@ -43,7 +40,8 @@ public class VehicleTypeController {
      * @param vehicleType
      * @return
      */
-    @RequestMapping(value = "/vehicleType", method = RequestMethod.POST)
+    @PostMapping
+    //@RequestMapping(value = "/vehicleType", method = RequestMethod.POST)
     @ResponseBody
     public Msg saveVehicleType(VehicleType vehicleType) {
         vehicleTypeService.insert(vehicleType);
@@ -56,7 +54,8 @@ public class VehicleTypeController {
      * @param ids
      * @return
      */
-    @RequestMapping(value = "/{ids}", method = RequestMethod.DELETE)
+    @DeleteMapping("/{ids}")
+    //@RequestMapping(value = "/{ids}", method = RequestMethod.DELETE)
     @ResponseBody
     public Msg deleteVehicleType(@PathVariable("ids") String ids) {
         if (ids.contains("-")) {

@@ -11,10 +11,14 @@ public abstract class BaseController<T> {
     public static final String CUSTOMER = "customer";
     public static final String TRUCK = "truck";
     public static final String WORKER = "worker";
+    public static final String MATERIAL = "material";
+    public static final String UNIT = "unit";
 
     public static final String SERVICES = "services";
     public static final String BILL = "bill";
     public static final String MAINTENANCE = "maintenance";
+
+    public static final String PURCHASE = "purchase";
 
     public static final String LIST = "list";
 
@@ -37,10 +41,14 @@ public abstract class BaseController<T> {
     public static final String WORKER_PAGE = BASICS + "/" + WORKER;//员工页面
     public static final String TRUCK_PAGE = BASICS + "/" + TRUCK;//车辆页面
     public static final String CUSTOMER_PAGE = BASICS + "/" + CUSTOMER;//客户页面
+    public static final String MATERIAL_PAGE = BASICS + "/" + MATERIAL;//材料页面
+    public static final String UNIT_PAGE = BASICS + "/" + UNIT;//单位页面
+
 
     //public static final String BILL_PAGE = SERVICES + "/" + BILL;
 
     public static final String MAINTENANCEBILL_PAGE = SERVICES + "/" + MAINTENANCE + BILL;
+    public static final String PURCHASEBILL_PAGE = SERVICES + "/" + PURCHASE + BILL;
 
     public BaseController() {
         //1.获取范型的真实类型

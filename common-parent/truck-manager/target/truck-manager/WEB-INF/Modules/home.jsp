@@ -7,34 +7,37 @@
     <meta name="description" content="">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="robots" content="all,follow">
+    <%
+        pageContext.setAttribute("APP_PATH", request.getContextPath());
+    %>
     <!-- Bootstrap CSS-->
     <link rel="stylesheet"
-          href="${pageContext.request.contextPath}/assets/vendor/bootstrap/css/bootstrap.min.css">
+          href="${APP_PATH}/assets/vendor/bootstrap/css/bootstrap.min.css">
     <!-- Font Awesome CSS-->
     <link rel="stylesheet"
-          href="${pageContext.request.contextPath}/assets/vendor/font-awesome/css/font-awesome.min.css">
+          href="${APP_PATH}/assets/vendor/font-awesome/css/font-awesome.min.css">
     <!-- Fontastic Custom icon font-->
     <link rel="stylesheet"
-          href="${pageContext.request.contextPath}/assets/vendor/css/fontastic.css">
+          href="${APP_PATH}/assets/vendor/css/fontastic.css">
     <!-- Google fonts - Roboto -->
     <link rel="stylesheet"
           href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700">
     <!-- jQuery Circle-->
     <link rel="stylesheet"
-          href="${pageContext.request.contextPath}/assets/vendor/css/grasp_mobile_progress_circle-1.0.0.min.css">
+          href="${APP_PATH}/assets/vendor/css/grasp_mobile_progress_circle-1.0.0.min.css">
     <!-- Custom Scrollbar-->
     <link rel="stylesheet"
-          href="${pageContext.request.contextPath}/assets/vendor/malihu-custom-scrollbar-plugin/jquery.mCustomScrollbar.css">
+          href="${APP_PATH}/assets/vendor/malihu-custom-scrollbar-plugin/jquery.mCustomScrollbar.css">
     <!-- theme stylesheet-->
     <link rel="stylesheet"
-          href="${pageContext.request.contextPath}/assets/vendor/css/style.default.css"
+          href="${APP_PATH}/assets/vendor/css/style.default.css"
           id="theme-stylesheet">
     <!-- Custom stylesheet - for your changes-->
     <link rel="stylesheet"
-          href="${pageContext.request.contextPath}/assets/vendor/css/custom.css">
+          href="${APP_PATH}/assets/vendor/css/custom.css">
     <!-- Favicon-->
     <link rel="shortcut icon"
-          href="${pageContext.request.contextPath}/assets/vendor/img/favicon.ico">
+          href="${APP_PATH}/assets/vendor/img/favicon.ico">
     <!-- Tweaks for older IEs--><!--[if lt IE 9]>
     <script src="https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js"></script>
     <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script><![endif]-->
@@ -47,14 +50,14 @@
         <div class="sidenav-header d-flex align-items-center justify-content-center">
             <!-- User Info-->
             <div class="sidenav-header-inner text-center">
-                <img src="${pageContext.request.contextPath}/assets/Images/xpic4711.jpg" alt="person"
+                <img src="${APP_PATH}/assets/Images/xpic4711.jpg" alt="person"
                      class="img-fluid rounded-circle">
                 <h2 class="h5">炉洋汽修</h2>
                 <span>LY TruckMaintenance</span>
             </div>
             <!-- Small Brand information, appears on minimized sidebar-->
             <div class="sidenav-header-logo">
-                <a href="${pageContext.request.contextPath}/home/home.do" class="brand-small text-center">
+                <a href="${APP_PATH}/home/home.do" class="brand-small text-center">
                     <strong>L</strong>
                     <strong class="text-primary">Y</strong>
                 </a>
@@ -65,26 +68,30 @@
             <h5 class="sidenav-heading">基本功能</h5>
             <ul id="side-main-menu" class="side-menu list-unstyled">
                 <li class="active">
-                    <a href="${pageContext.request.contextPath}/home/home.do">
+                    <a href="${APP_PATH}/home/home.do">
                         <i class="icon-home"></i>主页
                     </a>
                 </li>
                 <li>
-                    <a href="${pageContext.request.contextPath}/home/maintenancebill.do">
-                        <i class="icon-home"></i>维修服务
+                    <a href="${APP_PATH}/home/purchasebill.do">
+                        <i class="icon-interface-windows"></i>材料采购
                     </a>
                 </li>
-                <%--<li>
-                    <a href="#exampledropdownDropdown" aria-expanded="false" data-toggle="collapse">
-                        <i class="icon-interface-windows"></i>维修服务
-                    </a>
-                    <ul id="exampledropdownDropdown" class="collapse list-unstyled ">
-                        <li><a href="#">Page</a></li>
-                        <li><a href="#">Page</a></li>
-                        <li><a href="#">Page</a></li>
-                    </ul>
-                </li>--%>
                 <li>
+                    <a href="${APP_PATH}/home/maintenancebill.do">
+                        <i class="icon-bill"></i>维修服务
+                    </a>
+                </li>
+                <li>
+                    <a href="#tabledropdown" aria-expanded="false" data-toggle="collapse">
+                        <i class="icon-list"></i>报表查询
+                    </a>
+                    <ul id="tabledropdown" class="collapse list-unstyled ">
+                        <li><a href="#"><i class="icon-grid"></i>库存查询</a></li>
+                        <%--<li><a href="#"><i class="icon-flask"></i>材料信息</a></li>--%>
+                    </ul>
+                </li>
+                <%--<li>
                     <a href="charts.html">
                         <i class="fa fa-bar-chart"></i>图表
                     </a>
@@ -93,20 +100,29 @@
                     <a href="tables.html">
                         <i class="icon-grid"></i>报表
                     </a>
-                </li>
+                </li>--%>
             </ul>
         </div>
         <div class="admin-menu">
             <h5 class="sidenav-heading">系统设置</h5>
             <ul id="side-admin-menu" class="side-menu list-unstyled">
                 <!-- customerlist-2.jsp跳转方法-->
-                <!-- <li><a href="${pageContext.request.contextPath}/customer/customerlist.do"> <i class="icon-screen"> </i>客户信息</a></li>-->
+                <!-- <li><a href="${APP_PATH}/customer/customerlist.do"> <i class="icon-screen"> </i>客户信息</a></li>-->
                 <!-- customerlist.jsp跳转方法-->
-                <li><a href="${pageContext.request.contextPath}/home/customer.do"> <i class="icon-screen"> </i>客户信息</a>
+                <li><a href="${APP_PATH}/home/customer.do"> <i class="icon-screen"> </i>客户信息</a>
                 </li>
-                <li><a href="${pageContext.request.contextPath}/home/truck.do"> <i class="icon-picture"> </i>车辆信息</a>
+                <li><a href="${APP_PATH}/home/truck.do"> <i class="icon-flask"> </i>车辆信息</a>
                 </li>
-                <li><a href="${pageContext.request.contextPath}/home/worker.do"> <i class="icon-picture"> </i>员工信息</a>
+                <li><a href="${APP_PATH}/home/worker.do"> <i class="icon-picture"> </i>员工信息</a>
+                </li>
+                <li>
+                    <a href="#materialdropdown" aria-expanded="false" data-toggle="collapse">
+                        <i class="icon-list"></i>材料设置
+                    </a>
+                    <ul id="materialdropdown" class="collapse list-unstyled ">
+                        <li><a href="${APP_PATH}/home/material.do"><i class="icon-padnote"></i>材料信息</a></li>
+                        <li><a href="${APP_PATH}/home/unit.do"><i class="icon-padnote"></i>单位信息</a></li>
+                    </ul>
                 </li>
             </ul>
         </div>
@@ -142,67 +158,69 @@
             </div>
         </nav>
     </header>
-    <!-- Counts Section -->
-    <section class="dashboard-counts section-padding">
-        <div class="container-fluid">
-            <div class="row">
-                <!-- Count item widget-->
-                <div class="col-xl-2 col-md-4 col-6">
-                    <div class="wrapper count-title d-flex">
-                        <div class="icon"><i class="icon-user"></i></div>
-                        <div class="name"><strong class="text-uppercase">新进 客户</strong><span>今天</span>
-                            <div class="count-number">5</div>
+    <div class="jumbotron">
+        <!-- Counts Section -->
+        <section class="dashboard-counts section-padding">
+            <div class="container-fluid">
+                <div class="row">
+                    <!-- Count item widget-->
+                    <div class="col-xl-2 col-md-4 col-6">
+                        <div class="wrapper count-title d-flex">
+                            <div class="icon"><i class="icon-user"></i></div>
+                            <div class="name"><strong class="text-uppercase">新进 客户</strong><span>本周</span>
+                                <div class="count-number" id="new_customer_week">5</div>
+                            </div>
                         </div>
                     </div>
-                </div>
-                <!-- Count item widget-->
-                <div class="col-xl-2 col-md-4 col-6">
-                    <div class="wrapper count-title d-flex">
-                        <div class="icon"><i class="icon-padnote"></i></div>
-                        <div class="name"><strong class="text-uppercase">维修 车辆</strong><span>今天</span>
-                            <div class="count-number">7</div>
+                    <!-- Count item widget-->
+                    <div class="col-xl-2 col-md-4 col-6">
+                        <div class="wrapper count-title d-flex">
+                            <div class="icon"><i class="icon-padnote"></i></div>
+                            <div class="name"><strong class="text-uppercase">维修 车辆</strong><span>本周</span>
+                                <div class="count-number" id="new_truck_week"></div>
+                            </div>
                         </div>
                     </div>
-                </div>
-                <!-- Count item widget-->
-                <div class="col-xl-2 col-md-4 col-6">
-                    <div class="wrapper count-title d-flex">
-                        <div class="icon"><i class="icon-check"></i></div>
-                        <div class="name"><strong class="text-uppercase">完工 车辆</strong><span>今天</span>
-                            <div class="count-number">6</div>
+                    <!-- Count item widget-->
+                    <div class="col-xl-2 col-md-4 col-6">
+                        <div class="wrapper count-title d-flex">
+                            <div class="icon"><i class="icon-check"></i></div>
+                            <div class="name"><strong class="text-uppercase">完工 车辆</strong><span>本周</span>
+                                <div class="count-number" id="new_finish_week"></div>
+                            </div>
                         </div>
                     </div>
-                </div>
-                <!-- Count item widget-->
-                <div class="col-xl-2 col-md-4 col-6">
-                    <div class="wrapper count-title d-flex">
-                        <div class="icon"><i class="icon-bill"></i></div>
-                        <div class="name"><strong class="text-uppercase">新进 客户</strong><span>当月</span>
-                            <div class="count-number">100</div>
+                    <!-- Count item widget-->
+                    <div class="col-xl-2 col-md-4 col-6">
+                        <div class="wrapper count-title d-flex">
+                            <div class="icon"><i class="icon-bill"></i></div>
+                            <div class="name"><strong class="text-uppercase">新进 客户</strong><span>当月</span>
+                                <div class="count-number" id="new_customer_month"></div>
+                            </div>
                         </div>
                     </div>
-                </div>
-                <!-- Count item widget-->
-                <div class="col-xl-2 col-md-4 col-6">
-                    <div class="wrapper count-title d-flex">
-                        <div class="icon"><i class="icon-list"></i></div>
-                        <div class="name"><strong class="text-uppercase">维修 车辆</strong><span>当月</span>
-                            <div class="count-number">166</div>
+                    <!-- Count item widget-->
+                    <div class="col-xl-2 col-md-4 col-6">
+                        <div class="wrapper count-title d-flex">
+                            <div class="icon"><i class="icon-list"></i></div>
+                            <div class="name"><strong class="text-uppercase">维修 车辆</strong><span>当月</span>
+                                <div class="count-number" id="new_truck_month"></div>
+                            </div>
                         </div>
                     </div>
-                </div>
-                <!-- Count item widget-->
-                <div class="col-xl-2 col-md-4 col-6">
-                    <div class="wrapper count-title d-flex">
-                        <div class="icon"><i class="icon-list-1"></i></div>
-                        <div class="name"><strong class="text-uppercase">完工 车辆</strong><span>当月</span>
-                            <div class="count-number">160</div>
+                    <!-- Count item widget-->
+                    <div class="col-xl-2 col-md-4 col-6">
+                        <div class="wrapper count-title d-flex">
+                            <div class="icon"><i class="icon-list-1"></i></div>
+                            <div class="name"><strong class="text-uppercase">完工 车辆</strong><span>当月</span>
+                                <div class="count-number" id="new_finish_month"></div>
+                            </div>
                         </div>
                     </div>
                 </div>
             </div>
-        </div>
-    </section>
+        </section>
+    </div>
     <footer class="main-footer">
         <div class="container-fluid">
             <div class="row">
@@ -218,17 +236,47 @@
     </footer>
 </div>
 <!-- JavaScript files-->
-<script src="${pageContext.request.contextPath}/assets/vendor/jquery/jquery.min.js"></script>
-<script src="${pageContext.request.contextPath}/assets/vendor/popper.js/umd/popper.min.js"></script>
-<script src="${pageContext.request.contextPath}/assets/vendor/bootstrap/js/bootstrap.min.js"></script>
-<script src="${pageContext.request.contextPath}/assets/vendor/js/grasp_mobile_progress_circle-1.0.0.min.js"></script>
-<script src="${pageContext.request.contextPath}/assets/vendor/jquery.cookie/jquery.cookie.js"></script>
-<script src="${pageContext.request.contextPath}/assets/vendor/chart.js/Chart.min.js"></script>
-<script src="${pageContext.request.contextPath}/assets/vendor/jquery-validation/jquery.validate.min.js"></script>
-<script src="${pageContext.request.contextPath}/assets/vendor/malihu-custom-scrollbar-plugin/jquery.mCustomScrollbar.concat.min.js"></script>
-<script src="${pageContext.request.contextPath}/assets/vendor/js/charts-home.js"></script>
+<script src="${APP_PATH}/assets/vendor/jquery/jquery.min.js"></script>
+<script src="${APP_PATH}/assets/vendor/popper.js/umd/popper.min.js"></script>
+<script src="${APP_PATH}/assets/vendor/bootstrap/js/bootstrap.min.js"></script>
+<script src="${APP_PATH}/assets/vendor/js/grasp_mobile_progress_circle-1.0.0.min.js"></script>
+<script src="${APP_PATH}/assets/vendor/jquery.cookie/jquery.cookie.js"></script>
+<script src="${APP_PATH}/assets/vendor/chart.js/Chart.min.js"></script>
+<script src="${APP_PATH}/assets/vendor/jquery-validation/jquery.validate.min.js"></script>
+<script src="${APP_PATH}/assets/vendor/malihu-custom-scrollbar-plugin/jquery.mCustomScrollbar.concat.min.js"></script>
+<script src="${APP_PATH}/assets/vendor/js/charts-home.js"></script>
 <!-- Main File-->
-<script src="${pageContext.request.contextPath}/assets/vendor/js/front.js"></script>
+<script src="${APP_PATH}/assets/vendor/js/front.js"></script>
+<script>
+    $(function () {
+        var date = new Date();
+        var seperator = "-";
+        var year = date.getFullYear();
+        var month = date.getMonth() + 1;
+        var strDate = date.getDate();
+        if (month >= 1 && month <= 9) {
+            month = "0" + month;
+        }
+        if (strDate >= 0 && strDate <= 9) {
+            strDate = "0" + strDate;
+        }
+        var currentdate = year + seperator + month + seperator + strDate;
+        $.ajax({
+            url: "${APP_PATH}/maintenancebill/counts/"+ '2019-12-18',
+            type: "GET",
+            success: function (result) {
+                //console.log(result);
+                var counts = result.extend.truckCounts;
+                $("#new_customer_week").html(counts.week_customer);
+                $("#new_truck_week").html(counts.week_truck);
+                $("#new_finish_week").html(counts.week_finish);
+                $("#new_customer_month").html(counts.month_customer);
+                $("#new_truck_month").html(counts.month_truck);
+                $("#new_finish_month").html(counts.month_finish);
+            }
+        });
+    });
+</script>
 
 </body>
 </html>

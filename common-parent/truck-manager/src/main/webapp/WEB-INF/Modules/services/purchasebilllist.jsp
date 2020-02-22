@@ -85,12 +85,12 @@
                         <i class="icon-home"></i>主页
                     </a>
                 </li>
-                <li>
+                <li class="active">
                     <a href="${APP_PATH}/home/purchasebill.do">
                         <i class="icon-interface-windows"></i>材料采购
                     </a>
                 </li>
-                <li class="active">
+                <li>
                     <a href="${APP_PATH}/home/maintenancebill.do">
                         <i class="icon-bill"></i>维修服务
                     </a>

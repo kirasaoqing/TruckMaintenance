@@ -120,7 +120,7 @@
                 <!-- customerlist-2.jsp跳转方法-->
                 <!-- <li><a href="${APP_PATH}/customer/customerlist.do"> <i class="icon-screen"> </i>客户信息</a></li>-->
                 <!-- customerlist.jsp跳转方法-->
-                <li class="active"><a href="${APP_PATH}/home/customer.do"> <i class="icon-screen"> </i>客户信息</a>
+                <li><a href="${APP_PATH}/home/customer.do"> <i class="icon-screen"> </i>客户信息</a>
                 </li>
                 <li><a href="${APP_PATH}/home/truck.do"> <i class="icon-flask"> </i>车辆信息</a>
                 </li>
@@ -131,7 +131,7 @@
                         <i class="icon-list"></i>材料设置
                     </a>
                     <ul id="materialdropdown" class="collapse list-unstyled ">
-                        <li><a href="${APP_PATH}/home/material.do"><i class="icon-padnote"></i>材料信息</a></li>
+                        <li class="active"><a href="${APP_PATH}/home/material.do"><i class="icon-padnote"></i>材料信息</a></li>
                         <li><a href="${APP_PATH}/home/unit.do"><i class="icon-padnote"></i>单位信息</a></li>
                     </ul>
                 </li>

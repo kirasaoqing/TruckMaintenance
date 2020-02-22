@@ -52,6 +52,25 @@ public class HomeController {
         return CUSTOMER_PAGE + LIST;
     }
 
+    /**
+     * 跳转到材料列表
+     *
+     * @return
+     */
+    @RequestMapping(MATERIAL)
+    public String goMaterialList() {
+        return MATERIAL_PAGE + LIST;
+    }
+
+    /**
+     * 跳转到单位列表
+     *
+     * @return
+     */
+    @RequestMapping(UNIT)
+    public String goUnitList() {
+        return UNIT_PAGE + LIST;
+    }
 
     /**
      * 跳转到维修单列表
@@ -61,5 +80,15 @@ public class HomeController {
     @RequestMapping(MAINTENANCE + BILL)
     public String goMaintenanceList() {
         return MAINTENANCEBILL_PAGE + LIST;
+    }
+
+    /**
+     * 跳转到维修单列表
+     *
+     * @return
+     */
+    @RequestMapping(PURCHASE + BILL)
+    public String goPurchaseList() {
+        return PURCHASEBILL_PAGE + LIST;
     }
 }

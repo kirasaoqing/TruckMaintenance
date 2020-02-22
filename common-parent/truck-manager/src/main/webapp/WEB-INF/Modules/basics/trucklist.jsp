@@ -45,12 +45,13 @@
     <!-- Favicon-->
     <link rel="shortcut icon"
           href="${APP_PATH}/assets/vendor/img/favicon.ico">
+    <!-- bootstrap-table -->
+    <link rel="stylesheet"
+          href="${APP_PATH}/assets/vendor/bootstrap-table/bootstrap-table.min.css">
     <!-- Tweaks for older IEs--><!--[if lt IE 9]>
     <script src="https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js"></script>
     <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script><![endif]-->
-    <!-- sweetalert-->
-    <script src="${pageContext.request.contextPath}/assets/vendor/sweetalert/sweetalert.min.js"></script>
-    <!-- sweetalert-->
+
 </head>
 <body>
 <!-- Side Navbar -->
@@ -83,28 +84,57 @@
                     </a>
                 </li>
                 <li>
-                    <a href="${APP_PATH}/home/maintenancebill.do">
-                        <i class="icon-home"></i>维修服务
+                    <a href="${APP_PATH}/home/purchasebill.do">
+                        <i class="icon-interface-windows"></i>材料采购
                     </a>
                 </li>
                 <li>
-                    <a href="#">
+                    <a href="${APP_PATH}/home/maintenancebill.do">
+                        <i class="icon-bill"></i>维修服务
+                    </a>
+                </li>
+                <li>
+                    <a href="#tabledropdown" aria-expanded="false" data-toggle="collapse">
+                        <i class="icon-list"></i>报表查询
+                    </a>
+                    <ul id="tabledropdown" class="collapse list-unstyled ">
+                        <li><a href="#"><i class="icon-grid"></i>库存查询</a></li>
+                        <%--<li><a href="#"><i class="icon-flask"></i>材料信息</a></li>--%>
+                    </ul>
+                </li>
+                <%--<li>
+                    <a href="charts.html">
                         <i class="fa fa-bar-chart"></i>图表
                     </a>
                 </li>
                 <li>
-                    <a href="#">
+                    <a href="tables.html">
                         <i class="icon-grid"></i>报表
                     </a>
-                </li>
+                </li>--%>
             </ul>
         </div>
         <div class="admin-menu">
             <h5 class="sidenav-heading">系统设置</h5>
             <ul id="side-admin-menu" class="side-menu list-unstyled">
-                <li><a href="${APP_PATH}/home/customer.do"><i class="icon-screen"></i>客户信息</a></li>
-                <li class="active"><a href="${APP_PATH}/home/truck.do"><i class="icon-picture"></i>车辆信息</a></li>
-                <li><a href="${APP_PATH}/home/worker.do"><i class="icon-picture"></i>员工信息</a></li>
+                <!-- customerlist-2.jsp跳转方法-->
+                <!-- <li><a href="${APP_PATH}/customer/customerlist.do"> <i class="icon-screen"> </i>客户信息</a></li>-->
+                <!-- customerlist.jsp跳转方法-->
+                <li><a href="${APP_PATH}/home/customer.do"> <i class="icon-screen"> </i>客户信息</a>
+                </li>
+                <li class="active"><a href="${APP_PATH}/home/truck.do"> <i class="icon-flask"> </i>车辆信息</a>
+                </li>
+                <li><a href="${APP_PATH}/home/worker.do"> <i class="icon-picture"> </i>员工信息</a>
+                </li>
+                <li>
+                    <a href="#materialdropdown" aria-expanded="false" data-toggle="collapse">
+                        <i class="icon-list"></i>材料设置
+                    </a>
+                    <ul id="materialdropdown" class="collapse list-unstyled ">
+                        <li><a href="${APP_PATH}/home/material.do"><i class="icon-padnote"></i>材料信息</a></li>
+                        <li><a href="${APP_PATH}/home/unit.do"><i class="icon-padnote"></i>单位信息</a></li>
+                    </ul>
+                </li>
             </ul>
         </div>
     </div>
@@ -141,16 +171,6 @@
         </nav>
     </header>
     <!-- content start -->
-    <div class="breadcrumb-holder">
-        <div class="container-fluid">
-            <ul class="breadcrumb">
-                <li class="breadcrumb-item">
-                    <a href="${APP_PATH}/home/home.do">主页</a>
-                </li>
-                <li class="breadcrumb-item active">车辆</li>
-            </ul>
-        </div>
-    </div>
     <section class="dashboard-counts section-padding">
         <div class="container-fluid">
             <div class="row">
@@ -159,51 +179,20 @@
                         <div class="card-header">
                             <h2><span class="fa fa-user-circle-o"></span> 车辆列表</h2>
                         </div>
-                        <div class="card-deck">
-                            <div class="col-lg-6">
-                                <button type="button" class="btn btn-primary" id="truck_add_modal_btn">
-                                    <span class="fa fa-plus"></span> 新增
-                                </button>
-                                <button type="button" class="btn btn-outline-danger" id="truck_delete_btn">
-                                    <span class="fa fa-trash"></span> 删除
-                                </button>
-                            </div>
-                            <div class="col-lg-6">
-                                <input type="text" id="search_truck_input" placeholder="请输入车牌号" class="col-9">
-                                <button class="btn btn-dark" type="button" id="search_truck_btn">
+                        <div class="card-body">
+                            <div id="toolbar" class="btn-group">
+                                <input type="text" id="search_input" placeholder="请输入车牌号">
+                                <button id="search_btn" type="button" class="btn btn-dark">
                                     <span class="fa fa-search"></span> 搜索
                                 </button>
+                                <button id="add_btn" type="button" class="btn btn-primary">
+                                    <span class="fa fa-plus" aria-hidden="true"></span> 新增
+                                </button>
+                                <button id="delete_selected_btn" type="button" class="btn btn-outline-danger">
+                                    <span class="fa fa-trash" aria-hidden="true"></span> 删除
+                                </button>
                             </div>
-                        </div>
-                        <div class="card-body">
-                            <div class="table-responsive">
-                                <table class="table table-hover" id="truck_table">
-                                    <thead>
-                                    <th>
-                                        <input type="checkbox" id="check_all"/>
-                                    </th>
-                                    <th hidden="true">ID</th>
-                                    <th style="width: 15%">车牌号</th>
-                                    <th style="width: 15%">品牌</th>
-                                    <th style="width: 15%">车型</th>
-                                    <th style="width: 40%">所属客户</th>
-                                    <th style="width: 15%">操作</th>
-                                    </thead>
-                                    <tbody>
-                                    </tbody>
-                                </table>
-                            </div>
-                        </div>
-                        <div class="card-footer">
-                            <!--分页文字信息-->
-                            <div class="col-md-5 pull-left" id="page_info_area">
-
-                            </div>
-                            <!--分页条信息-->
-                            <div class="col-md-7 pull-right">
-                                <nav aria-label="Page navigation example" id="page_nav_area">
-                                </nav>
-                            </div>
+                            <table id="table"></table>
                         </div>
                     </div>
                 </div>
@@ -226,6 +215,14 @@
             <!-- 模态框主体 -->
             <div class="modal-body">
                 <form>
+                    <div class="form-group row">
+                        <label class="col-sm-3 form-control-label">车牌号</label>
+                        <div class="col-sm-9">
+                            <input type="text" class="form-control" name="id"
+                                   id="id_input" readonly="readonly">
+                            <span class="help-block"></span>
+                        </div>
+                    </div>
                     <div class="form-group row">
                         <label class="col-sm-3 form-control-label">车牌号</label>
                         <div class="col-sm-9">
@@ -272,8 +269,7 @@
             <!-- 模态框底部 -->
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-dismiss="modal">关闭</button>
-                <button type="button" class="btn btn-primary" id="truck_add_btn">保存</button>
-                <button type="button" class="btn btn-primary" id="truck_update_btn">修改</button>
+                <button type="button" class="btn btn-primary" id="save_or_update_btn">保存</button>
             </div>
         </div>
     </div>
@@ -313,7 +309,6 @@
     </div>
 </div>
 
-
 <!-- JavaScript files-->
 <script src="${APP_PATH}/assets/vendor/jquery/jquery.min.js"></script>
 <script src="${APP_PATH}/assets/vendor/popper.js/umd/popper.min.js"></script>
@@ -326,355 +321,254 @@
 <script src="${APP_PATH}/assets/vendor/js/charts-home.js"></script>
 <!-- Main File-->
 <script src="${APP_PATH}/assets/vendor/js/front.js"></script>
+<!-- sweetalert-->
+<script src="${APP_PATH}/assets/vendor/sweetalert/sweetalert.min.js"></script>
+<!-- bootstrap-table -->
+<script src="${APP_PATH}/assets/vendor/bootstrap-table/bootstrap-table.min.js"></script>
+<script src="${APP_PATH}/assets/vendor/bootstrap-table/bootstrap-table-zh-CN.min.js"></script>
+<!-- bootstrap-table-export -->
+<script src="${APP_PATH}/assets/vendor/bootstrap-table/bootstrap-table-export.min.js"></script>
+<script type="text/javascript" src="${APP_PATH}/assets/vendor/bootstrap-table/tableExport.min.js"></script>
 
 <script type="text/javascript">
-    /=========================列表展示============================/
-    var totalRecord, currentPage, search_plateNumber;//总记录数
-    //1.页面加载完成以后，直接去发送ajax请求，要到分页数据
     $(function () {
-        //页面加载，去首页
-        to_page(1);
+        //======================初始化========================
+        //1.初始化Table
+        var url = "${APP_PATH}/truck";
+        var oTable = new TableInit();
+        oTable.Init(url);
+        //2.初始化Button的点击事件
+        /*var oButtonInit = new ButtonInit();
+        oButtonInit.Init();*/
 
-    });
+        //======================查找=========================
+        $("#search_btn").click(function () {
+            var url = "${APP_PATH}/truck/list/" + $("#search_input").val();
+            console.log(url);
+            oTable.Init(url);
+        });
 
-    //查询出全部数据&数据翻页
-    function to_page(pn) {
-        $.ajax({
-            url: "${APP_PATH}/truck/list.do",
-            data: "pn=" + pn,
-            type: "GET",
-            success: function (result) {
-                //console.log(result);
-                //1.解析并显示员工数据
-                build_trucks_table(result);
-                //2.解析并显示分页信息
-                build_page_info(result);
-                //3.解析并显示分页条
-                build_page_nav(result);
-                totalRecord = result.extend.pageInfo.total;
+        //=====================新增和修改==========================
+        $("#add_btn").click(function () {
+            reset_form("#truckModal");
+            new customerInit();
+            new vehicleTypeInit();
+            $("#truckModal").modal({
+                backdrop: "static",
+                draggable: true,
+                overflow: "hidden"
+            });
+        });
+
+        $("#save_or_update_btn").click(function () {
+            input_validate();
+            //1.提交数据校验
+            if ($("#save_or_update_btn").attr("ajax-validate") === "fail") {
+                return false;
             }
-        });
-    }
-
-    //解析员工数据
-    function build_trucks_table(result) {
-        //清空
-        $("#truck_table tbody").empty();
-        var trucks = result.extend.pageInfo.list;
-        $.each(trucks, function (index, item) {
-            var id = $("<td hidden='true'></td>").append(item.id);
-            var platenumber = $("<td></td>").append(item.platenumber);
-            var brand = $("<td></td>").append(item.brand);
-            var vehicleType = $("<td></td>").append(item.vehicleType.name);
-            var customer = $("<td></td>").append(item.customer.name);
-            var upadteBtn = $("<button></button>").addClass("btn btn-warning btn-xs update_btn").append($("<sapn></span>").addClass("fa fa-edit")).append("修改");
-            //为编辑按钮添加一个自定义属性，来标示当前车辆id
-            upadteBtn.attr("update_id", item.id);
-            var lookBtn = $("<button></button>").addClass("btn btn-info btn-xs look_btn").append($("<sapn></span>").addClass("fa fa-search")).append("查看");
-            lookBtn.attr("look_id", item.id);
-            var btn = $("<td></td>").addClass("table-btn").append(lookBtn).append(" ").append(upadteBtn);
-            $("<tr></tr>").append("<td><input type='checkbox' class='check_item'></td>").append(id).append(platenumber).append(brand).append(vehicleType).append(customer).append(btn).appendTo("#truck_table tbody");
-        });
-    }
-
-    //解析分页信息
-    function build_page_info(result) {
-        //清空
-        $("#page_info_area").empty();
-        var pageInfo = result.extend.pageInfo;
-        var pageNum = pageInfo.pageNum;
-        var pages = pageInfo.pages;
-        var total = pageInfo.total;
-        currentPage = pageNum;
-        //当前第${pageInfo.pageNum}页/共${pageInfo.pages}页，共${pageInfo.total}条记录
-        $("#page_info_area").append("当前第" + pageNum + "页/共" + pages + "页，共" + total + "条记录");
-    }
-
-    //解析分页条
-    function build_page_nav(result) {
-        //清空
-        $("#page_nav_area").empty();
-        //构建元素
-        var ul = $("<ul></ul>").addClass("pagination");
-        var firstPageLi = $("<li></li>").addClass("page-item").append($("<a></a>").addClass("page-link").append("首页"));
-        var prePageLi = $("<li></li>").addClass("page-item").append($("<a></a>").addClass("page-link").append("&laquo;"));
-        if (result.extend.pageInfo.hasPreviousPage == false) {
-            firstPageLi.addClass("disabled");
-            prePageLi.addClass("disabled");
-        } else {
-            //为元素添加点击翻页事件
-            firstPageLi.click(function () {
-                to_page(1);
-            });
-            prePageLi.click(function () {
-                to_page(result.extend.pageInfo.pageNum - 1);
-            });
-        }
-
-        var nextPageLi = $("<li></li>").addClass("page-item").append($("<a></a>").addClass("page-link").append("&raquo;"));
-        var lastPageLi = $("<li></li>").addClass("page-item").append($("<a></a>").addClass("page-link").append("末页"));
-        if (result.extend.pageInfo.hasNextPage == false) {
-            nextPageLi.addClass("disabled");
-            lastPageLi.addClass("disabled");
-        } else {
-            nextPageLi.click(function () {
-                to_page(result.extend.pageInfo.pageNum + 1);
-            });
-            lastPageLi.click(function () {
-                to_page(result.extend.pageInfo.pages);
-            });
-        }
-
-        //构造首页和前一页
-        ul.append(firstPageLi).append(prePageLi);
-        //构造页码
-        $.each(result.extend.pageInfo.navigatepageNums, function (index, item) {
-            var numLi = $("<li></li>").addClass("page-item").append($("<a></a>").addClass("page-link").append(item));
-            if (result.extend.pageInfo.pageNum == item) {
-                numLi.addClass("active");
-            }
-            numLi.click(function () {
-                to_page(item);
-            });
-            ul.append(numLi);
-        });
-
-        //构造下一页和末页
-        ul.append(nextPageLi).append(lastPageLi).appendTo("#page_nav_area");
-    }
-
-    /================================模态框======================================/
-    $("#truck_add_modal_btn").click(function () {
-        //清除表单数据（表单重置）--dom对象
-        reset_form("#truckModal form");
-        $("#truck_add_btn").show();
-        $("#truck_update_btn").hide();
-        $("#platenumber_input").attr("readonly", false);
-        $("#brand_input").attr("readonly", false);
-        $("#vehichleType_select").attr("disabled", false);
-        $("#customer_select").attr("disabled", false);
-
-        //发送ajax请求，查出所有的车型和客户信息，显示在下拉列表中
-        getCustomers();
-        getVehicleTypes();
-        //显示模态框
-        $("#truckModal").modal({
-            backdrop: "static",
-            draggable: true,
-            overflow: "hidden"
-        });
-    });
-
-    //查出所有的客户并显示在下拉列表中
-    function getCustomers() {
-        //清空下拉列表
-        $("#customer_select").empty();
-        $.ajax({
-            url: "${APP_PATH}/customer/getAllCustomers.do",
-            type: "GET",
-            success: function (result) {
-                $.each(result.extend.customers, function () {
-                    var option = $("<option></option>").append(this.name).attr("value", this.id);
-                    option.appendTo("#customer_select");
+            //2.判断id是否存在,如果不存在新增
+            if ($("#id_input").val() == "") {
+                //2-1.发送ajax请求保存
+                $.ajax({
+                    url: "${APP_PATH}/truck",
+                    type: "POST",
+                    data: $("#truckModal form").serialize(),
+                    success: function (result) {
+                        //后端JSR303校验通过
+                        if (result.code == 100) {
+                            //1.关闭模态框
+                            $("#truckModal").modal('hide');
+                            //2.来到最后一页，显示新添加数据，也就是发送ajax请求显示最后一页数据
+                            $("#table").bootstrapTable('refresh');
+                        } else {
+                            show_validate_msg($("#platenumber_input"), "fail", result.extend.name);
+                        }
+                    }
+                });
+            } else {
+                //2-1.发送ajax请求更新
+                $.ajax({
+                    url: "${APP_PATH}/truck",
+                    type: "PUT",
+                    data: $("#truckModal form").serialize(),
+                    success: function (result) {
+                        //后端JSR303校验通过
+                        if (result.code == 100) {
+                            //1.关闭模态框
+                            $("#truckModal").modal('hide');
+                            //2.来到最后一页，显示新添加数据，也就是发送ajax请求显示最后一页数据
+                            $("#table").bootstrapTable('refresh');
+                        } else {
+                            show_validate_msg($("#platenumber_input"), "fail", result.extend.name);
+                        }
+                    }
                 });
             }
         });
-    }
 
-    //查出所有的车型并显示在下拉列表中
-    function getVehicleTypes() {
-        //清空下拉列表
-        $("#vehicleType_select").empty();
-        $.ajax({
-            url: "${APP_PATH}/vehicleType/getAllVehicleTypes.do",
-            type: "GET",
-            success: function (result) {
-                $.each(result.extend.vehicleTypes, function () {
-                    //console.log(result);
-                    var option = $("<option></option>").append(this.name).attr("value", this.id);
-                    option.appendTo("#vehicleType_select");
-                });
-            }
+        //=====================删除==========================
+        $("#delete_selected_btn").click(function () {
+            //使用getSelections即可获得，row是json格式的数据
+            var rows = $.map($('#table').bootstrapTable('getSelections'), function (rows) {
+                return rows;
+            });
+            var truckIds = "";
+            var truckPNs = "";
+            $.each(rows, function (index, row) {
+                truckIds += row.id + "-";
+                truckPNs += row.platenumber + ",";
+            });
+            $.ajax({
+                url: "${APP_PATH}/maintenancebill/check/" + truckIds,
+                type: "GET",
+                success: function (result) {
+                    console.log(result);
+                    if (result.code == 100) {
+                        if (truckIds != "") {
+                            truckIds = truckIds.substring(0, truckIds.length - 1);
+                            truckPNs = truckPNs.substring(0, truckPNs.length - 1);
+                            swal({
+                                title: "确定要删除以下客户吗？",
+                                text: truckPNs,
+                                icon: "warning",
+                                buttons: {
+                                    cancel: "取消",
+                                    confirm: {
+                                        text: "确定",
+                                        value: "delete"
+                                    }
+                                },
+                            }).then((value) => {
+                                if (value == "delete") {
+                                    $.ajax({
+                                        url: "${APP_PATH}/truck/" + truckIds,
+                                        type: "DELETE",
+                                        success: function (result) {
+                                            $("#table").bootstrapTable('refresh');
+                                        }
+                                    });
+                                }
+                            })
+                        } else {
+                            swal({
+                                title: "请勾选想要删除的车辆",
+                                icon: "warning",
+                                button: "退出"
+                            });
+                        }
+                    } else if (result.code == 200) {
+                        var va_ids = "";
+                        $.each(result.extend.va_msg, function (index, value) {
+                            va_ids += value + " ";
+                        });
+                        swal({
+                            title: "编号为：" + va_ids + "的车辆已经被使用，无法删除",
+                            icon: "warning",
+                            button: "退出"
+                        });
+                    }
+                }
+            });
         });
-    }
 
-    //模态框中填写的表单数据提交给服务器进行保存
-    $("#truck_add_btn").click(function () {
-        plateNumber_input_validate();
-        //1.提交数据校验
-        if ($("#truck_add_btn").attr("ajax-validate") === "fail") {
-            return false;
+        //=====================校验==========================
+        //车牌号校验
+        function input_validate() {
+            //1.拿到要校验的数据
+            var plateNumber = $("#platenumber_input").val();
+            //2.使用正则表达式
+            var pnReg = /^[京津沪渝冀豫云辽黑湘皖鲁新苏浙赣鄂桂甘晋蒙陕吉闽贵粤青藏川宁琼使领A-Z]{1}[A-Z]{1}[A-Z0-9]{4}[A-Z0-9挂学警港澳]{1}$/;
+            if (pnReg.test(plateNumber)) {
+                show_validate_msg("#platenumber_input", "success", "");
+                $("#save_or_update_btn").attr("ajax-validate", "success");
+            } else {
+                show_validate_msg("#platenumber_input", "fail", "请输入正确的车牌号码");
+                $("#save_or_update_btn").attr("ajax-validate", "fail");
+            }
         }
 
-        //2.发送ajax请求保存
-        $.ajax({
-            url: "${APP_PATH}/truck/truck.do",
-            type: "POST",
-            data: $("#truckModal form").serialize(),
-            success: function (result) {
-                //后端JSR303校验通过
-                if (result.code == 100) {
+        //校验信息显示
+        function show_validate_msg(ele, status, msg) {
+            //清除当前元素的校验状态
+            reset_ele(ele)
+            //添加校验状态
+            if ("success" == status) {
+                $(ele).addClass("is-valid");
+                $(ele).next("span").text(msg);
+                $(ele).next("span").addClass("valid-feedback");
+            } else if ("fail" == status) {
+                $(ele).addClass("is-invalid");
+                $(ele).next("span").text(msg);
+                $(ele).next("span").addClass("invalid-feedback");
+            }
+        }
+
+        //重置元素
+        function reset_ele(ele) {
+            $(ele).removeClass("is-invalid is-valid");
+            $(ele).next("span").text("");
+            $(ele).next("span").removeClass("invalid-feedback valid-feedback");
+        }
+
+        //重置表单
+        function reset_form(ele) {
+            //$(ele)[0].reset();
+            $(ele).find("*").removeClass("is-invalid is-valid invalid-feedback valid-feedback");
+            $(ele).find(".help-block").text("");
+            $(ele).find("*").val("");
+        }
+
+        /==================================车型操作====================================/
+        //显示新增车型模态框
+        $("#vehicleType_add_modal_btn").click(function () {
+            //显示模态框
+            $("#vehicleTypeModal").modal({
+                backdrop: "static"
+            });
+        })
+        //点击保存按钮新增车型
+        $("#vehicleType_add_btn").click(function () {
+            vehicleType_input_validate();
+            //1.提交数据校验
+            if ($("#vehicleType_add_btn").attr("ajax-validate") === "fail") {
+                return false;
+            }
+
+            $.ajax({
+                url: "${APP_PATH}/vehicleType",
+                type: "POST",
+                data: $("#vehicleTypeModal form").serialize(),
+                success: function (result) {
                     //1.关闭模态框
-                    $("#truckModal").modal('hide');
-                    //2.来到最后一页，显示新添加数据，也就是发送ajax请求显示最后一页数据
-                    to_page(totalRecord);
-                } else {
-                    show_validate_msg($("#platenumber_input"), "fail", result.extend.name);
+                    $("#vehicleTypeModal").modal('hide');
+                    //2.车辆新增界面重新获取车辆类型
+                    new vehicleTypeInit();
                 }
-            }
+            });
         });
-    });
 
-    //车牌号校验
-    function plateNumber_input_validate() {
-        //1.拿到要校验的数据
-        var plateNumber = $("#platenumber_input").val();
-        //2.使用正则表达式
-        var pnReg = /^[京津沪渝冀豫云辽黑湘皖鲁新苏浙赣鄂桂甘晋蒙陕吉闽贵粤青藏川宁琼使领A-Z]{1}[A-Z]{1}[A-Z0-9]{4}[A-Z0-9挂学警港澳]{1}$/;
-        if (pnReg.test(plateNumber)) {
-            show_validate_msg("#platenumber_input", "success", "");
-            $("#truck_add_btn").attr("ajax-validate", "success");
-        } else {
-            show_validate_msg("#platenumber_input", "fail", "请输入正确的车牌号码");
-            $("#truck_add_btn").attr("ajax-validate", "fail");
+        //车型校验
+        function vehicleType_input_validate() {
+            //1.拿到要校验的数据
+            var vehicleType = $("#vehicleType_input").val();
+            //2.使用正则表达式
+            var pnReg = /^[\u2E80-\u9FFF]{1,5}$/;
+            if (pnReg.test(vehicleType)) {
+                show_validate_msg("#vehicleType_input", "success", "");
+                $("#vehicleType_add_btn").attr("ajax-validate", "success");
+            } else {
+                show_validate_msg("#vehicleType_input", "fail", "请输入正确的车辆类型");
+                $("#vehicleType_add_btn").attr("ajax-validate", "fail");
+            }
         }
-    }
 
-    //校验信息显示
-    function show_validate_msg(ele, status, msg) {
-        //清除当前元素的校验状态
-        reset_ele(ele)
-        /*$(ele).removeClass("is-invalid is-valid");
-        $(ele).next("span").removeClass("invalid-feedback valid-feedback");*/
-        //添加校验状态
-        if ("success" == status) {
-            $(ele).addClass("is-valid");
-            $(ele).next("span").text(msg);
-            $(ele).next("span").addClass("valid-feedback");
-        } else if ("fail" == status) {
-            $(ele).addClass("is-invalid");
-            $(ele).next("span").text(msg);
-            $(ele).next("span").addClass("invalid-feedback");
-        }
-    }
-
-    //车牌号输入框内容改变后做用户名唯一性校验
-    $("#platenumber_input").change(function () {
-        $.ajax({
-            url: "${APP_PATH}/truck/checkTruckByPN.do",
-            type: "GET",
-            data: "plateNumber=" + $("#platenumber_input").val(),
-            success: function (result) {
-                if (result.code == 100) {
-                    show_validate_msg("#platenumber_input", "success", "新进厂车辆");
-                    $("#truck_add_btn").attr("ajax-validate", "success");
-                } else {
-                    show_validate_msg("#platenumber_input", "fail", result.extend.va_msg);
-                    $("#truck_add_btn").attr("ajax-validate", "fail");
-                }
-            }
-        });
-    });
-
-    //重置元素
-    function reset_ele(ele) {
-        $(ele).removeClass("is-invalid is-valid");
-        $(ele).next("span").text("");
-        $(ele).next("span").removeClass("invalid-feedback valid-feedback");
-    }
-
-    //重置表单
-    function reset_form(ele) {
-        //$(ele)[0].reset();
-        $(ele).find("*").removeClass("is-invalid is-valid invalid-feedback valid-feedback");
-        $(ele).find(".help-block").text("");
-        $(ele).find("*").val("");
-    }
-
-    //点击修改，弹出模态框
-    //我们在按钮创建之前就绑定了click，所以绑定不上
-    //绑定点击.live()，jquery新版没有live，使用on代替
-    $(document).on("click", ".update_btn", function () {
-        //查处客户信息
-        getTruck($(this).attr("update_id"));
-        $("#truck_update_btn").show();
-        $("#truck_add_btn").hide();
-        $("#truck_update_btn").attr("update_id", $(this).attr("update_id"));
-        $("#platenumber_input").attr("readonly", true);
-        $("#brand_input").attr("readonly", false);
-        $("#vehicleType_select").attr("disabled", false);
-        $("#customer_select").attr("disabled", false);
-        getCustomers();
-        getVehicleTypes();
-        //显示模态框
-        $("#truckModal").modal({
-            backdrop: "static",
-            draggable: true,
-            overflow: "hidden"
-        });
-    });
-
-    //点击查看，弹出模态框
-    $(document).on("click", ".look_btn", function () {
-        //查处客户信息
-        getTruck($(this).attr("look_id"));
-        $("#truck_update_btn").hide();
-        $("#truck_add_btn").hide();
-        $("#truck_update_btn").hide();
-        $("#platenumber_input").attr("readonly", true);
-        $("#brand_input").attr("readonly", true);
-        $("#vehicleType_select").attr("disabled", true);
-        $("#customer_select").attr("disabled", true);
-        getCustomers();
-        getVehicleTypes();
-        //显示模态框
-        $("#truckModal").modal({
-            backdrop: "static",
-            draggable: true,
-            overflow: "hidden"
-        });
-    });
-
-    function getTruck(id) {
-        $.ajax({
-            url: "${APP_PATH}/truck/" + id + ".do",
-            type: "GET",
-            success: function (result) {
-                //console.log(result);
-                var truckData = result.extend.truck;
-                $("#platenumber_input").val(truckData.platenumber);
-                $("#brand_input").val(truckData.brand);
-                $("#truckModal select[name=vehicletypeId]").val([truckData.vehicletypeId]);
-                $("#truckModal select[name=customerId]").val([truckData.customerId]);
-            }
-        });
-    }
-
-    /=============================删除===================================/
-    //checkbox全选全不选
-    $("#check_all").click(function () {
-        //原生属性用prop，自定义属性用attr
-        $(".check_item").prop("checked", $("#check_all").prop("checked"));
-    });
-    $(document).on("click", ".check_item", function () {
-        var flag = $(".check_item:checked").length == $(".check_item").length;
-        $("#check_all").prop("checked", flag);
-    });
-
-    //删除按钮事件
-    $("#truck_delete_btn").click(function () {
-        var truckIds = "";
-        var plateNumbers = "";
-        $.each($(".check_item:checked"), function () {
-            truckIds += $(this).parents("tr").find("td:eq(1)").text() + "-";
-            plateNumbers += $(this).parents("tr").find("td:eq(2)").text() + ",";
-        });
-        if (truckIds != "") {
-            truckIds = truckIds.substring(0, truckIds.length - 1);
-            plateNumbers = plateNumbers.substring(0, plateNumbers.length - 1);
+        //车辆信息模态框，车型-按钮
+        $("#vehicleType_delete_btn").click(function () {
+            var selectedId = $("#vehicleType_select").val();
+            var selectedName = $("#vehicleType_select option:selected").text();
             swal({
-                title: "确定要删除以下车辆信息吗？",
-                text: plateNumbers,
+                title: "确定要删除以下车型吗？",
+                text: selectedName,
                 icon: "warning",
                 buttons: {
                     cancel: "取消",
@@ -686,236 +580,252 @@
             }).then((value) => {
                 if (value == "delete") {
                     $.ajax({
-                        url: "${APP_PATH}/truck/" + truckIds + ".do",
+                        url: "${APP_PATH}/vehicleType/" + selectedId,
                         type: "DELETE",
                         success: function (result) {
-                            to_page(currentPage);
+                            new vehicleTypeInit();
                         }
                     });
                 }
             })
-        } else {
-            swal({
-                title: "请勾选想要删除的车辆",
-                icon: "warning",
-                button: "退出"
-            });
-        }
-    });
-
-    /================================更新=============================/
-    //模态框中修改按钮点击事件
-    $("#truck_update_btn").click(function () {
-        //1.表单校验
-
-        //2。数据提交
-        $.ajax({
-            url: "${APP_PATH}/truck/" + $(this).attr("update_id") + ".do",
-            method: "PUT",
-            data: $("#truckModal form").serialize(),
-            success: function (result) {
-                //2.关闭对话框
-                $("#truckModal").modal("hide");
-                //3.回到列表页面
-                to_page(currentPage);
-            }
         });
     });
 
-    /=============================查找===============================/
-    //搜索
-    $("#search_truck_btn").click(function () {
-        search_plateNumber = "%" + $("#search_truck_input").val() + "%";
-        search_to_page(1);
-    });
+    var TableInit = function () {
+        //==============================删除=================================
+        //操作栏的格式化
+        function actionFormatter(value, row, index) {
+            return [
+                /*'<button id="look_btn" type="button" class="btn btn-outline-dark">查看</button>',*/
+                '<button id="delete_one_btn" type="button" class="btn btn-outline-danger">删除</button>',
+            ].join('');
+        }
 
-    //搜索数据&数据翻页
-    function search_to_page(pn) {
+        window.operateEvents = {
+            'click #delete_one_btn': function (e, value, row, index) {
+                swal({
+                    title: "确定要删除以下车辆吗？",
+                    text: row.plateNumber,
+                    icon: "warning",
+                    buttons: {
+                        cancel: "取消",
+                        confirm: {
+                            text: "确定",
+                            value: "delete"
+                        }
+                    },
+                }).then((value) => {
+                    if (value == "delete") {
+                        $.ajax({
+                            url: "${APP_PATH}/maintenancebill/check/" + row.id,
+                            type: "GET",
+                            success: function (result) {
+                                console.log(result);
+                                if (result.code == 100) {
+                                    $.ajax({
+                                        url: "${APP_PATH}/truck/" + row.id.toString(),
+                                        type: "DELETE",
+                                        success: function (result) {
+                                            $("#table").bootstrapTable('refresh');
+                                            swal({
+                                                title: "删除成功",
+                                                icon: "success",
+                                                button: "退出"
+                                            });
+                                        }
+                                    });
+                                } else if (result.code == 200) {
+                                    swal({
+                                        title: "客户信息已经被使用，无法删除",
+                                        icon: "warning",
+                                        button: "退出"
+                                    });
+                                }
+                            }
+                        });
+                    }
+                })
+            }
+        };
+
+        var oTableInit = new Object();
+        //初始化Table
+        oTableInit.Init = function (url) {
+            //先销毁表格
+            $('#table').bootstrapTable("destroy");
+            //加载表格
+            $('#table').bootstrapTable({
+                url: url,
+                method: "GET",                      //请求方式（*）
+                dataType: "json",
+                contentType: "application/x-www-form-urlencoded", //适配POST请求
+                showHeader: true,                   //是否显示列头
+                showLoading: true,
+                showFullscreen: true,
+                sidePagination: "server",          //分页方式：client客户端分页，server服务端分页（*）
+                toolbar: "#toolbar",                //工具按钮用哪个容器
+                striped: true,                      //是否显示行间隔色
+                cache: false,                       //是否使用缓存，默认为true，所以一般情况下需要设置一下这个属性（*）
+                pagination: true,                   //是否显示分页（*）
+                sortable: true,                     //是否启用排序
+                sortOrder: "asc",                   //排序方式
+                queryParams: oTableInit.queryParams,//传递参数（*）
+                sidePagination: "server",           //分页方式：client客户端分页，server服务端分页（*）
+                pageNumber: 1,                      //初始化加载第一页，默认第一页
+                pageSize: 10,                       //每页的记录行数（*）
+                pageList: [10, 25, 50, 100],        //可供选择的每页的行数（*）
+                search: false,                      //是否显示表格搜索，此搜索是客户端搜索，不会进服务端，所以，个人感觉意义不大
+                strictSearch: true,
+                showColumns: true,                  //是否显示所有的列
+                showRefresh: false,                 //是否显示刷新按钮
+                minimumCountColumns: 2,             //最少允许的列数
+                clickToSelect: true,                //是否启用点击选中行
+                //height: 500,                      //行高，如果没有设置height属性，表格自动根据记录条数觉得表格高度
+                uniqueId: "id",                     //每一行的唯一标识，一般为主键列
+                showToggle: true,                   //是否显示详细视图和列表视图的切换按钮
+                cardView: false,                    //是否显示详细视图
+                paginationLoop: false,              //是否无限循环
+
+                detailView: true,                  //是否显示父子表
+                detailFormatter: function (index, row) {
+                    var html = []
+                    $.each(row, function (key, value) {
+                        if (key != "0") {
+                            html.push('<p><b>' + key + ':</b> ' + value + '</p>')
+                        }
+                    })
+                    return html.join('')
+                },
+
+                exportDataType: "selected",         //导出checkbox选中的行数
+                showExport: true,  //工具栏上显示导出按钮
+                //exportTypes: ['json', 'xml', 'png', 'csv', 'txt', 'sql', 'doc', 'excel', 'xlsx', 'pdf'],//导出格式
+                exportTypes: ['excel'],//导出格式
+                exportOptions: {//导出设置
+                    ignoreColumn: [0],  //忽略某一列的索引
+                    fileName: '客户信息',  //文件名称设置
+                    worksheetName: 'sheet1',  //表格工作区名称
+                    tableName: '客户信息',
+                    //excelstyles: ['background-color:red', 'color', 'font-size', 'font-weight'],
+                },
+                //得到查询的参数
+                queryParams: function (params) {
+                    //这里的键的名字和控制器的变量名必须一致，这边改动，控制器也需要改成一样的
+                    var temp = {
+                        rows: params.limit,    //页面大小
+                        page: (params.offset / params.limit) + 1,   //页码
+                        sort: params.sort,      //排序列名
+                        sortOrder: params.order //排位命令（desc，asc）
+                    };
+                    return temp;
+                },
+                columns: [
+                    {
+                        checkbox: true,
+                        visible: true,
+                        align: 'center'
+                    }, {
+                        field: 'id',
+                        title: '编号',
+                        align: 'center'
+                    }, {
+                        field: 'platenumber',
+                        title: '车牌号',
+                        align: 'center'
+                    }, {
+                        field: 'brand',
+                        title: '品牌',
+                        align: 'center'
+                    }, {
+                        field: 'vehicleType.name',
+                        title: '车型',
+                        align: 'center'
+                    }, {
+                        field: 'customer.name',
+                        title: '所属客户',
+                        align: 'center'
+                    }, {
+                        field: 'operate',
+                        title: '操作',
+                        width: 100,
+                        align: 'center',
+                        valign: 'middle',
+                        events: operateEvents,//给按钮注册事件
+                        formatter: actionFormatter//表格中增加按钮
+                    }
+                ],
+                onLoadSuccess: function () {
+
+                },
+                onLoadError: function () {
+
+                },
+
+                onDblClickRow: function (row, $element) {
+                    new customerInit();
+                    new vehicleTypeInit();
+                    //console.log(row);
+                    //console.log($element);
+                    $("#id_input").val(row.id);
+                    $("#platenumber_input").val(row.platenumber);
+                    $("#brand_input").val(row.brand);
+                    $("#vehicleType_select").val(row.vehicleType.id);
+                    $("#customer_select").val(row.customer.id);
+                    $("#truckModal").modal({
+                        backdrop: "static",
+                        draggable: true,
+                        overflow: "hidden"
+                    });
+                },
+            });
+        };
+        return oTableInit;
+    };
+
+    var ButtonInit = function () {
+        var oInit = new Object();
+        var postdata = {};
+
+        oInit.Init = function () {
+            //初始化页面上面的按钮事件
+        };
+        return oInit;
+    };
+
+
+    //=============================查找车辆类型和客户=======================
+    //查出所有的客户并显示在下拉列表中
+    var customerInit = function getCustomers() {
+        //清空下拉列表
+        $("#customer_select").empty();
         $.ajax({
-            url: "${APP_PATH}/truck/getTrucksByPN.do",
-            data: {"pn": pn, "plateNumber": search_plateNumber},
+            url: "${APP_PATH}/customer/getAllCustomers",
             type: "GET",
             success: function (result) {
-                //console.log(result);
-                if(result.code == 100){
-                    //1.解析并显示员工数据
-                    build_search_trucks_table(result);
-                    //2.解析并显示分页信息
-                    build_search_page_info(result);
-                    //3.解析并显示分页条
-                    build_search_page_nav(result);
-                }else if(result.code == 200){
-                    $("#truck_table tbody").empty();
-                    $("#page_info_area").empty();
-                    $("#page_nav_area").empty();
-                    swal({
-                        title: result.extend.va_msg,
-                        icon: "warning",
-                        button: "退出"
-                    });
-                }
-            }
-        });
-    }
-
-    //解析员工数据
-    function build_search_trucks_table(result) {
-        //清空
-        $("#truck_table tbody").empty();
-        var trucks = result.extend.pageInfo.list;
-        $.each(trucks, function (index, item) {
-            var id = $("<td hidden='true'></td>").append(item.id);
-            var platenumber = $("<td></td>").append(item.platenumber);
-            var brand = $("<td></td>").append(item.brand);
-            var vehicleType = $("<td></td>").append(item.vehicleType.name);
-            var customer = $("<td></td>").append(item.customer.name);
-            var upadteBtn = $("<button></button>").addClass("btn btn-warning btn-xs update_btn").append($("<sapn></span>").addClass("fa fa-edit")).append("修改");
-            //为编辑按钮添加一个自定义属性，来标示当前车辆id
-            upadteBtn.attr("update_id", item.id);
-            var lookBtn = $("<button></button>").addClass("btn btn-info btn-xs look_btn").append($("<sapn></span>").addClass("fa fa-search")).append("查看");
-            lookBtn.attr("look_id", item.id);
-            var btn = $("<td></td>").addClass("table-btn").append(lookBtn).append(" ").append(upadteBtn);
-            $("<tr></tr>").append("<td><input type='checkbox' class='check_item'></td>").append(id).append(platenumber).append(brand).append(vehicleType).append(customer).append(btn).appendTo("#truck_table tbody");
-        });
-    }
-
-    //解析分页信息
-    function build_search_page_info(result) {
-        //清空
-        $("#page_info_area").empty();
-        var pageInfo = result.extend.pageInfo;
-        var pageNum = pageInfo.pageNum;
-        var pages = pageInfo.pages;
-        var total = pageInfo.total;
-        currentPage = pageNum;
-        //当前第${pageInfo.pageNum}页/共${pageInfo.pages}页，共${pageInfo.total}条记录
-        $("#page_info_area").append("当前第" + pageNum + "页/共" + pages + "页，共" + total + "条记录");
-    }
-
-    //解析分页条
-    function build_search_page_nav(result) {
-        //清空
-        $("#page_nav_area").empty();
-        //构建元素
-        var ul = $("<ul></ul>").addClass("pagination");
-        var firstPageLi = $("<li></li>").addClass("page-item").append($("<a></a>").addClass("page-link").append("首页"));
-        var prePageLi = $("<li></li>").addClass("page-item").append($("<a></a>").addClass("page-link").append("&laquo;"));
-        if (result.extend.pageInfo.hasPreviousPage == false) {
-            firstPageLi.addClass("disabled");
-            prePageLi.addClass("disabled");
-        } else {
-            //为元素添加点击翻页事件
-            firstPageLi.click(function () {
-                search_to_page(1);
-            });
-            prePageLi.click(function () {
-                search_to_page(result.extend.pageInfo.pageNum - 1);
-            });
-        }
-
-        var nextPageLi = $("<li></li>").addClass("page-item").append($("<a></a>").addClass("page-link").append("&raquo;"));
-        var lastPageLi = $("<li></li>").addClass("page-item").append($("<a></a>").addClass("page-link").append("末页"));
-        if (result.extend.pageInfo.hasNextPage == false) {
-            nextPageLi.addClass("disabled");
-            lastPageLi.addClass("disabled");
-        } else {
-            nextPageLi.click(function () {
-                search_to_page(result.extend.pageInfo.pageNum + 1);
-            });
-            lastPageLi.click(function () {
-                search_to_page(result.extend.pageInfo.pages);
-            });
-        }
-
-        //构造首页和前一页
-        ul.append(firstPageLi).append(prePageLi);
-        //构造页码
-        $.each(result.extend.pageInfo.navigatepageNums, function (index, item) {
-            var numLi = $("<li></li>").addClass("page-item").append($("<a></a>").addClass("page-link").append(item));
-            if (result.extend.pageInfo.pageNum == item) {
-                numLi.addClass("active");
-            }
-            numLi.click(function () {
-                search_to_page(item);
-            });
-            ul.append(numLi);
-        });
-
-        //构造下一页和末页
-        ul.append(nextPageLi).append(lastPageLi).appendTo("#page_nav_area");
-    }
-
-    /==================================车型操作====================================/
-    //显示新增车型模态框
-    $("#vehicleType_add_modal_btn").click(function () {
-        //显示模态框
-        $("#vehicleTypeModal").modal({
-            backdrop: "static"
-        });
-    })
-    //点击保存按钮新增车型
-    $("#vehicleType_add_btn").click(function () {
-        vehicleType_input_validate();
-        //1.提交数据校验
-        if ($("#vehicleType_add_btn").attr("ajax-validate") === "fail") {
-            return false;
-        }
-
-        $.ajax({
-            url: "${APP_PATH}/vehicleType/vehicleType.do",
-            type: "POST",
-            data: $("#vehicleTypeModal form").serialize(),
-            success: function (result) {
-                //1.关闭模态框
-                $("#vehicleTypeModal").modal('hide');
-                //2.车辆新增界面重新获取车辆类型
-                getVehicleTypes();
-            }
-        });
-    });
-
-    //车牌号校验
-    function vehicleType_input_validate() {
-        //1.拿到要校验的数据
-        var vehicleType = $("#vehicleType_input").val();
-        //2.使用正则表达式
-        var pnReg = /^[\u2E80-\u9FFF]{1,5}$/;
-        if (pnReg.test(vehicleType)) {
-            show_validate_msg("#vehicleType_input", "success", "");
-            $("#vehicleType_add_btn").attr("ajax-validate", "success");
-        } else {
-            show_validate_msg("#vehicleType_input", "fail", "请输入正确的车辆类型");
-            $("#vehicleType_add_btn").attr("ajax-validate", "fail");
-        }
-    }
-
-    //车辆信息模态框，车型-按钮
-    $("#vehicleType_delete_btn").click(function () {
-        var selectedId = $("#vehicleType_select").val();
-        var selectedName = $("#vehicleType_select option:selected").text();
-        swal({
-            title: "确定要删除以下车型吗？",
-            text: selectedName,
-            icon: "warning",
-            buttons: {
-                cancel: "取消",
-                confirm: {
-                    text: "确定",
-                    value: "delete"
-                }
-            },
-        }).then((value) => {
-            if (value == "delete") {
-                $.ajax({
-                    url: "${APP_PATH}/vehicleType/" + selectedId + ".do",
-                    type: "DELETE",
-                    success: function (result) {
-                        getVehicleTypes();
-                    }
+                $.each(result.extend.customers, function () {
+                    var option = $("<option></option>").append(this.name).attr("value", this.id);
+                    option.appendTo("#customer_select");
                 });
             }
-        })
-    });
+        });
+    }
+
+    //查出所有的车型并显示在下拉列表中
+    var vehicleTypeInit = function getVehicleTypes() {
+        //清空下拉列表
+        $("#vehicleType_select").empty();
+        $.ajax({
+            url: "${APP_PATH}/vehicleType",
+            type: "GET",
+            success: function (result) {
+                $.each(result.extend.vehicleTypes, function () {
+                    //console.log(result);
+                    var option = $("<option></option>").append(this.name).attr("value", this.id);
+                    option.appendTo("#vehicleType_select");
+                });
+            }
+        });
+    }
 </script>
 
 </body>
