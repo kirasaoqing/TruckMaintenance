@@ -6,6 +6,15 @@
     <result column="name" property="name" jdbcType="VARCHAR" />
     <result column="unit_id" property="unitId" jdbcType="INTEGER" />
   </resultMap>
+  <resultMap id="WithUnitResultMap" type="com.cx.truck.model.Material" >
+    <id column="id" property="id" jdbcType="INTEGER" />
+    <result column="name" property="name" jdbcType="VARCHAR" />
+    <result column="unit_id" property="unitId" jdbcType="INTEGER" />
+    <association property="unit" javaType="com.cx.truck.model.Unit">
+      <id column="uid" property="id"/>
+      <result column="uname" property="name"/>
+    </association>
+  </resultMap>
   <sql id="Example_Where_Clause" >
     <where >
       <foreach collection="oredCriteria" item="criteria" separator="or" >
@@ -67,6 +76,10 @@
   <sql id="Base_Column_List" >
     id, name, unit_id
   </sql>
+  <sql id="WithUnit_Column_List" >
+    m.id, m.name, u.id as uid, u.name as uname
+  </sql>
+
   <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.cx.truck.model.MaterialExample" >
     select
     <if test="distinct" >
@@ -81,12 +94,38 @@
       order by ${orderByClause}
     </if>
   </select>
+  <!--按条件查询出包含单位信息的材料信息-->
+  <select id="selectByExampleWithUnit" resultMap="WithUnitResultMap" parameterType="com.cx.truck.model.MaterialExample" >
+    select
+    <if test="distinct" >
+      distinct
+    </if>
+    <include refid="WithUnit_Column_List" />
+    from bc_material m
+    left join bc_unit u on u.id = m.unit_id
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null" >
+      order by ${orderByClause}
+    </if>
+  </select>
+
   <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
     select 
     <include refid="Base_Column_List" />
     from bc_material
     where id = #{id,jdbcType=INTEGER}
   </select>
+  <!--按id查询出包含单位信息的材料信息-->
+  <select id="selectByPrimaryKeyWithUnit" resultMap="WithUnitResultMap" parameterType="java.lang.Integer" >
+    select
+    <include refid="WithUnit_Column_List" />
+    from bc_material m
+    left join bc_unit u on u.id = m.unit_id
+    where m.id = #{id,jdbcType=INTEGER}
+  </select>
+
   <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
     delete from bc_material
     where id = #{id,jdbcType=INTEGER}

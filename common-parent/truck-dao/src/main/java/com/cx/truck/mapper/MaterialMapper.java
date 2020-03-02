@@ -19,7 +19,21 @@ public interface MaterialMapper {
 
     List<Material> selectByExample(MaterialExample example);
 
+    /**
+     * 按条件查询出包含单位信息的材料信息
+     * @param example
+     * @return
+     */
+    List<Material> selectByExampleWithUnit(MaterialExample example);
+
     Material selectByPrimaryKey(Integer id);
+
+    /**
+     * 按id查询出包含单位信息的材料信息
+     * @param id
+     * @return
+     */
+    Material selectByPrimaryKeyWithUnit(Integer id);
 
     int updateByExampleSelective(@Param("record") Material record, @Param("example") MaterialExample example);
 

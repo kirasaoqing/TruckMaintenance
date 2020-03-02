@@ -1,5 +1,6 @@
 package com.cx.truck.service.impl;
 
+import com.cx.truck.mapper.MaintenanceMaterialMapper;
 import com.cx.truck.model.MaintenanceBill;
 import com.cx.truck.model.MaintenanceBillExample;
 import com.cx.truck.service.IMaintenanceBillService;
@@ -60,7 +61,9 @@ public class MaintenanceBillServiceImpl extends BaseServiceImpl<MaintenanceBill>
 
     @Override
     public List<MaintenanceBill> findAll() {
-        List<MaintenanceBill> maintenanceBills = maintenanceBillMapper.selectByExampleWithTruckAndStatus(null);
+        MaintenanceBillExample example = new MaintenanceBillExample();
+        example.setOrderByClause("b.id");
+        List<MaintenanceBill> maintenanceBills = maintenanceBillMapper.selectByExampleWithTruckAndStatus(example);
         return maintenanceBills;
     }
 

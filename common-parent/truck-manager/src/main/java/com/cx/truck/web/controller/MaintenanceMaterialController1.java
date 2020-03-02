@@ -6,7 +6,6 @@ import com.cx.truck.service.IMaintenanceMaterialService;
 import com.cx.truck.web.controller.base.BaseController;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;

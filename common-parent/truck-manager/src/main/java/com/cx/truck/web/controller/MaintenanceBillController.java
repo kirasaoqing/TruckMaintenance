@@ -9,14 +9,13 @@ import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
-@Controller
+@RestController
 @RequestMapping("maintenancebill")
 public class MaintenanceBillController extends BaseController<MaintenanceBill> {
 
@@ -155,7 +154,7 @@ public class MaintenanceBillController extends BaseController<MaintenanceBill> {
      */
     @PostMapping
     @ResponseBody
-    public JsonResult saveBills(MaintenanceBill maintenanceBill) {
+    public JsonResult save(MaintenanceBill maintenanceBill) {
         //maintenanceBillService.insert(maintenanceBill);
         Integer id = maintenanceBillService.insertSelective(maintenanceBill);
         return JsonResult.success().add("billid", id);
@@ -171,7 +170,7 @@ public class MaintenanceBillController extends BaseController<MaintenanceBill> {
      */
     @RequestMapping(value = "/{billIds}", method = RequestMethod.DELETE)
     @ResponseBody
-    public JsonResult deleteBills(@PathVariable("billIds") String billIds) {
+    public JsonResult delete(@PathVariable("billIds") String billIds) {
         if (billIds.contains("-")) {
             List<Integer> list_billIds = new ArrayList<Integer>();
             String[] arr_billIds = billIds.split("-");
@@ -194,7 +193,7 @@ public class MaintenanceBillController extends BaseController<MaintenanceBill> {
      */
     @PutMapping
     @ResponseBody
-    public JsonResult updateBill(MaintenanceBill maintenanceBill) {
+    public JsonResult update(MaintenanceBill maintenanceBill) {
         maintenanceBillService.update(maintenanceBill);
         return JsonResult.success();
     }

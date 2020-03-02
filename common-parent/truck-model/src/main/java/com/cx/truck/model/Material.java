@@ -7,6 +7,8 @@ public class Material {
 
     private Integer unitId;
 
+    private Unit unit;
+
     public Integer getId() {
         return id;
     }
@@ -29,6 +31,14 @@ public class Material {
 
     public void setUnitId(Integer unitId) {
         this.unitId = unitId;
+    }
+
+    public Unit getUnit() {
+        return unit;
+    }
+
+    public void setUnit(Unit unit) {
+        this.unit = unit;
     }
 
     @Override

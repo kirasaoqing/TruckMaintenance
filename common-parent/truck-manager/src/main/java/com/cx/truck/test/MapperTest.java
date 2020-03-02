@@ -60,8 +60,8 @@ public class MapperTest {
         System.out.println(maintenanceBillStatuses);*/
 
         //======================================truckMapper===============================
-        //List<Truck> trucks = truckMapper.selectByExampleWithCusAndVT(null);
-        /*Truck truck = truckMapper.selectByPrimaryKeyWithCusAndVT(1);
+        //List<Truck> trucks = truckMapper.selectByExampleWithCsmVTBrd(null);
+        /*Truck truck = truckMapper.selectByPrimaryKeyWithCsmVTBrd(1);
         System.out.println(">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>");
         System.out.println("truck:" + truck.toString());
         System.out.println(">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>");

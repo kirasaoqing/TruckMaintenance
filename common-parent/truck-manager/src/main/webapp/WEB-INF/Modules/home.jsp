@@ -168,7 +168,7 @@
                         <div class="wrapper count-title d-flex">
                             <div class="icon"><i class="icon-user"></i></div>
                             <div class="name"><strong class="text-uppercase">新进 客户</strong><span>本周</span>
-                                <div class="count-number" id="new_customer_week">5</div>
+                                <div class="count-number" id="new_customer_week"></div>
                             </div>
                         </div>
                     </div>

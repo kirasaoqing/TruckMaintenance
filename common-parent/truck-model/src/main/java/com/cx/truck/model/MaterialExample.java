@@ -205,7 +205,7 @@ public class MaterialExample {
         }
 
         public Criteria andNameLike(String value) {
-            addCriterion("name like", value, "name");
+            addCriterion("m.name like", value, "name");
             return (Criteria) this;
         }
 

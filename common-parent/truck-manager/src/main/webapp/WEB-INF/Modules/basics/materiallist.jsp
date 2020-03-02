@@ -131,7 +131,8 @@
                         <i class="icon-list"></i>材料设置
                     </a>
                     <ul id="materialdropdown" class="collapse list-unstyled ">
-                        <li class="active"><a href="${APP_PATH}/home/material.do"><i class="icon-padnote"></i>材料信息</a></li>
+                        <li class="active"><a href="${APP_PATH}/home/material.do"><i class="icon-padnote"></i>材料信息</a>
+                        </li>
                         <li><a href="${APP_PATH}/home/unit.do"><i class="icon-padnote"></i>单位信息</a></li>
                     </ul>
                 </li>
@@ -178,12 +179,12 @@
                     <div class="card">
                         <div class="card-header">
                             <div class="float-left">
-                                <h2><span class="fa fa-user-circle-o"></span> 客户列表</h2>
+                                <h2><span class="fa fa-user-circle-o"></span> 材料列表</h2>
                             </div>
                         </div>
                         <div class="card-body">
                             <div id="toolbar" class="btn-group">
-                                <input type="text" id="search_input" placeholder="请输入客户名称">
+                                <input type="text" id="search_input" placeholder="请输入材料名称" autocomplete="off">
                                 <button id="search_btn" type="button" class="btn btn-dark">
                                     <span class="fa fa-search"></span> 搜索
                                 </button>
@@ -216,100 +217,40 @@
 
 
 <!-- 新增模态框 -->
-<div class="modal fade" id="customerModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
-    <div class="modal-dialog modal-lg">
+<div class="modal fade" id="materialModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+    <div class="modal-dialog">
         <div class="modal-content">
 
             <!-- 模态框头部 -->
             <div class="modal-header">
-                <h4 class="modal-title"><strong class="h1 text-primary">客户信息</strong></h4>
+                <h4 class="modal-title"><strong class="h1 text-primary">材料信息</strong></h4>
                 <button type="button" class="close" data-dismiss="modal">&times;</button>
             </div>
 
             <!-- 模态框主体 -->
             <div class="modal-body">
-                <form>
-                    <div class="col-md-6 pull-left">
-                        <div class="card-header d-flex align-items-center">
-                            <h3>基本信息</h3>
-                        </div>
-                        <div class="form-group row">
-                            <label class="col-sm-3 form-control-label">客户编码</label>
-                            <div class="col-sm-9">
-                                <input type="text" class="form-control" placeholder="请输入客户编码" name="id"
-                                       id="id_input" readonly="readonly">
-                                <span class="help-block"></span>
-                            </div>
-                        </div>
-                        <div class="form-group row">
-                            <label class="col-sm-3 form-control-label">客户名称</label>
-                            <div class="col-sm-9">
-                                <input type="text" class="form-control" placeholder="请输入客户名称" name="name"
-                                       id="name_input" required>
-                                <span class="help-block"></span>
-                            </div>
-                        </div>
-                        <div class="form-group row">
-                            <label class="col-sm-3 form-control-label">单位地址</label>
-                            <div class="col-sm-9">
-                                <input type="text" class="form-control" placeholder="请输入单位地址" name="address"
-                                       id="address_input">
-                                <span class="help-block"></span>
-                            </div>
-                        </div>
-                        <div class="form-group row">
-                            <label class="col-sm-3 form-control-label">联系电话</label>
-                            <div class="col-sm-9">
-                                <input type="text" class="form-control" placeholder="请输入联系电话" name="phone"
-                                       id="phone_input">
-                                <span class="help-block"></span>
-                            </div>
-                        </div>
-                        <div class="form-group row">
-                            <label class="col-sm-3 form-control-label">联系人</label>
-                            <div class="col-sm-9">
-                                <input type="text" class="form-control" placeholder="请输入联系人名称" name="contactor"
-                                       id="contactor_input">
-                                <span class="help-block"></span>
-                            </div>
-                        </div>
-                        <div class="form-group row">
-                            <label class="col-sm-3 form-control-label">电话</label>
-                            <div class="col-sm-9">
-                                <input type="text" class="form-control" placeholder="请输入联系人电话" name="telephone"
-                                       id="telephone_input">
-                                <span class="help-block"></span>
-                            </div>
+                <form autocomplete="off">
+                    <div class="form-group row">
+                        <label class="col-sm-3 form-control-label">材料编码</label>
+                        <div class="col-sm-9">
+                            <input type="text" class="form-control" name="id"
+                                   id="id_input" readonly="readonly">
+                            <span class="help-block"></span>
                         </div>
                     </div>
-
-                    <div class="col-md-6 pull-right">
-                        <div class="card-header d-flex align-items-center">
-                            <h3>开票信息</h3>
+                    <div class="form-group row">
+                        <label class="col-sm-3 form-control-label">材料名称</label>
+                        <div class="col-sm-9">
+                            <input type="text" class="form-control" placeholder="请输入材料名称" name="name"
+                                   id="name_input" required>
+                            <span class="help-block"></span>
                         </div>
-                        <div class="form-group row">
-                            <label class="col-sm-3 form-control-label">税号</label>
-                            <div class="col-sm-9">
-                                <input type="text" class="form-control" placeholder="请输入税号" name="taxid"
-                                       id="taxid_input">
-                                <span class="help-block"></span>
-                            </div>
-                        </div>
-                        <div class="form-group row">
-                            <label class="col-sm-3 form-control-label">开户银行</label>
-                            <div class="col-sm-9">
-                                <input type="text" class="form-control" placeholder="请输入开户银行" name="bank"
-                                       id="bank_input">
-                                <span class="help-block"></span>
-                            </div>
-                        </div>
-                        <div class="form-group row">
-                            <label class="col-sm-3 form-control-label">银行账户</label>
-                            <div class="col-sm-9">
-                                <input type="text" class="form-control" placeholder="请输入银行账户" name="account"
-                                       id="account_input">
-                                <span class="help-block"></span>
-                            </div>
+                    </div>
+                    <div class="form-group row">
+                        <label class="col-sm-3 form-control-label">单位</label>
+                        <div class="col-sm-9">
+                            <select class="form-control" id="unit_select" name="unitId">
+                            </select>
                         </div>
                     </div>
                 </form>
@@ -334,6 +275,8 @@
 <script src="${APP_PATH}/assets/vendor/malihu-custom-scrollbar-plugin/jquery.mCustomScrollbar.concat.min.js"></script>
 <script src="${APP_PATH}/assets/vendor/js/charts-home.js"></script>
 <script src="${APP_PATH}/assets/vendor/js/front.js"></script>
+<!--common-->
+<script type="text/javascript" src="${APP_PATH}/assets/Scripts/common.js"></script>
 <!-- sweetalert-->
 <script src="${APP_PATH}/assets/vendor/sweetalert/sweetalert.min.js"></script>
 <!-- bootstrap-table -->
@@ -347,202 +290,28 @@
     $(function () {
         //======================初始化========================
         //1.初始化Table
-        var url = "${APP_PATH}/customer";
+        var url = "${APP_PATH}/material";
         var oTable = new TableInit();
         oTable.Init(url);
         //2.初始化Button的点击事件
-        /*var oButtonInit = new ButtonInit();
-        oButtonInit.Init();*/
+        var oButtonInit = new ButtonInit();
+        oButtonInit.Init();
 
-        //======================查找=========================
-        $("#search_btn").click(function () {
-            var url = "${APP_PATH}/customer/" + $("#search_input").val();
-            oTable.Init(url);
-        });
-
-        //=====================新增和修改==========================
-        $("#add_btn").click(function () {
-            reset_form("#customerModal");
-            $("#customerModal").modal({
-                backdrop: "static",
-                draggable: true,
-                overflow: "hidden"
-            });
-        });
-
-        $("#save_or_update_btn").click(function () {
-            name_input_validate();
-            //1.提交数据校验
-            if ($("#save_or_update_btn").attr("ajax-validate") === "fail") {
-                return false;
-            }
-            //2.判断id是否存在,如果不存在新增
-            if ($("#id_input").val() == "") {
-                //2-1.发送ajax请求保存
-                $.ajax({
-                    url: "${APP_PATH}/customer",
-                    type: "POST",
-                    data: $("#customerModal form").serialize(),
-                    success: function (result) {
-                        //后端JSR303校验通过
-                        if (result.code == 100) {
-                            //1.关闭模态框
-                            $("#customerModal").modal('hide');
-                            //2.来到最后一页，显示新添加数据，也就是发送ajax请求显示最后一页数据
-                            $("#table").bootstrapTable('refresh');
-                        } else {
-                            show_validate_msg($("#name_input"), "fail", result.extend.name);
-                        }
-                    }
-                });
-            } else {
-                //2-1.发送ajax请求更新
-                $.ajax({
-                    url: "${APP_PATH}/customer",
-                    type: "PUT",
-                    data: $("#customerModal form").serialize(),
-                    success: function (result) {
-                        //后端JSR303校验通过
-                        if (result.code == 100) {
-                            //1.关闭模态框
-                            $("#customerModal").modal('hide');
-                            //2.来到最后一页，显示新添加数据，也就是发送ajax请求显示最后一页数据
-                            $("#table").bootstrapTable('refresh');
-                        } else {
-                            show_validate_msg($("#name_input"), "fail", result.extend.name);
-                        }
-                    }
-                });
-            }
-        });
-
-        //=====================删除==========================
-        $("#delete_selected_btn").click(function () {
-            //使用getSelections即可获得，row是json格式的数据
-            var rows = $.map($('#table').bootstrapTable('getSelections'), function (rows) {
-                return rows;
-            });
-            var customerIds = "";
-            var customerNames = "";
-            $.each(rows, function (index, row) {
-                customerIds += row.id + "-";
-                customerNames += row.name + ",";
-            });
-            $.ajax({
-                url: "${APP_PATH}/truck/check/" + customerIds,
-                type: "GET",
-                success: function (result) {
-                    console.log(result);
-                    if (result.code == 100) {
-                        if (customerIds != "") {
-                            customerIds = customerIds.substring(0, customerIds.length - 1);
-                            customerNames = customerNames.substring(0, customerNames.length - 1);
-                            swal({
-                                title: "确定要删除以下客户吗？",
-                                text: customerNames,
-                                icon: "warning",
-                                buttons: {
-                                    cancel: "取消",
-                                    confirm: {
-                                        text: "确定",
-                                        value: "delete"
-                                    }
-                                },
-                            }).then((value) => {
-                                if (value == "delete") {
-                                    $.ajax({
-                                        url: "${APP_PATH}/customer/" + customerIds,
-                                        type: "DELETE",
-                                        success: function (result) {
-                                            console.log(result);
-                                            $("#table").bootstrapTable('refresh');
-                                        }
-                                    });
-                                }
-                            })
-                        } else {
-                            swal({
-                                title: "请勾选想要删除的客户",
-                                icon: "warning",
-                                button: "退出"
-                            });
-                        }
-                    } else if (result.code == 200) {
-                        var va_ids = "";
-                        $.each(result.extend.va_msg, function (index, value) {
-                            va_ids += value + " ";
-                        });
-                        swal({
-                            title: "客户:" + va_ids + "已经被使用，无法删除",
-                            icon: "warning",
-                            button: "退出"
-                        });
-                    }
-                }
-            });
-        });
-    });
-
-    //=====================校验==========================
-    //客户名称校验
-    function name_input_validate() {
-        //1.拿到要校验的数据
-        var name = $("#name_input").val();
-        //2.使用正则表达式
-        var nameReg = /(^[a-zA-Z0-9_-]{3,16}$)|(^[\u2E80-\u9FFF]{2,30}$)/;
-        if (nameReg.test(name)) {
-            show_validate_msg("#name_input", "success", "");
-            $("#save_or_update_btn").attr("ajax-validate", "success");
-        } else {
-            show_validate_msg("#name_input", "fail", "用户名可以是2-5位中文或者6-16位英文和数字的组合");
-            $("#save_or_update_btn").attr("ajax-validate", "fail");
-        }
-    }
-
-    //校验信息显示
-    function show_validate_msg(ele, status, msg) {
-        //清除当前元素的校验状态
-        reset_ele(ele)
-        //添加校验状态
-        if ("success" == status) {
-            $(ele).addClass("is-valid");
-            $(ele).next("span").text(msg);
-            $(ele).next("span").addClass("valid-feedback");
-        } else if ("fail" == status) {
-            $(ele).addClass("is-invalid");
-            $(ele).next("span").text(msg);
-            $(ele).next("span").addClass("invalid-feedback");
-        }
-    }
-
-    //重置元素
-    function reset_ele(ele) {
-        $(ele).removeClass("is-invalid is-valid");
-        $(ele).next("span").text("");
-        $(ele).next("span").removeClass("invalid-feedback valid-feedback");
-    }
-
-    //重置表单
-    function reset_form(ele) {
-        //$(ele)[0].reset();
-        $(ele).find("*").removeClass("is-invalid is-valid invalid-feedback valid-feedback");
-        $(ele).find(".help-block").text("");
-        $(ele).find("*").val("");
-    }
+    })
 
     var TableInit = function () {
         //操作栏的格式化
         function actionFormatter(value, row, index) {
             return [
                 /*'<button id="look_btn" type="button" class="btn btn-outline-dark">查看</button>',*/
-                '<button id="delete_one_btn" type="button" class="btn btn-outline-danger">删除</button>',
+                '<button id="delete_one_btn" type="button" class="btn btn-outline-danger btn-sm">删除</button>',
             ].join('');
         }
 
         window.operateEvents = {
             'click #delete_one_btn': function (e, value, row, index) {
                 swal({
-                    title: "确定要删除以下客户吗？",
+                    title: "确定要删除以下单位吗？",
                     text: row.name,
                     icon: "warning",
                     buttons: {
@@ -623,7 +392,7 @@
                 cardView: false,                    //是否显示详细视图
                 paginationLoop: false,              //是否无限循环
 
-                detailView: true,                  //是否显示父子表
+                detailView: false,                  //是否显示父子表
                 detailFormatter: function (index, row) {
                     var html = []
                     $.each(row, function (key, value) {
@@ -667,27 +436,13 @@
                         align: 'center'
                     }, {
                         field: 'name',
-                        title: '客户名称',
+                        title: '材料名称',
                         align: 'center'
                     }, {
-                        field: 'phone',
-                        title: '联系电话',
+                        field: 'unit.name',
+                        title: '单位',
                         align: 'center'
-                    }, {
-                        field: 'address',
-                        title: '地址',
-                        align: 'center'
-                    }, {
-                        field: 'contactor',
-                        title: '联系人',
-                        align: 'center'
-                    },
-                    /*{
-                        field: 'telephone',
-                        title: '联系人电话',
-                        align: 'center'
-                    }*/
-                    {
+                    },{
                         field: 'operate',
                         title: '操作',
                         width: 100,
@@ -705,18 +460,10 @@
                 },
 
                 onDblClickRow: function (row, $element) {
-                    //console.log(row);
-                    //console.log($element);
+                    new unitInit();
                     $("#id_input").val(row.id);
                     $("#name_input").val(row.name);
-                    $("#address_input").val(row.address);
-                    $("#phone_input").val(row.phone);
-                    $("#contactor_input").val(row.contactor);
-                    $("#telephone_input").val(row.telephone);
-                    $("#taxid_input").val(row.taxid);
-                    $("#bank_input").val(row.bank);
-                    $("#account_input").val(row.account);
-                    $("#customerModal").modal({
+                    $("#materialModal").modal({
                         backdrop: "static",
                         draggable: true,
                         overflow: "hidden"
@@ -733,9 +480,150 @@
 
         oInit.Init = function () {
             //初始化页面上面的按钮事件
+            //======================查找=========================
+            $("#search_btn").click(function () {
+                var oTable = new TableInit();
+                var url = "${APP_PATH}/material/list/" + $("#search_input").val();
+                oTable.Init(url);
+            });
+
+            //=====================新增和修改==========================
+            $("#add_btn").click(function () {
+                reset_form("#materialModal");
+                new unitInit();
+                $("#materialModal").modal({
+                    backdrop: "static",
+                    draggable: true,
+                    overflow: "hidden"
+                });
+            });
+
+            $("#save_or_update_btn").click(function () {
+                //2.判断id是否存在,如果不存在新增
+                if ($("#id_input").val() == "") {
+                    //2-1.发送ajax请求保存
+                    $.ajax({
+                        url: "${APP_PATH}/material",
+                        type: "POST",
+                        data: $("#materialModal form").serialize(),
+                        success: function (result) {
+                            //后端JSR303校验通过
+                            if (result.code == 100) {
+                                //1.关闭模态框
+                                $("#materialModal").modal('hide');
+                                //2.来到最后一页，显示新添加数据，也就是发送ajax请求显示最后一页数据
+                                $("#table").bootstrapTable('refresh');
+                            } else {
+                                show_validate_msg($("#name_input"), "fail", result.extend.name);
+                            }
+                        }
+                    });
+                } else {
+                    //2-1.发送ajax请求更新
+                    $.ajax({
+                        url: "${APP_PATH}/material",
+                        type: "PUT",
+                        data: $("#materialModal form").serialize(),
+                        success: function (result) {
+                            //后端JSR303校验通过
+                            if (result.code == 100) {
+                                //1.关闭模态框
+                                $("#materialModal").modal('hide');
+                                //2.来到最后一页，显示新添加数据，也就是发送ajax请求显示最后一页数据
+                                $("#table").bootstrapTable('refresh');
+                            } else {
+                                show_validate_msg($("#name_input"), "fail", result.extend.name);
+                            }
+                        }
+                    });
+                }
+            });
+
+            //=====================删除==========================////////
+            $("#delete_selected_btn").click(function () {
+                //使用getSelections即可获得，row是json格式的数据
+                var rows = $.map($('#table').bootstrapTable('getSelections'), function (rows) {
+                    return rows;
+                });
+                var materialIds = "";
+                var materialNames = "";
+                $.each(rows, function (index, row) {
+                    materialIds += row.id + "-";
+                    materialNames += row.name + ",";
+                });
+                $.ajax({
+                    url: "${APP_PATH}/truck/check/" + customerIds,
+                    type: "GET",
+                    success: function (result) {
+                        console.log(result);
+                        if (result.code == 100) {
+                            if (materialIds != "") {
+                                materialIds = customerIds.substring(0, materialIds.length - 1);
+                                materialNames = materialNames.substring(0, materialNames.length - 1);
+                                swal({
+                                    title: "确定要删除以下材料吗？",
+                                    text: materialNames,
+                                    icon: "warning",
+                                    buttons: {
+                                        cancel: "取消",
+                                        confirm: {
+                                            text: "确定",
+                                            value: "delete"
+                                        }
+                                    },
+                                }).then((value) => {
+                                    if (value == "delete") {
+                                        $.ajax({
+                                            url: "${APP_PATH}/material/" + materialIds,
+                                            type: "DELETE",
+                                            success: function (result) {
+                                                console.log(result);
+                                                $("#table").bootstrapTable('refresh');
+                                            }
+                                        });
+                                    }
+                                })
+                            } else {
+                                swal({
+                                    title: "请勾选想要删除的材料",
+                                    icon: "warning",
+                                    button: "退出"
+                                });
+                            }
+                        } else if (result.code == 200) {
+                            var va_ids = "";
+                            $.each(result.extend.va_msg, function (index, value) {
+                                va_ids += value + " ";
+                            });
+                            swal({
+                                title: "材料:" + va_ids + "已经被使用，无法删除",
+                                icon: "warning",
+                                button: "退出"
+                            });
+                        }
+                    }
+                });
+            });
         };
         return oInit;
     };
+
+    //=============================查找单位信息=======================
+    //查出所有的单位并显示在下拉列表中
+    var unitInit = function getUnits() {
+        //清空下拉列表
+        $("#unit_select").empty();
+        $.ajax({
+            url: "${APP_PATH}/unit/getAllUnits",
+            type: "GET",
+            success: function (result) {
+                $.each(result.extend.units, function () {
+                    var option = $("<option></option>").append(this.name).attr("value", this.id);
+                    option.appendTo("#unit_select");
+                });
+            }
+        });
+    }
 </script>
 </body>
 </html>

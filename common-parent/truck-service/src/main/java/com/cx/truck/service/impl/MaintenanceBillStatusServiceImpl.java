@@ -1,6 +1,7 @@
 package com.cx.truck.service.impl;
 
 import com.cx.truck.model.MaintenanceBillStatus;
+import com.cx.truck.model.MaintenanceBillStatusExample;
 import com.cx.truck.service.IMaintenanceBillStatusService;
 import com.cx.truck.service.base.BaseServiceImpl;
 import org.springframework.stereotype.Service;
@@ -56,7 +57,9 @@ public class MaintenanceBillStatusServiceImpl extends BaseServiceImpl<Maintenanc
 
     @Override
     public List<MaintenanceBillStatus> findAll() {
-        return maintenanceBillStatusMapper.selectByExample(null);
+        MaintenanceBillStatusExample example = new MaintenanceBillStatusExample();
+        example.setOrderByClause("id");
+        return maintenanceBillStatusMapper.selectByExample(example);
     }
 
     @Override

@@ -1,0 +1,280 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.cx.truck.mapper.PurchaseMaterialMapper" >
+  <resultMap id="BaseResultMap" type="com.cx.truck.model.PurchaseMaterial" >
+    <id column="id" property="id" jdbcType="INTEGER" />
+    <result column="bill_id" property="billId" jdbcType="INTEGER" />
+    <result column="material_id" property="materialId" jdbcType="INTEGER" />
+    <result column="quantity" property="quantity" jdbcType="DOUBLE" />
+    <result column="price" property="price" jdbcType="DOUBLE" />
+    <result column="amount" property="amount" jdbcType="DOUBLE" />
+  </resultMap>
+  <resultMap id="WithMaterialResultMap" type="com.cx.truck.model.PurchaseMaterial" >
+    <id column="id" property="id" jdbcType="INTEGER" />
+    <result column="bill_id" property="billId" jdbcType="INTEGER" />
+    <result column="material_id" property="materialId" jdbcType="INTEGER" />
+    <result column="quantity" property="quantity" jdbcType="DOUBLE" />
+    <result column="price" property="price" jdbcType="DOUBLE" />
+    <result column="amount" property="amount" jdbcType="DOUBLE" />
+    <association property="material" javaType="com.cx.truck.model.Material">
+      <id column="mid" property="id"/>
+      <result column="mname" property="name"/>
+      <result column="unit_id" property="unitId"/>
+      <association property="unit" javaType="com.cx.truck.model.Unit">
+        <id column="uid" property="id"/>
+        <result column="uname" property="name"/>
+      </association>
+    </association>
+  </resultMap>
+  <sql id="Example_Where_Clause" >
+    <where >
+      <foreach collection="oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause" >
+    <where >
+      <foreach collection="example.oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List" >
+    id, bill_id, material_id, quantity, price, amount
+  </sql>
+  <sql id="WithMaterial_Column_List" >
+    spm.id as id, bill_id, material_id, quantity, price, amount, bm.name as mname, bu.id as uid, bu.name as uname
+  </sql>
+
+
+  <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.cx.truck.model.PurchaseMaterialExample" >
+    select
+    <if test="distinct" >
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from sv_purchase_material
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null" >
+      order by ${orderByClause}
+    </if>
+  </select>
+
+  <!--根据example联查带物料的采购明细-->
+  <select id="selectByExampleWithMaterial" resultMap="WithMaterialResultMap" parameterType="com.cx.truck.model.PurchaseMaterialExample" >
+    select
+    <if test="distinct" >
+      distinct
+    </if>
+    <include refid="WithMaterial_Column_List" />
+    from sv_purchase_material spm
+    LEFT JOIN bc_material bm on bm.id = spm.material_id
+    LEFT JOIN bc_unit bu on bu.id = bm.unit_id
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null" >
+      order by ${orderByClause}
+    </if>
+  </select>
+
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select 
+    <include refid="Base_Column_List" />
+    from sv_purchase_material
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+
+  <!--根据id联查带物料的采购明细-->
+  <select id="selectByPrimaryKeyWithMaterial" resultMap="WithMaterialResultMap" parameterType="java.lang.Integer" >
+    select
+    <include refid="WithMaterial_Column_List" />
+    from sv_purchase_material spm
+    LEFT JOIN bc_material bm on bm.id = spm.material_id
+    LEFT JOIN bc_unit bu on bu.id = bm.unit_id
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from sv_purchase_material
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <delete id="deleteByExample" parameterType="com.cx.truck.model.PurchaseMaterialExample" >
+    delete from sv_purchase_material
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" parameterType="com.cx.truck.model.PurchaseMaterial" >
+    insert into sv_purchase_material (id, bill_id, material_id, 
+      quantity, price, amount
+      )
+    values (#{id,jdbcType=INTEGER}, #{billId,jdbcType=INTEGER}, #{materialId,jdbcType=INTEGER}, 
+      #{quantity,jdbcType=DOUBLE}, #{price,jdbcType=DOUBLE}, #{amount,jdbcType=DOUBLE}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="com.cx.truck.model.PurchaseMaterial" >
+    insert into sv_purchase_material
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        id,
+      </if>
+      <if test="billId != null" >
+        bill_id,
+      </if>
+      <if test="materialId != null" >
+        material_id,
+      </if>
+      <if test="quantity != null" >
+        quantity,
+      </if>
+      <if test="price != null" >
+        price,
+      </if>
+      <if test="amount != null" >
+        amount,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=INTEGER},
+      </if>
+      <if test="billId != null" >
+        #{billId,jdbcType=INTEGER},
+      </if>
+      <if test="materialId != null" >
+        #{materialId,jdbcType=INTEGER},
+      </if>
+      <if test="quantity != null" >
+        #{quantity,jdbcType=DOUBLE},
+      </if>
+      <if test="price != null" >
+        #{price,jdbcType=DOUBLE},
+      </if>
+      <if test="amount != null" >
+        #{amount,jdbcType=DOUBLE},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByExample" parameterType="com.cx.truck.model.PurchaseMaterialExample" resultType="java.lang.Integer" >
+    select count(*) from sv_purchase_material
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByExampleSelective" parameterType="map" >
+    update sv_purchase_material
+    <set >
+      <if test="record.id != null" >
+        id = #{record.id,jdbcType=INTEGER},
+      </if>
+      <if test="record.billId != null" >
+        bill_id = #{record.billId,jdbcType=INTEGER},
+      </if>
+      <if test="record.materialId != null" >
+        material_id = #{record.materialId,jdbcType=INTEGER},
+      </if>
+      <if test="record.quantity != null" >
+        quantity = #{record.quantity,jdbcType=DOUBLE},
+      </if>
+      <if test="record.price != null" >
+        price = #{record.price,jdbcType=DOUBLE},
+      </if>
+      <if test="record.amount != null" >
+        amount = #{record.amount,jdbcType=DOUBLE},
+      </if>
+    </set>
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map" >
+    update sv_purchase_material
+    set id = #{record.id,jdbcType=INTEGER},
+      bill_id = #{record.billId,jdbcType=INTEGER},
+      material_id = #{record.materialId,jdbcType=INTEGER},
+      quantity = #{record.quantity,jdbcType=DOUBLE},
+      price = #{record.price,jdbcType=DOUBLE},
+      amount = #{record.amount,jdbcType=DOUBLE}
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByPrimaryKeySelective" parameterType="com.cx.truck.model.PurchaseMaterial" >
+    update sv_purchase_material
+    <set >
+      <if test="billId != null" >
+        bill_id = #{billId,jdbcType=INTEGER},
+      </if>
+      <if test="materialId != null" >
+        material_id = #{materialId,jdbcType=INTEGER},
+      </if>
+      <if test="quantity != null" >
+        quantity = #{quantity,jdbcType=DOUBLE},
+      </if>
+      <if test="price != null" >
+        price = #{price,jdbcType=DOUBLE},
+      </if>
+      <if test="amount != null" >
+        amount = #{amount,jdbcType=DOUBLE},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.cx.truck.model.PurchaseMaterial" >
+    update sv_purchase_material
+    set bill_id = #{billId,jdbcType=INTEGER},
+      material_id = #{materialId,jdbcType=INTEGER},
+      quantity = #{quantity,jdbcType=DOUBLE},
+      price = #{price,jdbcType=DOUBLE},
+      amount = #{amount,jdbcType=DOUBLE}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+</mapper>

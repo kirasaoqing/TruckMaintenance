@@ -60,7 +60,9 @@ public class WorkerServiceImpl extends BaseServiceImpl<Worker> implements IWorke
 
     @Override
     public List<Worker> findAll() {
-        return workerMapper.selectByExample(null);
+        WorkerExample example = new WorkerExample();
+        example.setOrderByClause("id");
+        return workerMapper.selectByExample(example);
     }
 
     @Override

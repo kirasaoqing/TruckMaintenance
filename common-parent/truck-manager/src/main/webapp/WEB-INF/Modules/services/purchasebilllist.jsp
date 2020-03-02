@@ -189,7 +189,7 @@
                 <div class="col-lg-12">
                     <div class="card">
                         <div class="card-header">
-                            <h2><span class="fa fa-user-circle-o"></span> 维修单列表</h2>
+                            <h2><span class="fa fa-user-circle-o"></span> 采购单列表</h2>
                         </div>
                         <div class="card-deck">
                             <div class="card-body">
@@ -198,8 +198,7 @@
                                         <div class="input-group  date form_date" data-date=""
                                              data-date-format="yyyy/mm/dd">
                                             <input class="form-control" type="text" value=""
-                                                   id="begindate_input"
-                                                   placeholder="起始日">
+                                                   id="begindate_input" placeholder="起始日" autocomplete="off">
                                             <span class="input-group-addon sr-only"><span
                                                     class="glyphicon glyphicon-remove"></span></span>
                                             <span class="input-group-addon sr-only"><span
@@ -210,8 +209,7 @@
                                         <div class="input-group date form_date" data-date=""
                                              data-date-format="yyyy/mm/dd">
                                             <input class="form-control " type="text" value=""
-                                                   id="enddate_input"
-                                                   placeholder="截止日">
+                                                   id="enddate_input" placeholder="截止日" autocomplete="off">
                                             <span class="input-group-addon sr-only"><span
                                                     class="glyphicon glyphicon-remove"></span></span>
                                             <span class="input-group-addon sr-only"><span
@@ -219,8 +217,8 @@
                                         </div>
                                     </div>
                                     <div>
-                                        <input type="text" class="form-control" id="platenumber_input"
-                                               placeholder="车牌号">
+                                        <input type="text" class="form-control" id="supplier_search"
+                                               placeholder="供应商" autocomplete="off">
                                     </div>
                                     <button class="btn btn-dark" type="button" id="search_btn">
                                         <span class="fa fa-search"></span> 搜索
@@ -245,108 +243,47 @@
 <!-- 新增模态框 -->
 <div class="modal fade" id="billsModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
      style="overflow:scroll">
-    <div class="modal-dialog modal-lg">
+    <div class="modal-dialog">
         <div class="modal-content">
 
             <!-- 模态框头部 -->
             <div class="modal-header">
-                <h4 class="modal-title"><strong class="h1 text-primary">维修单</strong></h4>
+                <h4 class="modal-title"><strong class="h1 text-primary">采购单</strong></h4>
                 <button type="button" class="close" data-dismiss="modal">&times;</button>
             </div>
 
             <!-- 模态框主体 -->
             <div class="modal-body">
-                <form>
-                    <div class="col-md-12 row">
-                        <div class="col-md-6 pull-left">
-                            <div class="form-group row">
-                                <label class="col-sm-3 form-control-label">维修单号</label>
-                                <div class="col-sm-9">
-                                    <input type="text" class="form-control" name="id" id="id_input" readonly>
-                                    <span class="help-block"></span>
-                                </div>
-                            </div>
-                            <div class="form-group row">
-                                <label class="col-sm-3 form-control-label">车牌号</label>
-                                <div class="col-sm-9">
-                                    <select class="form-control" id="truck_select" name="truckId">
-                                    </select>
-                                </div>
-                            </div>
-                            <div class="form-group row">
-                                <label class="col-sm-3 form-control-label">客户</label>
-                                <div class="col-sm-9">
-                                    <input type="text" class="form-control" placeholder=""
-                                           id="customer_input" readonly>
-                                    <span class="help-block"></span>
-                                </div>
-                            </div>
-                            <div class="form-group row">
-                                <label class="col-sm-3 form-control-label">进厂里程</label>
-                                <div class="col-sm-9">
-                                    <input type="text" class="form-control" placeholder="请输入进厂里程" name="entrymileage"
-                                           id="mileage_input">
-                                    <span class="help-block"></span>
-                                </div>
-                            </div>
+                <form autocomplete="off">
+                    <div class="form-group row">
+                        <label class="col-sm-3 form-control-label">采购单号</label>
+                        <div class="col-sm-9">
+                            <input type="text" class="form-control" name="id" id="id_input" readonly>
+                            <span class="help-block"></span>
                         </div>
-
-                        <div class="col-md-6 pull-right">
-                            <div class="form-group row">
-                                <label class="col-sm-3 form-control-label">维修状态</label>
-                                <div class="col-sm-9">
-                                    <select class="form-control" id="status_select" name="statusId">
-                                    </select>
-                                </div>
-                            </div>
-
-                            <div class="form-group row">
-                                <label for="enter_input" class="col-sm-3 form-control-label">进厂时间</label>
-                                <div class="input-group date form_date col-sm-8" data-date=""
-                                     data-date-format="yyyy年mm月dd日"
-                                     data-link-field="enter_input" data-link-format="yyyy/mm/dd">
-                                    <input class="form-control" type="text" id="enterdate_input" placeholder="请选择进厂时间">
-                                    <span class="input-group-addon">
-                                    <span class="glyphicon glyphicon-remove"></span></span>
-                                    <span class="input-group-addon">
-                                    <span class="glyphicon glyphicon-calendar"></span>
-                                </span>
-                                </div>
-                                <input type="hidden" id="enter_input" name="enterdate" value=""/><br/>
-                            </div>
-
-                            <div class="form-group row">
-                                <label for="appointed_input" class="col-sm-3 form-control-label">出厂时间</label>
-                                <div class="input-group date form_date col-sm-8" data-date=""
-                                     data-date-format="yyyy年mm月dd日"
-                                     data-link-field="appointed_input" data-link-format="yyyy/mm/dd">
-                                    <input class="form-control" type="text" id="appointeddate_input"
-                                           placeholder="请选择出厂时间">
-                                    <span class="input-group-addon">
-                                    <span class="glyphicon glyphicon-remove"></span></span>
-                                    <span class="input-group-addon">
-                                    <span class="glyphicon glyphicon-calendar"></span>
-                                </span>
-                                </div>
-                                <input type="hidden" id="appointed_input" name="appointeddate"/><br/>
-                            </div>
-
-                            <div class="form-group row">
-                                <label for="setting_input" class="col-sm-3 form-control-label">结算时间</label>
-                                <div class="input-group date form_date col-sm-8" data-date=""
-                                     data-date-format="yyyy年mm月dd日"
-                                     data-link-field="setting_input" data-link-format="yyyy/mm/dd">
-                                    <input class="form-control" type="text" id="settingdate_input"
-                                           placeholder="请选择结算时间">
-                                    <span class="input-group-addon">
-                                    <span class="glyphicon glyphicon-remove"></span></span>
-                                    <span class="input-group-addon">
-                                    <span class="glyphicon glyphicon-calendar"></span>
-                                </span>
-                                </div>
-                                <input type="hidden" id="setting_input" name="settingdate"/><br/>
-                            </div>
+                    </div>
+                    <div class="form-group row">
+                        <label class="col-sm-3 form-control-label">供应商</label>
+                        <div class="col-sm-9">
+                            <input type="text" class="form-control" placeholder="" name="supplier"
+                                   id="supplier_input">
+                            <span class="help-block"></span>
                         </div>
+                    </div>
+                    <div class="form-group row">
+                        <label for="purchase_date_input" class="col-sm-3 form-control-label">采购时间</label>
+                        <div class="input-group date form_date col-sm-8" data-date=""
+                             data-date-format="yyyy年mm月dd日"
+                             data-link-field="purchase_date_input" data-link-format="yyyy/mm/dd">
+                            <input class="form-control" type="text" id="purchasedate_input"
+                                   placeholder="请选择采购时间">
+                            <span class="input-group-addon">
+                                    <span class="glyphicon glyphicon-remove"></span></span>
+                            <span class="input-group-addon">
+                                    <span class="glyphicon glyphicon-calendar"></span>
+                                </span>
+                        </div>
+                        <input type="hidden" id="purchase_date_input" name="purchasedate"/><br/>
                     </div>
                 </form>
             </div>
@@ -360,63 +297,7 @@
     </div>
 </div>
 
-<!-- 新增维修项目模态框 -->
-<div class="modal fade" id="itemModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
-     style="overflow:scroll">
-    <div class="modal-dialog">
-        <div class="modal-content">
-
-            <!-- 模态框头部 -->
-            <div class="modal-header">
-                <h4 class="modal-title"><strong class="h1 text-primary">维修项目</strong></h4>
-                <button type="button" class="close" data-dismiss="modal">&times;</button>
-            </div>
-
-            <!-- 模态框主体 -->
-            <div class="modal-body">
-                <form>
-                    <div class="form-group row">
-                        <label class="col-sm-3 form-control-label" for="item_billid_input">维修单号</label>
-                        <div class="col-sm-9">
-                            <input type="text" class="form-control" name="billId" id="item_billid_input" readonly>
-                            <span class="help-block"></span>
-                        </div>
-                    </div>
-                    <div class="form-group row">
-                        <label class="col-sm-3 form-control-label" for="itemid_input">项目编号</label>
-                        <div class="col-sm-9">
-                            <input type="text" class="form-control" name="id" id="itemid_input" readonly>
-                            <span class="help-block"></span>
-                        </div>
-                    </div>
-                    <div class="form-group row">
-                        <label class="col-sm-3 form-control-label" for="item_input">维修项目</label>
-                        <div class="col-sm-9">
-                            <input type="text" class="form-control" placeholder="请输入维修项目" name="item" id="item_input">
-                            <span class="help-block"></span>
-                        </div>
-                    </div>
-                    <div class="form-group row">
-                        <label class="col-sm-3 form-control-label" for="itemfees_input">项目费用</label>
-                        <div class="col-sm-9">
-                            <input type="text" class="form-control" placeholder="请输入项目费用" name="itemfees"
-                                   id="itemfees_input">
-                            <span class="help-block"></span>
-                        </div>
-                    </div>
-                </form>
-            </div>
-
-            <!-- 模态框底部 -->
-            <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-dismiss="modal">关闭</button>
-                <button type="button" class="btn btn-primary" id="item_save_or_update_btn">保存</button>
-            </div>
-        </div>
-    </div>
-</div>
-
-<!-- 新增维修材料模态框 -->
+<!-- 采购明细模态框 -->
 <div class="modal fade" id="materialModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
      style="overflow:scroll">
     <div class="modal-dialog">
@@ -424,39 +305,40 @@
 
             <!-- 模态框头部 -->
             <div class="modal-header">
-                <h4 class="modal-title"><strong class="h1 text-primary">维修材料</strong></h4>
+                <h4 class="modal-title"><strong class="h1 text-primary">采购明细</strong></h4>
                 <button type="button" class="close" data-dismiss="modal">&times;</button>
             </div>
 
             <!-- 模态框主体 -->
             <div class="modal-body">
-                <form>
+                <form autocomplete="off">
                     <div class="form-group row">
-                        <label class="col-sm-3 form-control-label" for="material_billid_input">维修单号</label>
+                        <label class="col-sm-3 form-control-label" for="billid_input">采购单号</label>
                         <div class="col-sm-9">
-                            <input type="text" class="form-control" name="billId" id="material_billid_input" readonly>
+                            <input type="text" class="form-control" name="billId" id="billid_input" readonly>
                             <span class="help-block"></span>
                         </div>
                     </div>
                     <div class="form-group row">
-                        <label class="col-sm-3 form-control-label" for="materialid_input">材料编号</label>
+                        <label class="col-sm-3 form-control-label" for="bill_material_id_input">明细编号</label>
                         <div class="col-sm-9">
-                            <input type="text" class="form-control" name="id" id="materialid_input" readonly>
+                            <input type="text" class="form-control" placeholder="" name="id"
+                                   id="bill_material_id_input" readonly>
                             <span class="help-block"></span>
                         </div>
                     </div>
                     <div class="form-group row">
-                        <label class="col-sm-3 form-control-label" for="material_input">材料名称</label>
+                        <label class="col-sm-3 form-control-label">材料编码</label>
                         <div class="col-sm-9">
-                            <input type="text" class="form-control" placeholder="请输入材料名称" name="name"
-                                   id="material_input">
-                            <span class="help-block"></span>
+                            <select class="form-control" id="materialId_select" name="materialId">
+                            </select>
                         </div>
                     </div>
                     <div class="form-group row">
                         <label class="col-sm-3 form-control-label" for="unit_input">单位</label>
                         <div class="col-sm-9">
-                            <input type="text" class="form-control" placeholder="请输入材料名称" name="unit" id="unit_input">
+                            <input type="text" class="form-control" placeholder="请输入材料名称" name="unit"
+                                   id="unit_input" readonly>
                             <span class="help-block"></span>
                         </div>
                     </div>
@@ -511,6 +393,8 @@
 <script src="${APP_PATH}/assets/vendor/datetimepicker/bootstrap-datetimepicker.zh-CN.js"></script>
 <!-- Main File-->
 <script src="${APP_PATH}/assets/vendor/js/front.js"></script>
+<!--common-->
+<script type="text/javascript" src="${APP_PATH}/assets/Scripts/common.js"></script>
 <!-- sweetalert-->
 <script src="${APP_PATH}/assets/vendor/sweetalert/sweetalert.min.js"></script>
 <!-- bootstrap-table -->
@@ -523,178 +407,47 @@
     $(function () {
         //======================初始化========================
         //1.初始化Table
-        var url = "${APP_PATH}/maintenancebill";
+        var url = "${APP_PATH}/purchasebill";
+
         /*$.ajax({
-            url: url,
+            url:'
+
+
+
+
+        ${APP_PATH}/purchasebill',
             type: "GET",
             success: function (result) {
                 console.log(result);
             }
-        });*/
+        })*/
 
         var oTable = new TableInit();
         oTable.Init(url);
 
-        //======================查找=========================
-        $("#search_btn").click(function () {
-            var url = "${APP_PATH}/maintenancebill/list";
-            oTable.Init(url);
-        });
+        //2.初始化Button的点击事件
+        var oButtonInit = new ButtonInit();
+        oButtonInit.Init();
 
-        //=====================新增和修改==========================
-        $("#add_btn").click(function () {
-            reset_form("#billsModal");
-            new truckInit();
-            new statusInit();
-            $("#billsModal").modal({
-                backdrop: "static",
-                draggable: true,
-                overflow: "hidden"
-            });
-        });
-        //维修单新增或者修改，改变车牌号，自动带出客户
-        $("#truck_select").change(function () {
-            $("#customer_input").empty();
-            var id = $(this).val();
-            $.ajax({
-                url: "${APP_PATH}/truck/" + id,
-                type: "GET",
-                success: function (result) {
-                    var truckData = result.extend.truck;
-                    $("#customer_input").val(truckData.customer.name);
-                }
-            });
-        });
-
-        $("#bill_save_or_update_btn").click(function () {
-            if ($("#enter_input").val() == "") {
-                $("#enter_input").removeAttr("name");
-            }
-            if ($("#appointed_input").val() == "") {
-                $("#appointed_input").removeAttr("name");
-            }
-            if ($("#setting_input").val() == "") {
-                $("#setting_input").removeAttr("name");
-            }
-            //2.判断id是否存在,如果不存在新增
-            if ($("#id_input").val() == "") {
-                //2-1.发送ajax请求保存
-                $.ajax({
-                    url: "${APP_PATH}/maintenancebill",
-                    type: "POST",
-                    data: $("#billsModal form").serialize(),
-                    success: function (result) {
-                        if (result.code == 100) {
-                            //1.关闭模态框
-                            $("#billsModal").modal('hide');
-                            //2.来到最后一页，显示新添加数据，也就是发送ajax请求显示最后一页数据
-                            $("#table").bootstrapTable('refresh');
-                        } else if (result.code == 200) {
-                            swal({
-                                title: "车辆信息保存失败",
-                                icon: "error",
-                                button: "确定"
-                            });
-                        }
-                    }
-                });
-            } else {
-                //2-1.发送ajax请求更新
-                $.ajax({
-                    url: "${APP_PATH}/maintenancebill",
-                    type: "PUT",
-                    data: $("#billsModal form").serialize(),
-                    success: function (result) {
-                        if (result.code == 100) {
-                            //1.关闭模态框
-                            $("#billsModal").modal('hide');
-                            //2.来到最后一页，显示新添加数据，也就是发送ajax请求显示最后一页数据
-                            $("#table").bootstrapTable('refresh');
-                        } else if (result.code == 200) {
-                            swal({
-                                title: "车辆信息修改失败",
-                                icon: "error",
-                                button: "确定"
-                            });
-                        }
-                    }
-                });
-            }
-        });
-
-        //=====================删除==========================
-        $("#delete_selected_btn").click(function () {
-            //使用getSelections即可获得，row是json格式的数据
-            var rows = $.map($('#table').bootstrapTable('getSelections'), function (rows) {
-                return rows;
-            });
-            var billIds = "";
-            var platenumbers = "";
-            $.each(rows, function (index, row) {
-                billIds += row.id + "-";
-                platenumbers += row.truck.platenumber + ",";
-            });
-            if (billIds != "") {
-                billIds = billIds.substring(0, billIds.length - 1);
-                platenumbers = platenumbers.substring(0, platenumbers.length - 1);
-                swal({
-                    title: "确定要删除以下车辆的维修单吗？",
-                    text: platenumbers,
-                    icon: "warning",
-                    buttons: {
-                        cancel: "取消",
-                        confirm: {
-                            text: "确定",
-                            value: "delete"
-                        }
-                    },
-                }).then((value) => {
-                    if (value == "delete") {
-                        $.ajax({
-                            url: "${APP_PATH}/maintenancebill/" + billIds,
-                            type: "DELETE",
-                            success: function (result) {
-                                $("#table").bootstrapTable('refresh');
-                            }
-                        });
-                    }
-                })
-            }
-        });
     });
-
-    //重置元素
-    function reset_ele(ele) {
-        $(ele).removeClass("is-invalid is-valid");
-        $(ele).next("span").text("");
-        $(ele).next("span").removeClass("invalid-feedback valid-feedback");
-    }
-
-    //重置表单
-    function reset_form(ele) {
-        //$(ele)[0].reset();
-        $(ele).find("*").removeClass("is-invalid is-valid invalid-feedback valid-feedback");
-        $(ele).find(".help-block").text("");
-        $(ele).find("*").val("");
-    }
 
     var TableInit = function () {
         //=============================新增维修项目&维修材料===================================
         //操作栏的格式化
         function actionFormatter(value, row, index) {
             return [
-                /*'<button id="delete_one_btn" type="button" class="btn btn-outline-danger btn-sm"><span class="fa fa-trash"></span>删除</button>',*/
-                '<button id="item_add_btn" type="button" class="btn btn-primary btn-sm"><span class="fa fa-plus"></span>项目</button>',
-                '<button id="material_add_btn" type="button" class="btn btn-secondary btn-sm"><span class="fa fa-plus"></span>材料</button>',
+                '<button id="delete_one_btn" type="button" class="btn btn-outline-danger btn-sm"><span class="fa fa-trash"></span>删除</button>',
+                '<button id="material_add_btn" type="button" class="btn btn-primary btn-sm"><span class="fa fa-plus"></span>明细</button>',
             ].join('');
         }
+
         //操作
         window.operateEvents = {
             //删除单个维修单按钮
             'click #delete_one_btn': function (e, value, row, index) {
                 swal({
-                    title: "确定要删除以下员工吗？",
-                    text: row.name,
+                    title: "确定要删除以下采购单吗？",
+                    text: row.id + "",
                     icon: "warning",
                     buttons: {
                         cancel: "取消",
@@ -704,169 +457,31 @@
                         }
                     },
                 }).then((value) => {
-                    if (value == "delete") {
-                        $.ajax({
-                            url: "${APP_PATH}/truck/check/" + row.id,
-                            type: "GET",
-                            success: function (result) {
-                                console.log(result);
-                                if (result.code == 100) {
-                                    $.ajax({
-                                        url: "${APP_PATH}/customer/" + row.id.toString(),
-                                        type: "DELETE",
-                                        success: function (result) {
-                                            $("#table").bootstrapTable('refresh');
-                                            swal({
-                                                title: "删除成功",
-                                                icon: "success",
-                                                button: "退出"
-                                            });
-                                        }
-                                    });
-                                } else if (result.code == 200) {
-                                    swal({
-                                        title: "客户信息已经被使用，无法删除",
-                                        icon: "warning",
-                                        button: "退出"
-                                    });
-                                }
-                            }
-                        });
-                        $.ajax({
-                            url: "${APP_PATH}/worker/" + row.id.toString(),
-                            type: "DELETE",
-                            success: function (result) {
-                                $("#table").bootstrapTable('refresh');
-                                swal({
-                                    title: "删除成功",
-                                    icon: "success",
-                                    button: "退出"
-                                });
-                            }
-                        });
-                    }
-                })
-            },
-
-            //维修项目新增按钮
-            'click #item_add_btn': function (e, value, row, index) {
-                reset_form("#itemModal");
-                $("#item_billid_input").val(row.id);
-                $("#itemModal").modal({
-                    backdrop: "static",
-                    draggable: true,
-                    overflow: "hidden"
-                });
-                $("#item_save_or_update_btn").click(function () {
-                    //新增
-                    if ($("#itemid_input").val() == "") {
-                        $.ajax({
-                            url: "${APP_PATH}/maintenanceitem",
-                            type: "POST",
-                            data: $("#itemModal form").serialize(),
-                            success: function (result) {
-                                if (result.code == 100) {
-                                    $("#itemModal").modal("hide");
-                                    //$("#item_table").bootstrapTable('refresh');
-                                    swal({
-                                        title: "维修项目保存成功",
-                                        icon: "success",
-                                        button: "确定"
-                                    });
-                                } else if (result.code == 200) {
-                                    swal({
-                                        title: "维修项目保存失败",
-                                        icon: "error",
-                                        button: "确定"
-                                    });
-                                }
-                            }
-                        });
-                    } else {//更新
-                        $.ajax({
-                            url: "${APP_PATH}/maintenanceitem",
-                            type: "PUT",
-                            data: $("#itemModal form").serialize(),
-                            success: function (result) {
-                                if (result.code == 100) {
-                                    $("#itemModal").modal("hide");
-                                    //$("#item_table").bootstrapTable('refresh');
-                                    swal({
-                                        title: "维修项目修改成功",
-                                        icon: "success",
-                                        button: "确定"
-                                    });
-                                } else if (result.code == 200) {
-                                    swal({
-                                        title: "维修项目修改失败",
-                                        icon: "error",
-                                        button: "确定"
-                                    });
-                                }
-                            }
-                        });
-                    }
+                    $.ajax({
+                        url: "${APP_PATH}/purchasebill/" + row.id.toString(),
+                        type: "DELETE",
+                        success: function (result) {
+                            $("#table").bootstrapTable('refresh');
+                            swal({
+                                title: "删除成功",
+                                icon: "success",
+                                button: "退出"
+                            });
+                        }
+                    });
                 })
             },
 
             //维修材料新增按钮
             'click #material_add_btn': function (e, value, row, index) {
-                reset_form("#itemModal");
-                $("#material_billid_input").val(row.id);
+                reset_form("#materialModal");
+                new materialInit();
+                $("#billid_input").val(row.id);
                 $("#materialModal").modal({
                     backdrop: "static",
                     draggable: true,
                     overflow: "hidden"
                 });
-                $("#material_save_or_update_btn").click(function () {
-                    if ($("#materialid_input").val() == "") {
-                        $.ajax({
-                            url: "${APP_PATH}/maintenancematerial",
-                            type: "POST",
-                            data: $("#materialModal form").serialize(),
-                            success: function (result) {
-                                if (result.code == 100) {
-                                    $("#materialModal").modal("hide");
-                                    //$("#material_table").bootstrapTable('refresh');
-                                    swal({
-                                        title: "维修材料保存成功",
-                                        icon: "success",
-                                        button: "确定"
-                                    });
-                                } else if (result.code == 200) {
-                                    swal({
-                                        title: "维修材料保存失败",
-                                        icon: "error",
-                                        button: "确定"
-                                    });
-                                }
-                            }
-                        });
-                    } else {
-                        $.ajax({
-                            url: "${APP_PATH}/maintenancematerial",
-                            type: "PUT",
-                            data: $("#materialModal form").serialize(),
-                            success: function (result) {
-                                if (result.code == 100) {
-                                    $("#materialModal").modal("hide");
-                                    //$("#material_table").bootstrapTable('refresh');
-                                    swal({
-                                        title: "维修材料修改成功",
-                                        icon: "success",
-                                        button: "确定"
-                                    });
-                                } else if (result.code == 200) {
-                                    swal({
-                                        title: "维修材料修改失败",
-                                        icon: "error",
-                                        button: "确定"
-                                    });
-                                }
-                            }
-                        });
-                    }
-                })
             }
         };
         var oTableInit = new Object();
@@ -911,18 +526,17 @@
                 queryParams: function (params) {
                     var beginDate = $("#begindate_input").val();
                     var endDate = $("#enddate_input").val();
-                    var truckId = $("#platenumber_input").attr("truckId");
+                    var supplier = $("#supplier_search").val();
 
                     //这里的键的名字和控制器的变量名必须一致，这边改动，控制器也需要改成一样的
                     var temp = {
-                        truckId: truckId,
+                        supplier: supplier,
                         beginDate: beginDate,
                         endDate: endDate,
                         rows: params.limit,    //页面大小
                         page: (params.offset / params.limit) + 1,   //页码
                         sort: params.sort,      //排序列名
                         sortOrder: params.order,//排位命令（desc，asc）
-
                     };
                     return temp;
                 },
@@ -951,28 +565,12 @@
                         title: '编号',
                         align: 'center'
                     }, {
-                        field: 'truck.platenumber',
-                        title: '车牌号',
+                        field: 'supplier',
+                        title: '供应商',
                         align: 'center'
                     }, {
-                        field: 'enterdate',
-                        title: '进厂时间',
-                        align: 'center'
-                    }, {
-                        field: 'appointeddate',
-                        title: '出厂时间',
-                        align: 'center'
-                    }, {
-                        field: 'settingdate',
-                        title: '结算时间',
-                        align: 'center'
-                    }, {
-                        field: 'entrymileage',
-                        title: '进厂里程',
-                        align: 'center'
-                    }, {
-                        field: 'maintenanceBillStatus.name',
-                        title: '车辆状态',
+                        field: 'purchasedate',
+                        title: '日期',
                         align: 'center'
                     }, {
                         field: 'operate',
@@ -992,19 +590,10 @@
                 },
 
                 onDblClickRow: function (row, $element) {
-                    new truckInit();
-                    new statusInit();
-                    //console.log($element);
+                    reset_form("#billsModal");
                     $("#id_input").val(row.id);
-                    /*$("#status_select").val([row.statusId]);
-                    $("#truck_select").val([row.truckId]);*/
-                    $("#billsModal select[name=status_select]").val([row.statusId]);
-                    $("#billsModal select[name=truck_select]").val([row.truckId]);
-                    $("#customer_input").val(row.truck.customer.name);
-                    $("#mileage_input").val(row.entrymileage);
-                    $("#enterdate_input").val(row.enterdate);
-                    $("#appointeddate_input").val(row.appointeddate);
-                    $("#settingdate_input").val(row.settingdate);
+                    $("#supplier_input").val(row.supplier);
+                    $("#purchasedate_input").val(row.purchasedate);
                     $("#billsModal").modal({
                         backdrop: "static",
                         draggable: true,
@@ -1015,18 +604,18 @@
                 //注册加载子表的事件。注意下这里的三个参数！
                 onExpandRow: function (index, row, $detail) {
                     //维修项目操作栏的格式化
-                    function item_actionFormatter(value, row, index) {
+                    function material_actionFormatter(value, row, index) {
                         return [
-                            '<button id="item_delete_one_btn" type="button" class="btn btn-outline-danger btn-sm"><span class="fa fa-trash"></span>删除</button>',
+                            '<button id="material_delete_one_btn" type="button" class="btn btn-outline-danger btn-sm"><span class="fa fa-trash"></span>删除</button>',
                         ].join('');
                     }
 
-                    window.item_operateEvents = {
+                    window.material_operateEvents = {
                         //删除单个维修项目按钮
-                        'click #item_delete_one_btn': function (e, value, row, index) {
+                        'click #material_delete_one_btn': function (e, value, row, index) {
                             swal({
                                 title: "确定要删除以下维修项目吗？",
-                                text: row.name,
+                                text: row.id + "",
                                 icon: "warning",
                                 buttons: {
                                     cancel: "取消",
@@ -1037,7 +626,7 @@
                                 },
                             }).then((value) => {
                                 $.ajax({
-                                    url: "${APP_PATH}/maintenanceitem/" + row.id.toString(),
+                                    url: "${APP_PATH}/purchasematerial/" + row.id.toString(),
                                     type: "DELETE",
                                     success: function (result) {
                                         //$("#item_table").bootstrapTable('refresh');
@@ -1051,101 +640,11 @@
                             })
                         }
                     }
-
-                    //维修材料操作栏的格式化
-                    function material_actionFormatter(value, row, index) {
-                        return [
-                            '<button id="material_delete_one_btn" type="button" class="btn btn-outline-danger btn-sm"><span class="fa fa-trash"></span>删除</button>',
-                        ].join('');
-                    }
-
-                    window.material_operateEvents = {
-                        //删除单个维修项目按钮
-                        'click #material_delete_one_btn': function (e, value, row, index) {
-                            swal({
-                                title: "确定要删除以下维修材料吗？",
-                                text: row.name,
-                                icon: "warning",
-                                buttons: {
-                                    cancel: "取消",
-                                    confirm: {
-                                        text: "确定",
-                                        value: "delete"
-                                    }
-                                },
-                            }).then((value) => {
-                                $.ajax({
-                                    url: "${APP_PATH}/maintenancematerial/" + row.id.toString(),
-                                    type: "DELETE",
-                                    success: function (result) {
-                                        //$("#material_table").bootstrapTable('refresh');
-                                        swal({
-                                            title: "删除成功",
-                                            icon: "success",
-                                            button: "退出"
-                                        });
-                                    }
-                                });
-                            })
-                        }
-                    }
-
                     //子表
                     var billId = row.id;
-
-                    var item_table = $detail.append('<table>维修项目</table><br>').find('table');
-                    var material_table = $detail.append('<table>维修材料</table>').find('table');
-
-                    var item_table = $(item_table).bootstrapTable({
-                        url: '${APP_PATH}/maintenanceitem/bill/' + billId,
-                        method: 'GET',
-                        queryParams: {strParentID: billId},
-                        ajaxOptions: {strParentID: billId},
-                        clickToSelect: true,
-                        detailView: false,//父子表
-                        uniqueId: "id",
-                        pageSize: 10,
-                        pageList: [10, 25],
-                        columns: [{
-                            field: 'id',
-                            title: '项目编号'
-                        }, {
-                            field: 'item',
-                            title: '维修项目'
-                        }, {
-                            field: 'itemfees',
-                            title: '维修费用'
-                        }, {
-                            field: 'billId',
-                            title: '维修单号'
-                        }, {
-                            field: 'operate',
-                            title: '操作',
-                            width: 100,
-                            align: 'center',
-                            valign: 'middle',
-                            events: item_operateEvents,//给按钮注册事件
-                            formatter: item_actionFormatter//表格中增加按钮
-                        }],
-                        //无线循环取子表，直到子表里面没有记录
-                        onExpandRow: function (index, row, $Subdetail) {
-                        },
-                        onDblClickRow: function (row, $element) {
-                            $("#item_billid_input").val(row.billId);
-                            $("#itemid_input").val(row.id);
-                            $("#item_input").val(row.item);
-                            $("#itemfees_input").val(row.itemfees);
-                            $("#itemModal").modal({
-                                backdrop: "static",
-                                draggable: true,
-                                overflow: "hidden"
-                            });
-                        }
-                    });
-
-
+                    var material_table = $detail.append('<table>材料明细</table>').find('table');
                     var material_table = $(material_table).bootstrapTable({
-                        url: '${APP_PATH}/maintenancematerial/bill/' + billId,
+                        url: '${APP_PATH}/purchasematerial/bill/' + billId,
                         method: 'GET',
                         queryParams: {strParentID: billId},
                         ajaxOptions: {strParentID: billId},
@@ -1156,12 +655,15 @@
                         pageList: [10, 25],
                         columns: [{
                             field: 'id',
+                            title: '序号'
+                        }, {
+                            field: 'materialId',
                             title: '材料编码'
                         }, {
-                            field: 'name',
+                            field: 'material.name',
                             title: '材料名称'
                         }, {
-                            field: 'unitlist.jsp',
+                            field: 'material.unit.name',
                             title: '单位'
                         }, {
                             field: 'quantity',
@@ -1174,7 +676,7 @@
                             title: '金额'
                         }, {
                             field: 'billId',
-                            title: '维修单号'
+                            title: '采购单号'
                         }, {
                             field: 'operate',
                             title: '操作',
@@ -1188,10 +690,12 @@
                         onExpandRow: function (index, row, $Subdetail) {
                         },
                         onDblClickRow: function (row, $element) {
-                            $("#material_billid_input").val(row.billId);
-                            $("#materialid_input").val(row.id);
-                            $("#material_input").val(row.name);
-                            $("#unit_input").val(row.unit);
+                            reset_form("#materialModal");
+                            var materialId = row.materialId;
+                            new materialInit(materialId);
+                            $("#bill_material_id_input").val(row.id)
+                            $("#billid_input").val(row.billId);
+                            $("#unit_input").val(row.material.unit.name);
                             $("#quantity_input").val(row.quantity);
                             $("#price_input").val(row.price);
                             $("#amount_input").val(row.amount);
@@ -1199,7 +703,8 @@
                                 backdrop: "static",
                                 draggable: true,
                                 overflow: "hidden"
-                            });
+                            })
+                            //$("#materialId_select").find("option:contains('2')").attr("selected", true);
                         }
                     });
                 }
@@ -1214,6 +719,185 @@
 
         oInit.Init = function () {
             //初始化页面上面的按钮事件
+            //======================查找=========================
+            $("#search_btn").click(function () {
+                var url = "${APP_PATH}/purchasebill/list";
+                var oTable = new TableInit();
+                oTable.Init(url);
+            });
+
+            //=====================新增和修改==========================
+            $("#add_btn").click(function () {
+                reset_form("#billsModal");
+                $("#billsModal").modal({
+                    backdrop: "static",
+                    draggable: true,
+                    overflow: "hidden"
+                });
+            });
+            //采购单据信息保存和修改
+            $("#bill_save_or_update_btn").click(function () {
+                if ($("#purchase_date_input").val() == "") {
+                    $("#purchase_date_input").removeAttr("name");
+                }
+                //2.判断id是否存在,如果不存在新增
+                if ($("#id_input").val() == "") {
+                    //2-1.发送ajax请求保存
+                    $.ajax({
+                        url: "${APP_PATH}/purchasebill",
+                        type: "POST",
+                        data: $("#billsModal form").serialize(),
+                        success: function (result) {
+                            if (result.code == 100) {
+                                //1.关闭模态框
+                                $("#billsModal").modal('hide');
+                                //2.来到最后一页，显示新添加数据，也就是发送ajax请求显示最后一页数据
+                                $("#table").bootstrapTable('refresh');
+                            } else if (result.code == 200) {
+                                swal({
+                                    title: "采购单保存失败",
+                                    icon: "error",
+                                    button: "确定"
+                                });
+                            }
+                        }
+                    });
+                } else {
+                    //2-1.发送ajax请求更新
+                    $.ajax({
+                        url: "${APP_PATH}/purchasebill",
+                        type: "PUT",
+                        data: $("#billsModal form").serialize(),
+                        success: function (result) {
+                            if (result.code == 100) {
+                                //1.关闭模态框
+                                $("#billsModal").modal('hide');
+                                //2.来到最后一页，显示新添加数据，也就是发送ajax请求显示最后一页数据
+                                $("#table").bootstrapTable('refresh');
+                            } else if (result.code == 200) {
+                                swal({
+                                    title: "采购单修改失败",
+                                    icon: "error",
+                                    button: "确定"
+                                });
+                            }
+                        }
+                    });
+                }
+            });
+            //采购单明细保存和修改
+            $("#material_save_or_update_btn").click(function () {
+                if ($("#bill_material_id_input").val() == "") {
+                    $.ajax({
+                        url: "${APP_PATH}/purchasematerial",
+                        type: "POST",
+                        data: $("#materialModal form").serialize(),
+                        success: function (result) {
+                            if (result.code == 100) {
+                                $("#materialModal").modal("hide");
+                                //$("#material_table").bootstrapTable('refresh');
+                                swal({
+                                    title: "材料明细保存成功",
+                                    icon: "success",
+                                    button: "确定"
+                                });
+                            } else if (result.code == 200) {
+                                swal({
+                                    title: "材料明细保存失败",
+                                    icon: "error",
+                                    button: "确定"
+                                });
+                            }
+                        }
+                    });
+                } else {
+                    $.ajax({
+                        url: "${APP_PATH}/purchasematerial",
+                        type: "PUT",
+                        data: $("#materialModal form").serialize(),
+                        success: function (result) {
+                            if (result.code == 100) {
+                                $("#materialModal").modal("hide");
+                                //$("#material_table").bootstrapTable('refresh');
+                                swal({
+                                    title: "材料明细修改成功",
+                                    icon: "success",
+                                    button: "确定"
+                                });
+                            } else if (result.code == 200) {
+                                swal({
+                                    title: "材料明细修改失败",
+                                    icon: "error",
+                                    button: "确定"
+                                });
+                            }
+                        }
+                    });
+                }
+            })
+
+            //=====================删除==========================
+            $("#delete_selected_btn").click(function () {
+                //使用getSelections即可获得，row是json格式的数据
+                var rows = $.map($('#table').bootstrapTable('getSelections'), function (rows) {
+                    return rows;
+                });
+                var billIds = "";
+                $.each(rows, function (index, row) {
+                    billIds += row.id + "-";
+                });
+                if (billIds != "") {
+                    billIds = billIds.substring(0, billIds.length - 1);
+                    swal({
+                        title: "确定要删除以下采购单吗？",
+                        text: billIds,
+                        icon: "warning",
+                        buttons: {
+                            cancel: "取消",
+                            confirm: {
+                                text: "确定",
+                                value: "delete"
+                            }
+                        },
+                    }).then((value) => {
+                        if (value == "delete") {
+                            /*$.ajax({
+                                url: "${APP_PATH}/purchasematerial/material/" + billIds,
+                                type: "DELETE",
+                                success: function (result) {
+                                    if(result.code == 100){
+                                        $.ajax({
+                                            url: "${APP_PATH}/purchasebill/" + billIds,
+                                            type: "DELETE",
+                                            success: function (result) {
+                                                $("#table").bootstrapTable('refresh');
+                                                swal({
+                                                    title: "删除成功",
+                                                    icon: "success",
+                                                    button: "退出"
+                                                });
+                                            }
+                                        });
+                                    }
+
+                                }
+                            });*/
+                            $.ajax({
+                                url: "${APP_PATH}/purchasebill/" + billIds,
+                                type: "DELETE",
+                                success: function (result) {
+                                    $("#table").bootstrapTable('refresh');
+                                    swal({
+                                        title: "删除成功",
+                                        icon: "success",
+                                        button: "退出"
+                                    });
+                                }
+                            });
+                        }
+                    })
+                }
+            });
         };
         return oInit;
     };
@@ -1232,57 +916,47 @@
         forceParse: 0
     });
 
-    //===========================车牌号输入框变化后，根据车牌号查询出车辆内码==========================
-    $("#platenumber_input").change(function () {
-        var platenumber = $("#platenumber_input").val();
+    //=============================查找物料信息，根据修改变更单位=======================
+    //查出所有的单位并显示在下拉列表中
+    var materialInit = function getMaterials(materialId) {
+        //清空下拉列表
+        $("#materialId_select").empty();
         $.ajax({
-            url: "${APP_PATH}/truck/getTruckByPN",
+            url: "${APP_PATH}/material/getAllMaterials",
             type: "GET",
-            data: "platenumber=" + platenumber,
             success: function (result) {
-                if (result.code == 100) {
-                    truckId = result.extend.truck.id;
-                    $("#platenumber_input").attr("truckId", truckId);
-                } else if (result.code == 200) {
-                    $("#platenumber_input").removeAttr("truckId");
-                }
+                var option = $("<option></option>").append().attr("value", 0);
+                option.appendTo("#materialId_select");
+                $.each(result.extend.materials, function () {
+                    if (this.id == materialId) {
+                        option = $("<option></option>").append(this.name).attr("value", this.id).attr("selected", "selected");
+                    } else {
+                        option = $("<option></option>").append(this.name).attr("value", this.id)
+                    }
+                    option.appendTo("#materialId_select");
+                });
             }
         });
+    }
+
+    //物料更改，单位更改
+    $("#materialId_select").change(function () {
+        $("#unit_input").val("");
+        var id = $(this).val();
+        if (id == "") {
+            $("#unit_input").val("");
+        } else {
+            $.ajax({
+                url: "${APP_PATH}/material/" + id,
+                type: "GET",
+                success: function (result) {
+                    var data = result.extend.material;
+                    $("#unit_input").val(data.unit.name);
+                }
+            });
+        }
     });
 
-    //=============================查找车辆信息和车辆状态=======================
-    //查出所有的客户并显示在下拉列表中
-    var truckInit = function getTrucks() {
-        //清空下拉列表
-        $("#truck_select").empty();
-        $.ajax({
-            url: "${APP_PATH}/truck/getAllTrucks",
-            type: "GET",
-            success: function (result) {
-                $.each(result.extend.trucks, function () {
-                    var option = $("<option></option>").append(this.platenumber).attr("value", this.id);
-                    option.appendTo("#truck_select");
-                });
-            }
-        });
-    }
-
-    //查出所有的车型并显示在下拉列表中
-    var statusInit = function getVehicleTypes() {
-        //清空下拉列表
-        $("#status_select").empty();
-        $.ajax({
-            url: "${APP_PATH}/billStatus/getAllBillStatus",
-            type: "GET",
-            success: function (result) {
-                console.log(result);
-                $.each(result.extend.billStatuses, function () {
-                    var option = $("<option></option>").append(this.name).attr("value", this.id);
-                    option.appendTo("#status_select");
-                });
-            }
-        });
-    }
 </script>
 </body>
 </html>

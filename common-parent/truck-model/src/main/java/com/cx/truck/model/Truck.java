@@ -9,23 +9,24 @@ public class Truck {
             message = "车牌号格式不正确")
     private String platenumber;
 
-    private String brand;
+    private String brandId;
 
     private Integer vehicletypeId;
 
     private Integer customerId;
 
-    //查询车辆时客户，车型信息也是查询好的
+    //查询车辆时客户、车型和品牌信息也是查询好的
     private VehicleType vehicleType;
     private Customer customer;
+    private Brand brand;
 
     public Truck() {
     }
 
-    public Truck(Integer id, String platenumber, String brand, Integer vehicletypeId, Integer customerId) {
+    public Truck(Integer id, String platenumber, String brandId, Integer vehicletypeId, Integer customerId) {
         this.id = id;
         this.platenumber = platenumber;
-        this.brand = brand;
+        this.brandId = brandId;
         this.vehicletypeId = vehicletypeId;
         this.customerId = customerId;
     }
@@ -46,12 +47,20 @@ public class Truck {
         this.platenumber = platenumber == null ? null : platenumber.trim();
     }
 
-    public String getBrand() {
+    public String getBrandId() {
+        return brandId;
+    }
+
+    public void setBrandId(String brandId) {
+        this.brandId = brandId;
+    }
+
+    public Brand getBrand() {
         return brand;
     }
 
-    public void setBrand(String brand) {
-        this.brand = brand == null ? null : brand.trim();
+    public void setBrand(Brand brand) {
+        this.brand = brand;
     }
 
     public Integer getVehicletypeId() {
@@ -91,7 +100,7 @@ public class Truck {
         return "Truck{" +
                 "id=" + id +
                 ", platenumber='" + platenumber + '\'' +
-                ", brand='" + brand + '\'' +
+                ", brandId='" + brandId + '\'' +
                 ", vehicletypeId=" + vehicletypeId +
                 ", customerId=" + customerId +
                 '}';

@@ -21,9 +21,19 @@ public interface TruckMapper {
 
     Truck selectByPrimaryKey(Integer id);
 
-    List<Truck> selectByExampleWithCusAndVT(TruckExample example);
+    /**
+     * 按条件关联查询出包含客户和车型信息的车辆信息
+     * @param example
+     * @return
+     */
+    List<Truck> selectByExampleWithCsmVTBrd(TruckExample example);
 
-    Truck selectByPrimaryKeyWithCusAndVT(Integer id);
+    /**
+     * 按id查询出包含客户和车型信息的车辆信息
+     * @param id
+     * @return
+     */
+    Truck selectByPrimaryKeyWithCsmVTBrd(Integer id);
 
     int updateByExampleSelective(@Param("record") Truck record, @Param("example") TruckExample example);
 

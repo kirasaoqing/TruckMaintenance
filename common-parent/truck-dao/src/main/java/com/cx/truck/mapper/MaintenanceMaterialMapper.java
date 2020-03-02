@@ -19,7 +19,21 @@ public interface MaintenanceMaterialMapper {
 
     List<MaintenanceMaterial> selectByExample(MaintenanceMaterialExample example);
 
+    /**
+     * 根据复杂条件联合查询出带物料的维修物料信息
+     * @param example
+     * @return
+     */
+    List<MaintenanceMaterial> selectByExampleWithMaterial(MaintenanceMaterialExample example);
+
     MaintenanceMaterial selectByPrimaryKey(Integer id);
+
+    /**
+     * 根据id联合查询出带物料的维修物料信息
+     * @param id
+     * @return
+     */
+    MaintenanceMaterial selectByPrimaryKeyWithMaterial(Integer id);
 
     int updateByExampleSelective(@Param("record") MaintenanceMaterial record, @Param("example") MaintenanceMaterialExample example);
 

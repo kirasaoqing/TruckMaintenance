@@ -38,7 +38,7 @@ public class MaintenanceMaterialServiceImpl extends BaseServiceImpl<MaintenanceM
 
     @Override
     public MaintenanceMaterial findById(Integer id) {
-        return maintenanceMaterialMapper.selectByPrimaryKey(id);
+        return maintenanceMaterialMapper.selectByPrimaryKeyWithMaterial(id);
     }
 
     @Override
@@ -74,7 +74,7 @@ public class MaintenanceMaterialServiceImpl extends BaseServiceImpl<MaintenanceM
         MaintenanceMaterialExample example = new MaintenanceMaterialExample();
         MaintenanceMaterialExample.Criteria criteria = example.createCriteria();
         criteria.andBillIdEqualTo(billId);
-        return maintenanceMaterialMapper.selectByExample(example);
+        return maintenanceMaterialMapper.selectByExampleWithMaterial(example);
     }
 
     @Override

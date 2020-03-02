@@ -183,7 +183,7 @@
                         </div>
                         <div class="card-body">
                             <div id="toolbar" class="btn-group">
-                                <input type="text" id="search_input" placeholder="请输入客户名称">
+                                <input type="text" id="search_input" placeholder="请输入客户名称" autocomplete="off">
                                 <button id="search_btn" type="button" class="btn btn-dark">
                                     <span class="fa fa-search"></span> 搜索
                                 </button>
@@ -228,7 +228,7 @@
 
             <!-- 模态框主体 -->
             <div class="modal-body">
-                <form>
+                <form autocomplete="off">
                     <div class="col-md-6 pull-left">
                         <div class="card-header d-flex align-items-center">
                             <h3>基本信息</h3>
@@ -334,6 +334,8 @@
 <script src="${APP_PATH}/assets/vendor/malihu-custom-scrollbar-plugin/jquery.mCustomScrollbar.concat.min.js"></script>
 <script src="${APP_PATH}/assets/vendor/js/charts-home.js"></script>
 <script src="${APP_PATH}/assets/vendor/js/front.js"></script>
+<!--common-->
+<script type="text/javascript" src="${APP_PATH}/assets/Scripts/common.js"></script>
 <!-- sweetalert-->
 <script src="${APP_PATH}/assets/vendor/sweetalert/sweetalert.min.js"></script>
 <!-- bootstrap-table -->
@@ -351,190 +353,14 @@
         var oTable = new TableInit();
         oTable.Init(url);
         //2.初始化Button的点击事件
-        /*var oButtonInit = new ButtonInit();
-        oButtonInit.Init();*/
-
-        //======================查找=========================
-        $("#search_btn").click(function () {
-            var url = "${APP_PATH}/customer/" + $("#search_input").val();
-            oTable.Init(url);
-        });
-
-        //=====================新增和修改==========================
-        $("#add_btn").click(function () {
-            reset_form("#customerModal");
-            $("#customerModal").modal({
-                backdrop: "static",
-                draggable: true,
-                overflow: "hidden"
-            });
-        });
-
-        $("#save_or_update_btn").click(function () {
-            name_input_validate();
-            //1.提交数据校验
-            if ($("#save_or_update_btn").attr("ajax-validate") === "fail") {
-                return false;
-            }
-            //2.判断id是否存在,如果不存在新增
-            if ($("#id_input").val() == "") {
-                //2-1.发送ajax请求保存
-                $.ajax({
-                    url: "${APP_PATH}/customer",
-                    type: "POST",
-                    data: $("#customerModal form").serialize(),
-                    success: function (result) {
-                        //后端JSR303校验通过
-                        if (result.code == 100) {
-                            //1.关闭模态框
-                            $("#customerModal").modal('hide');
-                            //2.来到最后一页，显示新添加数据，也就是发送ajax请求显示最后一页数据
-                            $("#table").bootstrapTable('refresh');
-                        } else {
-                            show_validate_msg($("#name_input"), "fail", result.extend.name);
-                        }
-                    }
-                });
-            } else {
-                //2-1.发送ajax请求更新
-                $.ajax({
-                    url: "${APP_PATH}/customer",
-                    type: "PUT",
-                    data: $("#customerModal form").serialize(),
-                    success: function (result) {
-                        //后端JSR303校验通过
-                        if (result.code == 100) {
-                            //1.关闭模态框
-                            $("#customerModal").modal('hide');
-                            //2.来到最后一页，显示新添加数据，也就是发送ajax请求显示最后一页数据
-                            $("#table").bootstrapTable('refresh');
-                        } else {
-                            show_validate_msg($("#name_input"), "fail", result.extend.name);
-                        }
-                    }
-                });
-            }
-        });
-
-        //=====================删除==========================
-        $("#delete_selected_btn").click(function () {
-            //使用getSelections即可获得，row是json格式的数据
-            var rows = $.map($('#table').bootstrapTable('getSelections'), function (rows) {
-                return rows;
-            });
-            var customerIds = "";
-            var customerNames = "";
-            $.each(rows, function (index, row) {
-                customerIds += row.id + "-";
-                customerNames += row.name + ",";
-            });
-            $.ajax({
-                url: "${APP_PATH}/truck/check/" + customerIds,
-                type: "GET",
-                success: function (result) {
-                    console.log(result);
-                    if (result.code == 100) {
-                        if (customerIds != "") {
-                            customerIds = customerIds.substring(0, customerIds.length - 1);
-                            customerNames = customerNames.substring(0, customerNames.length - 1);
-                            swal({
-                                title: "确定要删除以下客户吗？",
-                                text: customerNames,
-                                icon: "warning",
-                                buttons: {
-                                    cancel: "取消",
-                                    confirm: {
-                                        text: "确定",
-                                        value: "delete"
-                                    }
-                                },
-                            }).then((value) => {
-                                if (value == "delete") {
-                                    $.ajax({
-                                        url: "${APP_PATH}/customer/" + customerIds,
-                                        type: "DELETE",
-                                        success: function (result) {
-                                            console.log(result);
-                                            $("#table").bootstrapTable('refresh');
-                                        }
-                                    });
-                                }
-                            })
-                        } else {
-                            swal({
-                                title: "请勾选想要删除的客户",
-                                icon: "warning",
-                                button: "退出"
-                            });
-                        }
-                    } else if (result.code == 200) {
-                        var va_ids = "";
-                        $.each(result.extend.va_msg, function (index, value) {
-                            va_ids += value + " ";
-                        });
-                        swal({
-                            title: "客户:" + va_ids + "已经被使用，无法删除",
-                            icon: "warning",
-                            button: "退出"
-                        });
-                    }
-                }
-            });
-        });
+        var oButtonInit = new ButtonInit();
+        oButtonInit.Init();
     });
-
-    //=====================校验==========================
-    //客户名称校验
-    function name_input_validate() {
-        //1.拿到要校验的数据
-        var name = $("#name_input").val();
-        //2.使用正则表达式
-        var nameReg = /(^[a-zA-Z0-9_-]{3,16}$)|(^[\u2E80-\u9FFF]{2,30}$)/;
-        if (nameReg.test(name)) {
-            show_validate_msg("#name_input", "success", "");
-            $("#save_or_update_btn").attr("ajax-validate", "success");
-        } else {
-            show_validate_msg("#name_input", "fail", "用户名可以是2-5位中文或者6-16位英文和数字的组合");
-            $("#save_or_update_btn").attr("ajax-validate", "fail");
-        }
-    }
-
-    //校验信息显示
-    function show_validate_msg(ele, status, msg) {
-        //清除当前元素的校验状态
-        reset_ele(ele)
-        //添加校验状态
-        if ("success" == status) {
-            $(ele).addClass("is-valid");
-            $(ele).next("span").text(msg);
-            $(ele).next("span").addClass("valid-feedback");
-        } else if ("fail" == status) {
-            $(ele).addClass("is-invalid");
-            $(ele).next("span").text(msg);
-            $(ele).next("span").addClass("invalid-feedback");
-        }
-    }
-
-    //重置元素
-    function reset_ele(ele) {
-        $(ele).removeClass("is-invalid is-valid");
-        $(ele).next("span").text("");
-        $(ele).next("span").removeClass("invalid-feedback valid-feedback");
-    }
-
-    //重置表单
-    function reset_form(ele) {
-        //$(ele)[0].reset();
-        $(ele).find("*").removeClass("is-invalid is-valid invalid-feedback valid-feedback");
-        $(ele).find(".help-block").text("");
-        $(ele).find("*").val("");
-    }
 
     var TableInit = function () {
         //操作栏的格式化
         function actionFormatter(value, row, index) {
             return [
-                /*'<button id="look_btn" type="button" class="btn btn-outline-dark">查看</button>',*/
                 '<button id="delete_one_btn" type="button" class="btn btn-outline-danger">删除</button>',
             ].join('');
         }
@@ -733,9 +559,153 @@
 
         oInit.Init = function () {
             //初始化页面上面的按钮事件
+            //======================查找=========================
+            $("#search_btn").click(function () {
+                var url = "${APP_PATH}/customer/" + $("#search_input").val();
+                var oTable = new TableInit();
+                oTable.Init(url);
+            });
+
+            //=====================新增和修改==========================
+            $("#add_btn").click(function () {
+                reset_form("#customerModal");
+                $("#customerModal").modal({
+                    backdrop: "static",
+                    draggable: true,
+                    overflow: "hidden"
+                });
+            });
+
+            $("#save_or_update_btn").click(function () {
+                name_input_validate();
+                //1.提交数据校验
+                if ($("#save_or_update_btn").attr("ajax-validate") === "fail") {
+                    return false;
+                }
+                //2.判断id是否存在,如果不存在新增
+                if ($("#id_input").val() == "") {
+                    //2-1.发送ajax请求保存
+                    $.ajax({
+                        url: "${APP_PATH}/customer",
+                        type: "POST",
+                        data: $("#customerModal form").serialize(),
+                        success: function (result) {
+                            //后端JSR303校验通过
+                            if (result.code == 100) {
+                                //1.关闭模态框
+                                $("#customerModal").modal('hide');
+                                //2.来到最后一页，显示新添加数据，也就是发送ajax请求显示最后一页数据
+                                $("#table").bootstrapTable('refresh');
+                            } else {
+                                show_validate_msg($("#name_input"), "fail", result.extend.name);
+                            }
+                        }
+                    });
+                } else {
+                    //2-1.发送ajax请求更新
+                    $.ajax({
+                        url: "${APP_PATH}/customer",
+                        type: "PUT",
+                        data: $("#customerModal form").serialize(),
+                        success: function (result) {
+                            //后端JSR303校验通过
+                            if (result.code == 100) {
+                                //1.关闭模态框
+                                $("#customerModal").modal('hide');
+                                //2.来到最后一页，显示新添加数据，也就是发送ajax请求显示最后一页数据
+                                $("#table").bootstrapTable('refresh');
+                            } else {
+                                show_validate_msg($("#name_input"), "fail", result.extend.name);
+                            }
+                        }
+                    });
+                }
+            });
+
+            //=====================删除==========================
+            $("#delete_selected_btn").click(function () {
+                //使用getSelections即可获得，row是json格式的数据
+                var rows = $.map($('#table').bootstrapTable('getSelections'), function (rows) {
+                    return rows;
+                });
+                var customerIds = "";
+                var customerNames = "";
+                $.each(rows, function (index, row) {
+                    customerIds += row.id + "-";
+                    customerNames += row.name + ",";
+                });
+                $.ajax({
+                    url: "${APP_PATH}/truck/check/" + customerIds,
+                    type: "GET",
+                    success: function (result) {
+                        console.log(result);
+                        if (result.code == 100) {
+                            if (customerIds != "") {
+                                customerIds = customerIds.substring(0, customerIds.length - 1);
+                                customerNames = customerNames.substring(0, customerNames.length - 1);
+                                swal({
+                                    title: "确定要删除以下客户吗？",
+                                    text: customerNames,
+                                    icon: "warning",
+                                    buttons: {
+                                        cancel: "取消",
+                                        confirm: {
+                                            text: "确定",
+                                            value: "delete"
+                                        }
+                                    },
+                                }).then((value) => {
+                                    if (value == "delete") {
+                                        $.ajax({
+                                            url: "${APP_PATH}/customer/" + customerIds,
+                                            type: "DELETE",
+                                            success: function (result) {
+                                                console.log(result);
+                                                $("#table").bootstrapTable('refresh');
+                                            }
+                                        });
+                                    }
+                                })
+                            } else {
+                                swal({
+                                    title: "请勾选想要删除的客户",
+                                    icon: "warning",
+                                    button: "退出"
+                                });
+                            }
+                        } else if (result.code == 200) {
+                            var va_ids = "";
+                            $.each(result.extend.va_msg, function (index, value) {
+                                va_ids += value + " ";
+                            });
+                            swal({
+                                title: "客户:" + va_ids + "已经被使用，无法删除",
+                                icon: "warning",
+                                button: "退出"
+                            });
+                        }
+                    }
+                });
+            });
         };
         return oInit;
     };
+
+    //=====================校验==========================
+    //客户名称校验
+    function name_input_validate() {
+        //1.拿到要校验的数据
+        var name = $("#name_input").val();
+        //2.使用正则表达式
+        var nameReg = /(^[a-zA-Z0-9_-]{3,16}$)|(^[\u2E80-\u9FFF]{2,30}$)/;
+        if (nameReg.test(name)) {
+            show_validate_msg("#name_input", "success", "");
+            $("#save_or_update_btn").attr("ajax-validate", "success");
+        } else {
+            show_validate_msg("#name_input", "fail", "用户名可以是2-5位中文或者6-16位英文和数字的组合");
+            $("#save_or_update_btn").attr("ajax-validate", "fail");
+        }
+    }
 </script>
 </body>
 </html>

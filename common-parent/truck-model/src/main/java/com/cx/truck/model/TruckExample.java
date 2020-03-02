@@ -234,76 +234,6 @@ public class TruckExample {
             return (Criteria) this;
         }
 
-        public Criteria andBrandIsNull() {
-            addCriterion("brand is null");
-            return (Criteria) this;
-        }
-
-        public Criteria andBrandIsNotNull() {
-            addCriterion("brand is not null");
-            return (Criteria) this;
-        }
-
-        public Criteria andBrandEqualTo(String value) {
-            addCriterion("brand =", value, "brand");
-            return (Criteria) this;
-        }
-
-        public Criteria andBrandNotEqualTo(String value) {
-            addCriterion("brand <>", value, "brand");
-            return (Criteria) this;
-        }
-
-        public Criteria andBrandGreaterThan(String value) {
-            addCriterion("brand >", value, "brand");
-            return (Criteria) this;
-        }
-
-        public Criteria andBrandGreaterThanOrEqualTo(String value) {
-            addCriterion("brand >=", value, "brand");
-            return (Criteria) this;
-        }
-
-        public Criteria andBrandLessThan(String value) {
-            addCriterion("brand <", value, "brand");
-            return (Criteria) this;
-        }
-
-        public Criteria andBrandLessThanOrEqualTo(String value) {
-            addCriterion("brand <=", value, "brand");
-            return (Criteria) this;
-        }
-
-        public Criteria andBrandLike(String value) {
-            addCriterion("brand like", value, "brand");
-            return (Criteria) this;
-        }
-
-        public Criteria andBrandNotLike(String value) {
-            addCriterion("brand not like", value, "brand");
-            return (Criteria) this;
-        }
-
-        public Criteria andBrandIn(List<String> values) {
-            addCriterion("brand in", values, "brand");
-            return (Criteria) this;
-        }
-
-        public Criteria andBrandNotIn(List<String> values) {
-            addCriterion("brand not in", values, "brand");
-            return (Criteria) this;
-        }
-
-        public Criteria andBrandBetween(String value1, String value2) {
-            addCriterion("brand between", value1, value2, "brand");
-            return (Criteria) this;
-        }
-
-        public Criteria andBrandNotBetween(String value1, String value2) {
-            addCriterion("brand not between", value1, value2, "brand");
-            return (Criteria) this;
-        }
-
         public Criteria andVehicletypeIdIsNull() {
             addCriterion("vehicletype_id is null");
             return (Criteria) this;
@@ -361,6 +291,66 @@ public class TruckExample {
 
         public Criteria andVehicletypeIdNotBetween(Integer value1, Integer value2) {
             addCriterion("vehicletype_id not between", value1, value2, "vehicletypeId");
+            return (Criteria) this;
+        }
+
+        public Criteria andBrandIdIsNull() {
+            addCriterion("brand_id is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andBrandIdIsNotNull() {
+            addCriterion("brand_id is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andBrandIdEqualTo(Integer value) {
+            addCriterion("brand_id =", value, "brandId");
+            return (Criteria) this;
+        }
+
+        public Criteria andBrandIdNotEqualTo(Integer value) {
+            addCriterion("brand_id <>", value, "brandId");
+            return (Criteria) this;
+        }
+
+        public Criteria andBrandIdGreaterThan(Integer value) {
+            addCriterion("brand_id >", value, "brandId");
+            return (Criteria) this;
+        }
+
+        public Criteria andBrandIdGreaterThanOrEqualTo(Integer value) {
+            addCriterion("brand_id >=", value, "brandId");
+            return (Criteria) this;
+        }
+
+        public Criteria andBrandIdLessThan(Integer value) {
+            addCriterion("brand_id <", value, "brandId");
+            return (Criteria) this;
+        }
+
+        public Criteria andBrandIdLessThanOrEqualTo(Integer value) {
+            addCriterion("brand_id <=", value, "brandId");
+            return (Criteria) this;
+        }
+
+        public Criteria andBrandIdIn(List<Integer> values) {
+            addCriterion("brand_id in", values, "brandId");
+            return (Criteria) this;
+        }
+
+        public Criteria andBrandIdNotIn(List<Integer> values) {
+            addCriterion("brand_id not in", values, "brandId");
+            return (Criteria) this;
+        }
+
+        public Criteria andBrandIdBetween(Integer value1, Integer value2) {
+            addCriterion("brand_id between", value1, value2, "brandId");
+            return (Criteria) this;
+        }
+
+        public Criteria andBrandIdNotBetween(Integer value1, Integer value2) {
+            addCriterion("brand_id not between", value1, value2, "brandId");
             return (Criteria) this;
         }
 

@@ -67,8 +67,9 @@ public class CustomerServiceImpl extends BaseServiceImpl<Customer> implements IC
 
     @Override
     public List<Customer> findAll() {
-        //List<Customer> customerList = customerMapper.findCustomerList();
-        return customerMapper.selectByExample(null);
+        CustomerExample example = new CustomerExample();
+        example.setOrderByClause("id");
+        return customerMapper.selectByExample(example);
     }
 
     @Override

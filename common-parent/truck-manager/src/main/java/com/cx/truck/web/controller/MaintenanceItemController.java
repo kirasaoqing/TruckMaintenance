@@ -14,7 +14,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.ArrayList;
 import java.util.List;
 
-@Controller
+@RestController
 @RequestMapping("maintenanceitem")
 public class MaintenanceItemController extends BaseController<MaintenanceItem> {
     //创建一个日志对象

@@ -20,7 +20,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-@Controller
+@RestController
 @RequestMapping("truck")
 public class TruckController {
 
@@ -220,7 +220,7 @@ public class TruckController {
      */
     @DeleteMapping("/{truckIds}")
     @ResponseBody
-    public JsonResult deleteTruck(@PathVariable("truckIds") String truckIds) {
+    public JsonResult delete(@PathVariable("truckIds") String truckIds) {
         if (truckIds.contains("-")) {
             List<Integer> list_truckIds = new ArrayList<Integer>();
             String[] arr_truckIds = truckIds.split("-");
@@ -244,9 +244,8 @@ public class TruckController {
      */
     @PutMapping
     @ResponseBody
-    public JsonResult updateCustomer(Truck truck) {
+    public JsonResult update(Truck truck) {
         truckService.update(truck);
         return JsonResult.success();
     }
-
 }

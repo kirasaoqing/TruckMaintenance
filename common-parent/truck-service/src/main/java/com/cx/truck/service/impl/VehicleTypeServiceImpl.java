@@ -12,12 +12,12 @@ import java.util.List;
 public class VehicleTypeServiceImpl extends BaseServiceImpl<VehicleType> implements IVehicleTypeService {
     @Override
     public void insert(VehicleType vehicleType) {
-        vehicleTypeMapper.insertSelective(vehicleType);
+
     }
 
     @Override
     public Integer insertSelective(VehicleType vehicleType) {
-        return null;
+        return vehicleTypeMapper.insertSelective(vehicleType);
     }
 
     @Override
@@ -57,7 +57,9 @@ public class VehicleTypeServiceImpl extends BaseServiceImpl<VehicleType> impleme
 
     @Override
     public List<VehicleType> findAll() {
-        return vehicleTypeMapper.selectByExample(null);
+        VehicleTypeExample example = new VehicleTypeExample();
+        example.setOrderByClause("id");
+        return vehicleTypeMapper.selectByExample(example);
     }
 
     @Override

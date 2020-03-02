@@ -5,17 +5,15 @@ public class MaintenanceMaterial {
 
     private Integer billId;
 
-    private String name;
-
-    private String type;
-
-    private String unit;
+    private Integer materialId;
 
     private Double quantity;
 
     private Double price;
 
     private Double amount;
+
+    private Material material;
 
     public Integer getId() {
         return id;
@@ -33,28 +31,12 @@ public class MaintenanceMaterial {
         this.billId = billId;
     }
 
-    public String getName() {
-        return name;
+    public Integer getMaterialId() {
+        return materialId;
     }
 
-    public void setName(String name) {
-        this.name = name == null ? null : name.trim();
-    }
-
-    public String getType() {
-        return type;
-    }
-
-    public void setType(String type) {
-        this.type = type == null ? null : type.trim();
-    }
-
-    public String getUnit() {
-        return unit;
-    }
-
-    public void setUnit(String unit) {
-        this.unit = unit == null ? null : unit.trim();
+    public void setMaterialId(Integer materialId) {
+        this.materialId = materialId;
     }
 
     public Double getQuantity() {
@@ -81,14 +63,20 @@ public class MaintenanceMaterial {
         this.amount = amount;
     }
 
+    public Material getMaterial() {
+        return material;
+    }
+
+    public void setMaterial(Material material) {
+        this.material = material;
+    }
+
     @Override
     public String toString() {
         return "MaintenanceMaterial{" +
                 "id=" + id +
                 ", billId=" + billId +
-                ", name='" + name + '\'' +
-                ", type='" + type + '\'' +
-                ", unit='" + unit + '\'' +
+                ", materialId=" + materialId +
                 ", quantity=" + quantity +
                 ", price=" + price +
                 ", amount=" + amount +

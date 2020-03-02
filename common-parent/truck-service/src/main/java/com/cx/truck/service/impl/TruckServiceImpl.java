@@ -37,7 +37,7 @@ public class TruckServiceImpl extends BaseServiceImpl<Truck> implements ITruckSe
 
     @Override
     public Truck findById(Integer id) {
-        return truckMapper.selectByPrimaryKeyWithCusAndVT(id);
+        return truckMapper.selectByPrimaryKeyWithCsmVTBrd(id);
     }
 
     @Override
@@ -50,7 +50,7 @@ public class TruckServiceImpl extends BaseServiceImpl<Truck> implements ITruckSe
         TruckExample example = new TruckExample();
         TruckExample.Criteria criteria = example.createCriteria();
         criteria.andPlatenumberLike(name);
-        List<Truck> trucks = truckMapper.selectByExampleWithCusAndVT(example);
+        List<Truck> trucks = truckMapper.selectByExampleWithCsmVTBrd(example);
         return trucks;
     }
 
@@ -61,7 +61,9 @@ public class TruckServiceImpl extends BaseServiceImpl<Truck> implements ITruckSe
 
     @Override
     public List<Truck> findAll() {
-        return truckMapper.selectByExampleWithCusAndVT(null);
+        TruckExample example = new TruckExample();
+        example.setOrderByClause("t.id");
+        return truckMapper.selectByExampleWithCsmVTBrd(example);
     }
 
     @Override
