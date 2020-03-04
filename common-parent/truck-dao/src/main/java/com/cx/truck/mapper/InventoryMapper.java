@@ -4,7 +4,9 @@ import com.cx.truck.model.Inventory;
 import com.cx.truck.model.InventoryExample;
 import org.apache.ibatis.annotations.Param;
 
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 public interface InventoryMapper {
     int countByExample(InventoryExample example);
@@ -28,4 +30,6 @@ public interface InventoryMapper {
     int updateByPrimaryKeySelective(Inventory record);
 
     int updateByPrimaryKey(Inventory record);
+
+    List<Map<String,Object>> getInventory(@Param(value="id") Integer id);
 }

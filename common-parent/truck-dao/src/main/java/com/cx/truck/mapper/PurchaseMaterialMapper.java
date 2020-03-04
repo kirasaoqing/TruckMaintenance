@@ -18,6 +18,7 @@ public interface PurchaseMaterialMapper {
     int insertSelective(PurchaseMaterial record);
 
     List<PurchaseMaterial> selectByExample(PurchaseMaterialExample example);
+    PurchaseMaterial selectByPrimaryKey(Integer id);
 
     /**
      * 根据example联查带物料的采购明细
@@ -25,9 +26,6 @@ public interface PurchaseMaterialMapper {
      * @return
      */
     List<PurchaseMaterial> selectByExampleWithMaterial(PurchaseMaterialExample example);
-
-    PurchaseMaterial selectByPrimaryKey(Integer id);
-
     /**
      * 根据id联查带物料的采购明细
      * @param id
@@ -42,4 +40,5 @@ public interface PurchaseMaterialMapper {
     int updateByPrimaryKeySelective(PurchaseMaterial record);
 
     int updateByPrimaryKey(PurchaseMaterial record);
+
 }

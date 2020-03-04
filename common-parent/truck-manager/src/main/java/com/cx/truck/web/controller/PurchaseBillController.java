@@ -24,6 +24,7 @@ public class PurchaseBillController {
     private IPurchaseBillService purchaseBillService;
 
     //================================查询===================================
+
     /**
      * 查询全部
      *
@@ -60,7 +61,7 @@ public class PurchaseBillController {
      * @param endDate
      * @param supplier
      * @return
-     */
+     *//*
     @GetMapping("/list")
     @ResponseBody
     public JsonResult listByQueryParams(@RequestParam(value = "page", defaultValue = "1") Integer page,
@@ -72,6 +73,41 @@ public class PurchaseBillController {
         PageHelper.startPage(page, rows);
         //startPage后面紧跟的这个查询就是一个分页查询
         List<PurchaseBill> purchaseBills = purchaseBillService.findByCondition(beginDate, endDate, supplier);
+        if (purchaseBills.size() > 0) {
+            PageInfo<PurchaseBill> pageInfo = new PageInfo<PurchaseBill>(purchaseBills);
+            List<PurchaseBill> rowInfo = pageInfo.getList();
+            int total = (int) pageInfo.getTotal();
+            JsonResult result = JsonResult.success();
+            result.setTotal(total);
+            result.setRows(rowInfo);
+            return result;
+        } else {
+            return JsonResult.fail().add("va_msg", "所查询采购单不存在");
+        }
+    }*/
+
+    /**
+     * 根据条件查询
+     *
+     * @param page
+     * @param rows
+     * @param beginDate
+     * @param endDate
+     * @param materialId
+     * @return
+     */
+    @GetMapping("/list")
+    @ResponseBody
+    public JsonResult listByQueryParams(@RequestParam(value = "page", defaultValue = "1") Integer page,
+                                        @RequestParam(value = "rows", defaultValue = "6") Integer rows,
+                                        @RequestParam(value = "beginDate", defaultValue = "2000/01/01") String beginDate,
+                                        @RequestParam(value = "endDate", defaultValue = "2888/01/01") String endDate,
+                                        @RequestParam(value = "materialId", defaultValue = "0") Integer materialId) {
+        List<Integer> billIds = purchaseBillService.getBillIds(materialId, beginDate, endDate);
+        //引入PageHelper分页插件，在查询之前只需要调用
+        PageHelper.startPage(page, rows);
+        //startPage后面紧跟的这个查询就是一个分页查询
+        List<PurchaseBill> purchaseBills = purchaseBillService.findBillsByIds(billIds);
         if (purchaseBills.size() > 0) {
             PageInfo<PurchaseBill> pageInfo = new PageInfo<PurchaseBill>(purchaseBills);
             List<PurchaseBill> rowInfo = pageInfo.getList();
@@ -128,6 +164,7 @@ public class PurchaseBillController {
 
     /**
      * 更新维修单
+     *
      * @param purchaseBill
      * @return
      */

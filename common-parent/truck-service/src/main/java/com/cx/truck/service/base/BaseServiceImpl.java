@@ -89,4 +89,10 @@ public abstract class BaseServiceImpl<T> implements IBaseService<T> {
      */
     @Autowired
     protected BrandMapper brandMapper;
+
+    /**
+     * 统一管理mapper:inventoryMapper
+     */
+    @Autowired
+    protected InventoryMapper inventoryMapper;
 }

@@ -13,6 +13,7 @@ public abstract class BaseController<T> {
     public static final String WORKER = "worker";
     public static final String MATERIAL = "material";
     public static final String UNIT = "unit";
+    public static final String INVENTORY = "inventory";
 
     public static final String SERVICES = "services";
     public static final String BILL = "bill";
@@ -49,6 +50,7 @@ public abstract class BaseController<T> {
 
     public static final String MAINTENANCEBILL_PAGE = SERVICES + "/" + MAINTENANCE + BILL;
     public static final String PURCHASEBILL_PAGE = SERVICES + "/" + PURCHASE + BILL;
+    public static final String INVENTORY_PAGE = SERVICES + "/" + INVENTORY;
 
     public BaseController() {
         //1.获取范型的真实类型

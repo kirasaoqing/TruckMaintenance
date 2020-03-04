@@ -68,7 +68,7 @@
             </div>
             <!-- Small Brand information, appears on minimized sidebar-->
             <div class="sidenav-header-logo">
-                <a href="${pageContext.request.contextPath}/home/home.do" class="brand-small text-center">
+                <a href="${APP_PATH}/home/home.do" class="brand-small text-center">
                     <strong>L</strong>
                     <strong class="text-primary">Y</strong>
                 </a>
@@ -98,7 +98,7 @@
                         <i class="icon-list"></i>报表查询
                     </a>
                     <ul id="tabledropdown" class="collapse list-unstyled ">
-                        <li><a href="#"><i class="icon-grid"></i>库存查询</a></li>
+                        <li><a href="${APP_PATH}/home/inventory.do"><i class="icon-grid"></i>库存查询</a></li>
                         <%--<li><a href="#"><i class="icon-flask"></i>材料信息</a></li>--%>
                     </ul>
                 </li>

@@ -92,4 +92,17 @@ public class PurchaseBillServiceImpl extends BaseServiceImpl<PurchaseBill> imple
 
         return purchaseBillMapper.selectByExample(example);
     }
+
+    @Override
+    public List<Integer> getBillIds(Integer materialId, String beginDate, String endDate) {
+        return purchaseBillMapper.getBillIds(materialId, beginDate, endDate);
+    }
+
+    @Override
+    public List<PurchaseBill> findBillsByIds(List<Integer> billIds) {
+        PurchaseBillExample example = new PurchaseBillExample();
+        PurchaseBillExample.Criteria criteria = example.createCriteria();
+        criteria.andIdIn(billIds);
+        return purchaseBillMapper.selectByExample(example);
+    }
 }

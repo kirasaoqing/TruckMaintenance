@@ -106,6 +106,12 @@
       order by ${orderByClause}
     </if>
   </select>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select
+    <include refid="Base_Column_List" />
+    from sv_purchase_material
+    where id = #{id,jdbcType=INTEGER}
+  </select>
 
   <!--根据example联查带物料的采购明细-->
   <select id="selectByExampleWithMaterial" resultMap="WithMaterialResultMap" parameterType="com.cx.truck.model.PurchaseMaterialExample" >
@@ -124,14 +130,6 @@
       order by ${orderByClause}
     </if>
   </select>
-
-  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
-    select 
-    <include refid="Base_Column_List" />
-    from sv_purchase_material
-    where id = #{id,jdbcType=INTEGER}
-  </select>
-
   <!--根据id联查带物料的采购明细-->
   <select id="selectByPrimaryKeyWithMaterial" resultMap="WithMaterialResultMap" parameterType="java.lang.Integer" >
     select
@@ -141,6 +139,7 @@
     LEFT JOIN bc_unit bu on bu.id = bm.unit_id
     where id = #{id,jdbcType=INTEGER}
   </select>
+
 
   <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
     delete from sv_purchase_material
@@ -277,4 +276,5 @@
       amount = #{amount,jdbcType=DOUBLE}
     where id = #{id,jdbcType=INTEGER}
   </update>
+
 </mapper>

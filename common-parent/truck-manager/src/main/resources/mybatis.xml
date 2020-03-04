@@ -10,6 +10,9 @@
         <setting name="cacheEnabled" value="true"/>
     </settings>-->
 
+    <settings>
+        <setting name="logImpl" value="STDOUT_LOGGING"/>
+    </settings>
     <plugins>
         <plugin interceptor="com.github.pagehelper.PageInterceptor">
             <!--分页参数合理化，不可能-->

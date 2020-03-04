@@ -32,6 +32,7 @@ public class MaterialController {
     protected IMaterialService materialService;
 
     //================================查询===================================
+
     /**
      * 查询全部
      *
@@ -69,7 +70,7 @@ public class MaterialController {
     @GetMapping("/list/{name}")
     @ResponseBody
     public JsonResult listByName(@PathVariable("name") String name,
-                                        int rows, int page) {
+                                 int rows, int page) {
         PageHelper.startPage(page, rows);
         List<Material> trucks = materialService.fuzzyByName("%" + name + "%");
         if (trucks.size() > 0) {
@@ -118,6 +119,7 @@ public class MaterialController {
 
     /**
      * 查询所有车辆json
+     *
      * @return
      */
     @GetMapping("/getAllMaterials")
@@ -141,8 +143,10 @@ public class MaterialController {
     }
 
     //================================新增===================================
+
     /**
      * 新增单位
+     *
      * @param material
      * @param result
      * @return
@@ -158,12 +162,13 @@ public class MaterialController {
             }
             return JsonResult.fail().add("failFileds", map);
         } else {
-            materialService.insert(material);
-            return JsonResult.success();
+            Integer materialId = materialService.insertSelective(material);
+            return JsonResult.success().add("materialId", materialId);
         }
     }
 
     //================================删除===================================
+
     /**
      * 批量/单一删除方法
      * 批量：1-2-3
@@ -189,6 +194,7 @@ public class MaterialController {
     }
 
     //================================更新===================================
+
     /**
      * 更新单位信息
      *

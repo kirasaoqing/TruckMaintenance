@@ -1,8 +1,8 @@
 <%--
   Created by IntelliJ IDEA.
   User: kira
-  Date: 2020-01-03
-  Time: 09:06
+  Date: 2020-03-03
+  Time: 14:03
   To change this template use File | Settings | File Templates.
 --%>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
@@ -10,14 +10,13 @@
 <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <title>客户信息</title>
-    <%
-        pageContext.setAttribute("APP_PATH", request.getContextPath());
-    %>
+    <title>库存查询</title>
     <meta name="description" content="">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="robots" content="all,follow">
-
+    <%
+        pageContext.setAttribute("APP_PATH", request.getContextPath());
+    %>
     <!-- Bootstrap CSS-->
     <link rel="stylesheet"
           href="${APP_PATH}/assets/vendor/bootstrap/css/bootstrap.min.css">
@@ -52,6 +51,7 @@
     <!-- Tweaks for older IEs--><!--[if lt IE 9]>
     <script src="https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js"></script>
     <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script><![endif]-->
+
 </head>
 <body>
 <!-- Side Navbar -->
@@ -61,14 +61,14 @@
         <div class="sidenav-header d-flex align-items-center justify-content-center">
             <!-- User Info-->
             <div class="sidenav-header-inner text-center">
-                <img src="${pageContext.request.contextPath}/assets/Images/xpic4711.jpg" alt="person"
+                <img src="${APP_PATH}/assets/Images/xpic4711.jpg" alt="person"
                      class="img-fluid rounded-circle">
                 <h2 class="h5">炉洋汽修</h2>
                 <span>LY TruckMaintenance</span>
             </div>
             <!-- Small Brand information, appears on minimized sidebar-->
             <div class="sidenav-header-logo">
-                <a href="${pageContext.request.contextPath}/home/home.do" class="brand-small text-center">
+                <a href="${APP_PATH}/home/home.do" class="brand-small text-center">
                     <strong>L</strong>
                     <strong class="text-primary">Y</strong>
                 </a>
@@ -98,7 +98,8 @@
                         <i class="icon-list"></i>报表查询
                     </a>
                     <ul id="tabledropdown" class="collapse list-unstyled ">
-                        <li><a href="${APP_PATH}/home/inventory.do"><i class="icon-grid"></i>库存查询</a></li>
+                        <li class="active"><a href="${APP_PATH}/home/inventory.do"><i class="icon-grid"></i>库存查询</a>
+                        </li>
                         <%--<li><a href="#"><i class="icon-flask"></i>材料信息</a></li>--%>
                     </ul>
                 </li>
@@ -131,8 +132,7 @@
                         <i class="icon-list"></i>材料设置
                     </a>
                     <ul id="materialdropdown" class="collapse list-unstyled ">
-                        <li class="active"><a href="${APP_PATH}/home/material.do"><i class="icon-padnote"></i>材料信息</a>
-                        </li>
+                        <li><a href="${APP_PATH}/home/material.do"><i class="icon-padnote"></i>材料信息</a></li>
                         <li><a href="${APP_PATH}/home/unit.do"><i class="icon-padnote"></i>单位信息</a></li>
                     </ul>
                 </li>
@@ -140,7 +140,7 @@
         </div>
     </div>
 </nav>
-<!-- page -->
+<!--page-->
 <div class="page">
     <!-- navbar-->
     <header class="header">
@@ -161,7 +161,7 @@
                     <ul class="nav-menu list-unstyled d-flex flex-md-row align-items-md-center">
                         <!-- Log out-->
                         <li class="nav-item">
-                            <a href="${pageContext.request.contextPath}/user/logout.do" class="nav-link logout">
+                            <a href="${APP_PATH}/user/logout.do" class="nav-link logout">
                                 <span class="d-none d-sm-inline-block">退出</span>
                                 <i class="fa fa-sign-out"></i>
                             </a>
@@ -171,28 +171,21 @@
             </div>
         </nav>
     </header>
-    <!-- Counts Section -->
+    <!-- content start -->
     <section class="dashboard-counts section-padding">
         <div class="container-fluid">
             <div class="row">
                 <div class="col-lg-12">
                     <div class="card">
                         <div class="card-header">
-                            <div class="float-left">
-                                <h2><span class="fa fa-user-circle-o"></span> 材料列表</h2>
-                            </div>
+                            <h2><span class="fa fa-android"></span> 即时库存</h2>
                         </div>
                         <div class="card-body">
-                            <div id="toolbar" class="btn-group">
-                                <input type="text" id="search_input" placeholder="请输入材料名称" autocomplete="off">
-                                <button id="search_btn" type="button" class="btn btn-dark">
+                            <div id="toolbar" class="form-inline">
+                                <label>选择材料：</label>
+                                <select class="form-control" id="materialId_select" name="materialId"></select>
+                                <button id="search_btn" type="button" class="btn btn-primary">
                                     <span class="fa fa-search"></span> 搜索
-                                </button>
-                                <button id="add_btn" type="button" class="btn btn-primary">
-                                    <span class="fa fa-plus" aria-hidden="true"></span> 新增
-                                </button>
-                                <button id="delete_selected_btn" type="button" class="btn btn-outline-danger">
-                                    <span class="fa fa-trash" aria-hidden="true"></span> 删除
                                 </button>
                             </div>
                             <table id="table"></table>
@@ -202,69 +195,10 @@
             </div>
         </div>
     </section>
-    <footer class="main-footer">
-        <div class="container-fluid">
-            <div class="row">
-                <div class="col-sm-6">
-                    <p>Copyright &copy; 2019.LYQX All rights reserved. 炉洋汽修 版权所有</p>
-                </div>
-                <div class="col-sm-6 text-right">
-                </div>
-            </div>
-        </div>
-    </footer>
 </div>
 
 
-<!-- 新增模态框 -->
-<div class="modal fade" id="materialModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
-    <div class="modal-dialog">
-        <div class="modal-content">
-
-            <!-- 模态框头部 -->
-            <div class="modal-header">
-                <h4 class="modal-title"><strong class="h1 text-primary">材料信息</strong></h4>
-                <button type="button" class="close" data-dismiss="modal">&times;</button>
-            </div>
-
-            <!-- 模态框主体 -->
-            <div class="modal-body">
-                <form autocomplete="off">
-                    <div class="form-group row">
-                        <label class="col-sm-3 form-control-label">材料编码</label>
-                        <div class="col-sm-9">
-                            <input type="text" class="form-control" name="id"
-                                   id="id_input" readonly="readonly">
-                            <span class="help-block"></span>
-                        </div>
-                    </div>
-                    <div class="form-group row">
-                        <label class="col-sm-3 form-control-label">材料名称</label>
-                        <div class="col-sm-9">
-                            <input type="text" class="form-control" placeholder="请输入材料名称" name="name"
-                                   id="name_input" required>
-                            <span class="help-block"></span>
-                        </div>
-                    </div>
-                    <div class="form-group row">
-                        <label class="col-sm-3 form-control-label">单位</label>
-                        <div class="col-sm-9">
-                            <select class="form-control" id="unit_select" name="unitId">
-                            </select>
-                        </div>
-                    </div>
-                </form>
-            </div>
-
-            <!-- 模态框底部 -->
-            <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-dismiss="modal">关闭</button>
-                <button type="button" class="btn btn-primary" id="save_or_update_btn">保存</button>
-            </div>
-        </div>
-    </div>
-</div>
-
+<!-- JavaScript files-->
 <script src="${APP_PATH}/assets/vendor/jquery/jquery.min.js"></script>
 <script src="${APP_PATH}/assets/vendor/popper.js/umd/popper.min.js"></script>
 <script src="${APP_PATH}/assets/vendor/bootstrap/js/bootstrap.min.js"></script>
@@ -274,9 +208,10 @@
 <script src="${APP_PATH}/assets/vendor/jquery-validation/jquery.validate.min.js"></script>
 <script src="${APP_PATH}/assets/vendor/malihu-custom-scrollbar-plugin/jquery.mCustomScrollbar.concat.min.js"></script>
 <script src="${APP_PATH}/assets/vendor/js/charts-home.js"></script>
-<script src="${APP_PATH}/assets/vendor/js/front.js"></script>
 <!--common-->
 <script type="text/javascript" src="${APP_PATH}/assets/Scripts/common.js"></script>
+<!-- Main File-->
+<script src="${APP_PATH}/assets/vendor/js/front.js"></script>
 <!-- sweetalert-->
 <script src="${APP_PATH}/assets/vendor/sweetalert/sweetalert.min.js"></script>
 <!-- bootstrap-table -->
@@ -290,55 +225,19 @@
     $(function () {
         //======================初始化========================
         //1.初始化Table
-        var url = "${APP_PATH}/material";
+        var url = "${APP_PATH}/inventory/inventory" ;
         var oTable = new TableInit();
         oTable.Init(url);
         //2.初始化Button的点击事件
         var oButtonInit = new ButtonInit();
         oButtonInit.Init();
 
-    })
+        //3.初始化搜索下拉列表
+        new materialInit();
+
+    });
 
     var TableInit = function () {
-        //操作栏的格式化
-        function actionFormatter(value, row, index) {
-            return [
-                /*'<button id="look_btn" type="button" class="btn btn-outline-dark">查看</button>',*/
-                '<button id="delete_one_btn" type="button" class="btn btn-outline-danger btn-sm">删除</button>',
-            ].join('');
-        }
-
-        window.operateEvents = {
-            'click #delete_one_btn': function (e, value, row, index) {
-                swal({
-                    title: "确定要删除以下单位吗？",
-                    text: row.name,
-                    icon: "warning",
-                    buttons: {
-                        cancel: "取消",
-                        confirm: {
-                            text: "确定",
-                            value: "delete"
-                        }
-                    },
-                }).then((value) => {
-                    if (value == "delete") {
-                        $.ajax({
-                            url: "${APP_PATH}/material/" + row.id.toString(),
-                            type: "DELETE",
-                            success: function (result) {
-                                $("#table").bootstrapTable('refresh');
-                                swal({
-                                    title: "删除成功",
-                                    icon: "success",
-                                    button: "退出"
-                                });
-                            }
-                        });
-                    }
-                })
-            }
-        };
         var oTableInit = new Object();
         //初始化Table
         oTableInit.Init = function (url) {
@@ -377,7 +276,7 @@
                 cardView: false,                    //是否显示详细视图
                 paginationLoop: false,              //是否无限循环
 
-                detailView: false,                  //是否显示父子表
+                detailView: true,                  //是否显示父子表
                 detailFormatter: function (index, row) {
                     var html = []
                     $.each(row, function (key, value) {
@@ -401,40 +300,42 @@
                 },
                 //得到查询的参数
                 queryParams: function (params) {
+                    var materialId = $("#materialId_select").val();
                     //这里的键的名字和控制器的变量名必须一致，这边改动，控制器也需要改成一样的
                     var temp = {
                         rows: params.limit,    //页面大小
                         page: (params.offset / params.limit) + 1,   //页码
                         sort: params.sort,      //排序列名
-                        sortOrder: params.order //排位命令（desc，asc）
+                        sortOrder: params.order, //排位命令（desc，asc）
+                        materialId:materialId
                     };
                     return temp;
                 },
                 columns: [
                     {
-                        checkbox: true,
-                        visible: true,
+                        field: 'materialId',
+                        title: '材料编码',
                         align: 'center'
-                    }, {
-                        field: 'id',
-                        title: '编号',
-                        align: 'center'
-                    }, {
-                        field: 'name',
+                    },{
+                        field: 'materialName',
                         title: '材料名称',
                         align: 'center'
                     }, {
-                        field: 'unit.name',
+                        field: 'unitName',
                         title: '单位',
                         align: 'center'
                     }, {
-                        field: 'operate',
-                        title: '操作',
-                        width: 100,
-                        align: 'center',
-                        valign: 'middle',
-                        events: operateEvents,//给按钮注册事件
-                        formatter: actionFormatter//表格中增加按钮
+                        field: 'purchaseQty',
+                        title: '采购数量',
+                        align: 'center'
+                    }, {
+                        field: 'useQty',
+                        title: '使用数量',
+                        align: 'center'
+                    }, {
+                        field: 'inventory',
+                        title: '库存数量',
+                        align: 'center'
                     }
                 ],
                 onLoadSuccess: function () {
@@ -445,14 +346,7 @@
                 },
 
                 onDblClickRow: function (row, $element) {
-                    new unitInit(row.unit.id);
-                    $("#id_input").val(row.id);
-                    $("#name_input").val(row.name);
-                    $("#materialModal").modal({
-                        backdrop: "static",
-                        draggable: true,
-                        overflow: "hidden"
-                    });
+
                 },
             });
         };
@@ -467,163 +361,30 @@
             //初始化页面上面的按钮事件
             //======================查找=========================
             $("#search_btn").click(function () {
+                var url = "${APP_PATH}/inventory/inventory" ;
                 var oTable = new TableInit();
-                var url = "${APP_PATH}/material/list/" + $("#search_input").val();
                 oTable.Init(url);
             });
-
-            //=====================新增和修改==========================
-            $("#add_btn").click(function () {
-                reset_form("#materialModal");
-                new unitInit();
-                $("#materialModal").modal({
-                    backdrop: "static",
-                    draggable: true,
-                    overflow: "hidden"
-                });
-            });
-
-            $("#save_or_update_btn").click(function () {
-                //2.判断id是否存在,如果不存在新增
-                if ($("#id_input").val() == "") {
-                    //2-1.发送ajax请求保存
-                    $.ajax({
-                        url: "${APP_PATH}/material",
-                        type: "POST",
-                        data: $("#materialModal form").serialize(),
-                        success: function (result) {
-                            //后端JSR303校验通过
-                            if (result.code == 100) {
-                                /*//向库存表存物料及初始化库存为0
-                                $.ajax({
-                                    url: "{APP_PATH}/inventory",
-                                    type: "POST",
-                                    data: "materialId=" + result.extend.materialId + "&inventory=" + 0,
-                                    success: function (result) {
-                                        console.log("inventory result:" + result);
-                                    }
-                                });*/
-                                //1.关闭模态框
-                                $("#materialModal").modal('hide');
-                                //2.来到最后一页，显示新添加数据，也就是发送ajax请求显示最后一页数据
-                                $("#table").bootstrapTable('refresh');
-                            } else {
-                                show_validate_msg($("#name_input"), "fail", result.extend.name);
-                            }
-                        }
-                    });
-                } else {
-                    //2-1.发送ajax请求更新
-                    $.ajax({
-                        url: "${APP_PATH}/material",
-                        type: "PUT",
-                        data: $("#materialModal form").serialize(),
-                        success: function (result) {
-                            //后端JSR303校验通过
-                            if (result.code == 100) {
-                                //1.关闭模态框
-                                $("#materialModal").modal('hide');
-                                //2.来到最后一页，显示新添加数据，也就是发送ajax请求显示最后一页数据
-                                $("#table").bootstrapTable('refresh');
-                            } else {
-                                show_validate_msg($("#name_input"), "fail", result.extend.name);
-                            }
-                        }
-                    });
-                }
-            });
-
-            //=====================删除==========================
-            $("#delete_selected_btn").click(function () {
-                //使用getSelections即可获得，row是json格式的数据
-                var rows = $.map($('#table').bootstrapTable('getSelections'), function (rows) {
-                    return rows;
-                });
-                var materialIds = "";
-                var materialNames = "";
-                $.each(rows, function (index, row) {
-                    materialIds += row.id + "-";
-                    materialNames += row.name + ",";
-                });
-                $.ajax({
-                    url: "${APP_PATH}/truck/check/" + customerIds,
-                    type: "GET",
-                    success: function (result) {
-                        console.log(result);
-                        if (result.code == 100) {
-                            if (materialIds != "") {
-                                materialIds = customerIds.substring(0, materialIds.length - 1);
-                                materialNames = materialNames.substring(0, materialNames.length - 1);
-                                swal({
-                                    title: "确定要删除以下材料吗？",
-                                    text: materialNames,
-                                    icon: "warning",
-                                    buttons: {
-                                        cancel: "取消",
-                                        confirm: {
-                                            text: "确定",
-                                            value: "delete"
-                                        }
-                                    },
-                                }).then((value) => {
-                                    if (value == "delete") {
-                                        $.ajax({
-                                            url: "${APP_PATH}/material/" + materialIds,
-                                            type: "DELETE",
-                                            success: function (result) {
-                                                console.log(result);
-                                                $("#table").bootstrapTable('refresh');
-                                            }
-                                        });
-                                    }
-                                })
-                            } else {
-                                swal({
-                                    title: "请勾选想要删除的材料",
-                                    icon: "warning",
-                                    button: "退出"
-                                });
-                            }
-                        } else if (result.code == 200) {
-                            var va_ids = "";
-                            $.each(result.extend.va_msg, function (index, value) {
-                                va_ids += value + " ";
-                            });
-                            swal({
-                                title: "材料:" + va_ids + "已经被使用，无法删除",
-                                icon: "warning",
-                                button: "退出"
-                            });
-                        }
-                    }
-                });
-            });
-        };
+        }
         return oInit;
     };
 
-    //=============================查找单位信息=======================
     //查出所有的单位并显示在下拉列表中
-    var unitInit = function getUnits(unitId) {
+    var materialInit = function getMaterials() {
         //清空下拉列表
-        $("#unit_select").empty();
+        $("#materialId_select").empty();
         $.ajax({
-            url: "${APP_PATH}/unit/getAllUnits",
+            url: "${APP_PATH}/material/getAllMaterials",
             type: "GET",
             success: function (result) {
-                var option = $("<option></option>").append().attr("value", 0);
-                option.appendTo("#unit_select");
-                $.each(result.extend.units, function () {
-                    if (this.id == unitId) {
-                        var option = $("<option></option>").append(this.name).attr("value", this.id).attr("selected", "selected");
-                    } else {
-                        var option = $("<option></option>").append(this.name).attr("value", this.id);
-                    }
-                    option.appendTo("#unit_select");
+                $.each(result.extend.materials, function () {
+                    option = $("<option></option>").append(this.name).attr("value", this.id)
+                    option.appendTo("#materialId_select");
                 });
             }
         });
     }
 </script>
+
 </body>
 </html>

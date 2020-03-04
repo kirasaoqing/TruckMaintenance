@@ -28,4 +28,13 @@ public interface PurchaseBillMapper {
     int updateByPrimaryKeySelective(PurchaseBill record);
 
     int updateByPrimaryKey(PurchaseBill record);
+
+    /**
+     * 根据材料id查询出采购单id
+     * @param id
+     * @return
+     */
+    List<Integer> getBillIds(@Param(value="id") Integer id,
+                             @Param("beginDate")String beginDate,
+                             @Param("endDate")String endDate);
 }

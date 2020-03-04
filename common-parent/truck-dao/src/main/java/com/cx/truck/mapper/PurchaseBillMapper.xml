@@ -178,4 +178,11 @@
       supplier = #{supplier,jdbcType=VARCHAR}
     where id = #{id,jdbcType=INTEGER}
   </update>
+
+  <!--根据材料id查询出采购单id-->
+  <select id="getBillIds" resultType="java.lang.Integer" >
+    SELECT id FROM sv_purchase_bill
+        WHERE purchasedate BETWEEN #{beginDate} AND #{endDate}
+        AND id IN (SELECT bill_id FROM sv_purchase_material WHERE material_id = #{id})
+  </select>
 </mapper>

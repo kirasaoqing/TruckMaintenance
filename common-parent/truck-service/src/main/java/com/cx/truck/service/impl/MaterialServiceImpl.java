@@ -12,12 +12,13 @@ import java.util.List;
 public class MaterialServiceImpl extends BaseServiceImpl<Material> implements IMaterialService {
     @Override
     public void insert(Material material) {
-        materialMapper.insertSelective(material);
+
     }
 
     @Override
     public Integer insertSelective(Material material) {
-        return null;
+        materialMapper.insertSelective(material);
+        return material.getId();
     }
 
     @Override

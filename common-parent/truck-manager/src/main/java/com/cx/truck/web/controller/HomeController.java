@@ -73,6 +73,17 @@ public class HomeController {
     }
 
     /**
+     * 跳转到库存查询
+     *
+     * @return
+     */
+    @RequestMapping(INVENTORY)
+    public String goInventory() {
+        return INVENTORY_PAGE;
+    }
+
+
+    /**
      * 跳转到维修单列表
      *
      * @return

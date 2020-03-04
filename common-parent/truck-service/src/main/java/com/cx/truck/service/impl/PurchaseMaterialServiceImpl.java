@@ -86,4 +86,6 @@ public class PurchaseMaterialServiceImpl extends BaseServiceImpl<PurchaseMateria
         criteria.andBillIdIn(billIds);
         purchaseMaterialMapper.deleteByExample(example);
     }
+
+
 }

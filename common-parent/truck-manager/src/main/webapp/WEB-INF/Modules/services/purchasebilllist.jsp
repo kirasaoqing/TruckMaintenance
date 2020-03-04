@@ -100,7 +100,7 @@
                         <i class="icon-list"></i>报表查询
                     </a>
                     <ul id="tabledropdown" class="collapse list-unstyled ">
-                        <li><a href="#"><i class="icon-grid"></i>库存查询</a></li>
+                        <li><a href="${APP_PATH}/home/inventory.do"><i class="icon-grid"></i>库存查询</a></li>
                         <%--<li><a href="#"><i class="icon-flask"></i>材料信息</a></li>--%>
                     </ul>
                 </li>
@@ -216,9 +216,13 @@
                                                     class="glyphicon glyphicon-calendar"></span></span>
                                         </div>
                                     </div>
-                                    <div>
+                                    <%--<div>
                                         <input type="text" class="form-control" id="supplier_search"
                                                placeholder="供应商" autocomplete="off">
+                                    </div>--%>
+                                    <div>
+                                        <select class="form-control" id="materialId_search_select"
+                                                name="materialId"></select>
                                     </div>
                                     <button class="btn btn-dark" type="button" id="search_btn">
                                         <span class="fa fa-search"></span> 搜索
@@ -409,19 +413,6 @@
         //1.初始化Table
         var url = "${APP_PATH}/purchasebill";
 
-        /*$.ajax({
-            url:'
-
-
-
-
-        ${APP_PATH}/purchasebill',
-            type: "GET",
-            success: function (result) {
-                console.log(result);
-            }
-        })*/
-
         var oTable = new TableInit();
         oTable.Init(url);
 
@@ -429,6 +420,8 @@
         var oButtonInit = new ButtonInit();
         oButtonInit.Init();
 
+        //3.初始化搜索框
+        new materialSelectInit();
     });
 
     var TableInit = function () {
@@ -526,11 +519,13 @@
                 queryParams: function (params) {
                     var beginDate = $("#begindate_input").val();
                     var endDate = $("#enddate_input").val();
-                    var supplier = $("#supplier_search").val();
+                    /*var supplier = $("#supplier_search").val();*/
+                    var materialId = $("#materialId_search_select").val();
 
                     //这里的键的名字和控制器的变量名必须一致，这边改动，控制器也需要改成一样的
                     var temp = {
-                        supplier: supplier,
+                        materialId: materialId,
+                        /*supplier: supplier,*/
                         beginDate: beginDate,
                         endDate: endDate,
                         rows: params.limit,    //页面大小
@@ -788,19 +783,42 @@
             //采购单明细保存和修改
             $("#material_save_or_update_btn").click(function () {
                 if ($("#bill_material_id_input").val() == "") {
+                    //采购单明细保存
                     $.ajax({
                         url: "${APP_PATH}/purchasematerial",
                         type: "POST",
                         data: $("#materialModal form").serialize(),
                         success: function (result) {
                             if (result.code == 100) {
+                                /*//库存表查询
+                                $.ajax({
+                                    url: "{APP_PATH}/inventory/list/" + $("#materialId_select").val(),
+                                    type: "GET",
+                                    success: function (result) {
+                                        if (result.code == 100) {
+                                            //更新库存
+                                            var inventory = result.extend.inventory;
+                                            var inven = parseFloat(inventory.inventory) + parseFloat($("#quantity_input").val());
+                                            console.log("inven:" + inven);
+                                            $.ajax({
+                                                url: "{APP_PATH}/inventory",
+                                                type: "PUT",
+                                                data: "id=" + inventory.id + "&materialId=" + inventory.materialId + "&inventory=" + inven,
+                                                success: function (result) {
+                                                    console.log(result);
+                                                }
+                                            });
+                                        }
+
+                                    }
+                                });*/
                                 $("#materialModal").modal("hide");
-                                //$("#material_table").bootstrapTable('refresh');
                                 swal({
                                     title: "材料明细保存成功",
                                     icon: "success",
                                     button: "确定"
                                 });
+                                $("#table").bootstrapTable('refresh');
                             } else if (result.code == 200) {
                                 swal({
                                     title: "材料明细保存失败",
@@ -862,12 +880,16 @@
                     }).then((value) => {
                         if (value == "delete") {
                             /*$.ajax({
-                                url: "${APP_PATH}/purchasematerial/material/" + billIds,
+                                url: "
+
+                            ${APP_PATH}/purchasematerial/material/" + billIds,
                                 type: "DELETE",
                                 success: function (result) {
                                     if(result.code == 100){
                                         $.ajax({
-                                            url: "${APP_PATH}/purchasebill/" + billIds,
+                                            url: "
+
+                            ${APP_PATH}/purchasebill/" + billIds,
                                             type: "DELETE",
                                             success: function (result) {
                                                 $("#table").bootstrapTable('refresh');
@@ -879,7 +901,6 @@
                                             }
                                         });
                                     }
-
                                 }
                             });*/
                             $.ajax({
@@ -957,6 +978,21 @@
         }
     });
 
+    //查出所有的单位并显示在下拉列表中
+    var materialSelectInit = function getMaterialSelect() {
+        //清空下拉列表
+        $("#materialId_search_select").empty();
+        $.ajax({
+            url: "${APP_PATH}/material/getAllMaterials",
+            type: "GET",
+            success: function (result) {
+                $.each(result.extend.materials, function () {
+                    option = $("<option></option>").append(this.name).attr("value", this.id)
+                    option.appendTo("#materialId_search_select");
+                });
+            }
+        });
+    }
 </script>
 </body>
 </html>

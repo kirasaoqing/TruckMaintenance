@@ -142,7 +142,7 @@
     values (#{id,jdbcType=INTEGER}, #{name,jdbcType=VARCHAR}, #{unitId,jdbcType=INTEGER}
       )
   </insert>
-  <insert id="insertSelective" parameterType="com.cx.truck.model.Material" >
+  <insert id="insertSelective" parameterType="com.cx.truck.model.Material" useGeneratedKeys="true" keyProperty="id">
     insert into bc_material
     <trim prefix="(" suffix=")" suffixOverrides="," >
       <if test="id != null" >
