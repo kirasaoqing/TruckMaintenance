@@ -94,10 +94,10 @@
                     </a>
                 </li>
                 <li>
-                    <a href="#tabledropdown" aria-expanded="false" data-toggle="collapse">
+                    <a href="#tabledropdown" aria-expanded="true" data-toggle="collapse">
                         <i class="icon-list"></i>报表查询
                     </a>
-                    <ul id="tabledropdown" class="collapse list-unstyled ">
+                    <ul id="tabledropdown" class="collapse show list-unstyled ">
                         <li class="active"><a href="${APP_PATH}/home/inventory.do"><i class="icon-grid"></i>库存查询</a>
                         </li>
                         <%--<li><a href="#"><i class="icon-flask"></i>材料信息</a></li>--%>

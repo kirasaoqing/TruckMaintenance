@@ -355,18 +355,18 @@
                         </div>
                     </div>
                     <div class="form-group row">
-                        <label class="col-sm-3 form-control-label" for="price_input">单价</label>
+                        <label class="col-sm-3 form-control-label" for="purprice_input">采购价(元)</label>
                         <div class="col-sm-9">
                             <input type="text" class="form-control" placeholder="请输入单价" name="price"
-                                   id="price_input">
+                                   id="purprice_input" readonly>
                             <span class="help-block"></span>
                         </div>
                     </div>
                     <div class="form-group row">
-                        <label class="col-sm-3 form-control-label" for="amount_input">金额</label>
+                        <label class="col-sm-3 form-control-label" for="amount_input">金额(元)</label>
                         <div class="col-sm-9">
                             <input type="text" class="form-control" placeholder="请输入金额" name="amount"
-                                   id="amount_input">
+                                   id="amount_input" readonly>
                             <span class="help-block"></span>
                         </div>
                     </div>
@@ -450,18 +450,20 @@
                         }
                     },
                 }).then((value) => {
-                    $.ajax({
-                        url: "${APP_PATH}/purchasebill/" + row.id.toString(),
-                        type: "DELETE",
-                        success: function (result) {
-                            $("#table").bootstrapTable('refresh');
-                            swal({
-                                title: "删除成功",
-                                icon: "success",
-                                button: "退出"
-                            });
-                        }
-                    });
+                    if (value == "delete") {
+                        $.ajax({
+                            url: "${APP_PATH}/purchasebill/" + row.id.toString(),
+                            type: "DELETE",
+                            success: function (result) {
+                                $("#table").bootstrapTable('refresh');
+                                swal({
+                                    title: "删除成功",
+                                    icon: "success",
+                                    button: "退出"
+                                });
+                            }
+                        });
+                    }
                 })
             },
 
@@ -609,7 +611,7 @@
                         //删除单个维修项目按钮
                         'click #material_delete_one_btn': function (e, value, row, index) {
                             swal({
-                                title: "确定要删除以下维修项目吗？",
+                                title: "确定要删除以下材料明细吗？",
                                 text: row.id + "",
                                 icon: "warning",
                                 buttons: {
@@ -620,24 +622,26 @@
                                     }
                                 },
                             }).then((value) => {
-                                $.ajax({
-                                    url: "${APP_PATH}/purchasematerial/" + row.id.toString(),
-                                    type: "DELETE",
-                                    success: function (result) {
-                                        //$("#item_table").bootstrapTable('refresh');
-                                        swal({
-                                            title: "删除成功",
-                                            icon: "success",
-                                            button: "退出"
-                                        });
-                                    }
-                                });
+                                if (value == "delete") {
+                                    $.ajax({
+                                        url: "${APP_PATH}/purchasematerial/" + row.id.toString(),
+                                        type: "DELETE",
+                                        success: function (result) {
+                                            $("#material_table").bootstrapTable('refresh');
+                                            swal({
+                                                title: "删除成功",
+                                                icon: "success",
+                                                button: "退出"
+                                            });
+                                        }
+                                    });
+                                }
                             })
                         }
                     }
                     //子表
                     var billId = row.id;
-                    var material_table = $detail.append('<table>材料明细</table>').find('table');
+                    var material_table = $detail.append('<table id="material_table">材料明细</table>').find('table');
                     var material_table = $(material_table).bootstrapTable({
                         url: '${APP_PATH}/purchasematerial/bill/' + billId,
                         method: 'GET',
@@ -692,7 +696,7 @@
                             $("#billid_input").val(row.billId);
                             $("#unit_input").val(row.material.unit.name);
                             $("#quantity_input").val(row.quantity);
-                            $("#price_input").val(row.price);
+                            $("#purprice_input").val(row.price);
                             $("#amount_input").val(row.amount);
                             $("#materialModal").modal({
                                 backdrop: "static",
@@ -812,13 +816,13 @@
 
                                     }
                                 });*/
+                                $("#material_table").bootstrapTable('refresh');
                                 $("#materialModal").modal("hide");
                                 swal({
                                     title: "材料明细保存成功",
                                     icon: "success",
                                     button: "确定"
                                 });
-                                $("#table").bootstrapTable('refresh');
                             } else if (result.code == 200) {
                                 swal({
                                     title: "材料明细保存失败",
@@ -835,8 +839,8 @@
                         data: $("#materialModal form").serialize(),
                         success: function (result) {
                             if (result.code == 100) {
+                                $("#material_table").bootstrapTable('refresh');
                                 $("#materialModal").modal("hide");
-                                //$("#material_table").bootstrapTable('refresh');
                                 swal({
                                     title: "材料明细修改成功",
                                     icon: "success",
@@ -963,6 +967,8 @@
     //物料更改，单位更改
     $("#materialId_select").change(function () {
         $("#unit_input").val("");
+        $("#quantity_input").val(0);
+        $("#amount_input").val(0);
         var id = $(this).val();
         if (id == "") {
             $("#unit_input").val("");
@@ -973,6 +979,7 @@
                 success: function (result) {
                     var data = result.extend.material;
                     $("#unit_input").val(data.unit.name);
+                    $("#purprice_input").val(data.purprice);
                 }
             });
         }
@@ -993,6 +1000,13 @@
             }
         });
     }
+
+    //==============================填数量，自动值更新金额=========================================
+    $("#quantity_input").change(function () {
+        var purprice = $("#purprice_input").val();
+        var quantity = $(this).val();
+        $("#amount_input").val(purprice * quantity);
+    });
 </script>
 </body>
 </html>

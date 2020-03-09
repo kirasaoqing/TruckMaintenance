@@ -5,11 +5,15 @@
     <id column="id" property="id" jdbcType="INTEGER" />
     <result column="name" property="name" jdbcType="VARCHAR" />
     <result column="unit_id" property="unitId" jdbcType="INTEGER" />
+    <result column="purprice" property="purprice" jdbcType="DECIMAL" />
+    <result column="saleprice" property="saleprice" jdbcType="DECIMAL" />
   </resultMap>
   <resultMap id="WithUnitResultMap" type="com.cx.truck.model.Material" >
     <id column="id" property="id" jdbcType="INTEGER" />
     <result column="name" property="name" jdbcType="VARCHAR" />
     <result column="unit_id" property="unitId" jdbcType="INTEGER" />
+    <result column="purprice" property="purprice" jdbcType="DECIMAL" />
+    <result column="saleprice" property="saleprice" jdbcType="DECIMAL" />
     <association property="unit" javaType="com.cx.truck.model.Unit">
       <id column="uid" property="id"/>
       <result column="uname" property="name"/>
@@ -74,10 +78,10 @@
     </where>
   </sql>
   <sql id="Base_Column_List" >
-    id, name, unit_id
+    id, name, unit_id, purprice, saleprice
   </sql>
   <sql id="WithUnit_Column_List" >
-    m.id, m.name, u.id as uid, u.name as uname
+    m.id, m.name, m.purprice, m.saleprice, u.id as uid, u.name as uname
   </sql>
 
   <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.cx.truck.model.MaterialExample" >
@@ -93,6 +97,12 @@
     <if test="orderByClause != null" >
       order by ${orderByClause}
     </if>
+  </select>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select 
+    <include refid="Base_Column_List" />
+    from bc_material
+    where id = #{id,jdbcType=INTEGER}
   </select>
   <!--按条件查询出包含单位信息的材料信息-->
   <select id="selectByExampleWithUnit" resultMap="WithUnitResultMap" parameterType="com.cx.truck.model.MaterialExample" >
@@ -110,13 +120,6 @@
       order by ${orderByClause}
     </if>
   </select>
-
-  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
-    select 
-    <include refid="Base_Column_List" />
-    from bc_material
-    where id = #{id,jdbcType=INTEGER}
-  </select>
   <!--按id查询出包含单位信息的材料信息-->
   <select id="selectByPrimaryKeyWithUnit" resultMap="WithUnitResultMap" parameterType="java.lang.Integer" >
     select
@@ -125,7 +128,7 @@
     left join bc_unit u on u.id = m.unit_id
     where m.id = #{id,jdbcType=INTEGER}
   </select>
-
+  
   <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
     delete from bc_material
     where id = #{id,jdbcType=INTEGER}
@@ -137,12 +140,12 @@
     </if>
   </delete>
   <insert id="insert" parameterType="com.cx.truck.model.Material" >
-    insert into bc_material (id, name, unit_id
-      )
-    values (#{id,jdbcType=INTEGER}, #{name,jdbcType=VARCHAR}, #{unitId,jdbcType=INTEGER}
-      )
+    insert into bc_material (id, name, unit_id, 
+      purprice, saleprice)
+    values (#{id,jdbcType=INTEGER}, #{name,jdbcType=VARCHAR}, #{unitId,jdbcType=INTEGER}, 
+      #{purprice,jdbcType=DECIMAL}, #{saleprice,jdbcType=DECIMAL})
   </insert>
-  <insert id="insertSelective" parameterType="com.cx.truck.model.Material" useGeneratedKeys="true" keyProperty="id">
+  <insert id="insertSelective" parameterType="com.cx.truck.model.Material" >
     insert into bc_material
     <trim prefix="(" suffix=")" suffixOverrides="," >
       <if test="id != null" >
@@ -154,6 +157,12 @@
       <if test="unitId != null" >
         unit_id,
       </if>
+      <if test="purprice != null" >
+        purprice,
+      </if>
+      <if test="saleprice != null" >
+        saleprice,
+      </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides="," >
       <if test="id != null" >
@@ -164,6 +173,12 @@
       </if>
       <if test="unitId != null" >
         #{unitId,jdbcType=INTEGER},
+      </if>
+      <if test="purprice != null" >
+        #{purprice,jdbcType=DECIMAL},
+      </if>
+      <if test="saleprice != null" >
+        #{saleprice,jdbcType=DECIMAL},
       </if>
     </trim>
   </insert>
@@ -185,6 +200,12 @@
       <if test="record.unitId != null" >
         unit_id = #{record.unitId,jdbcType=INTEGER},
       </if>
+      <if test="record.purprice != null" >
+        purprice = #{record.purprice,jdbcType=DECIMAL},
+      </if>
+      <if test="record.saleprice != null" >
+        saleprice = #{record.saleprice,jdbcType=DECIMAL},
+      </if>
     </set>
     <if test="_parameter != null" >
       <include refid="Update_By_Example_Where_Clause" />
@@ -194,7 +215,9 @@
     update bc_material
     set id = #{record.id,jdbcType=INTEGER},
       name = #{record.name,jdbcType=VARCHAR},
-      unit_id = #{record.unitId,jdbcType=INTEGER}
+      unit_id = #{record.unitId,jdbcType=INTEGER},
+      purprice = #{record.purprice,jdbcType=DECIMAL},
+      saleprice = #{record.saleprice,jdbcType=DECIMAL}
     <if test="_parameter != null" >
       <include refid="Update_By_Example_Where_Clause" />
     </if>
@@ -208,13 +231,21 @@
       <if test="unitId != null" >
         unit_id = #{unitId,jdbcType=INTEGER},
       </if>
+      <if test="purprice != null" >
+        purprice = #{purprice,jdbcType=DECIMAL},
+      </if>
+      <if test="saleprice != null" >
+        saleprice = #{saleprice,jdbcType=DECIMAL},
+      </if>
     </set>
     where id = #{id,jdbcType=INTEGER}
   </update>
   <update id="updateByPrimaryKey" parameterType="com.cx.truck.model.Material" >
     update bc_material
     set name = #{name,jdbcType=VARCHAR},
-      unit_id = #{unitId,jdbcType=INTEGER}
+      unit_id = #{unitId,jdbcType=INTEGER},
+      purprice = #{purprice,jdbcType=DECIMAL},
+      saleprice = #{saleprice,jdbcType=DECIMAL}
     where id = #{id,jdbcType=INTEGER}
   </update>
 </mapper>

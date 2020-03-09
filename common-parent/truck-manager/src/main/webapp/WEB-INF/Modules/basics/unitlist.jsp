@@ -127,10 +127,10 @@
                 <li><a href="${APP_PATH}/home/worker.do"> <i class="icon-picture"> </i>员工信息</a>
                 </li>
                 <li>
-                    <a href="#materialdropdown" aria-expanded="false" data-toggle="collapse">
+                    <a href="#materialdropdown" aria-expanded="true" data-toggle="collapse">
                         <i class="icon-list"></i>材料设置
                     </a>
-                    <ul id="materialdropdown" class="collapse list-unstyled ">
+                    <ul id="materialdropdown" class="collapse show list-unstyled ">
                         <li><a href="${APP_PATH}/home/material.do"><i class="icon-padnote"></i>材料信息</a></li>
                         <li class="active"><a href="${APP_PATH}/home/unit.do"><i class="icon-padnote"></i>单位信息</a></li>
                     </ul>

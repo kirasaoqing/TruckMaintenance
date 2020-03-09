@@ -1,5 +1,6 @@
 package com.cx.truck.model;
 
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -205,7 +206,7 @@ public class MaterialExample {
         }
 
         public Criteria andNameLike(String value) {
-            addCriterion("m.name like", value, "name");
+            addCriterion("name like", value, "name");
             return (Criteria) this;
         }
 
@@ -291,6 +292,126 @@ public class MaterialExample {
 
         public Criteria andUnitIdNotBetween(Integer value1, Integer value2) {
             addCriterion("unit_id not between", value1, value2, "unitId");
+            return (Criteria) this;
+        }
+
+        public Criteria andPurpriceIsNull() {
+            addCriterion("purprice is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andPurpriceIsNotNull() {
+            addCriterion("purprice is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andPurpriceEqualTo(BigDecimal value) {
+            addCriterion("purprice =", value, "purprice");
+            return (Criteria) this;
+        }
+
+        public Criteria andPurpriceNotEqualTo(BigDecimal value) {
+            addCriterion("purprice <>", value, "purprice");
+            return (Criteria) this;
+        }
+
+        public Criteria andPurpriceGreaterThan(BigDecimal value) {
+            addCriterion("purprice >", value, "purprice");
+            return (Criteria) this;
+        }
+
+        public Criteria andPurpriceGreaterThanOrEqualTo(BigDecimal value) {
+            addCriterion("purprice >=", value, "purprice");
+            return (Criteria) this;
+        }
+
+        public Criteria andPurpriceLessThan(BigDecimal value) {
+            addCriterion("purprice <", value, "purprice");
+            return (Criteria) this;
+        }
+
+        public Criteria andPurpriceLessThanOrEqualTo(BigDecimal value) {
+            addCriterion("purprice <=", value, "purprice");
+            return (Criteria) this;
+        }
+
+        public Criteria andPurpriceIn(List<BigDecimal> values) {
+            addCriterion("purprice in", values, "purprice");
+            return (Criteria) this;
+        }
+
+        public Criteria andPurpriceNotIn(List<BigDecimal> values) {
+            addCriterion("purprice not in", values, "purprice");
+            return (Criteria) this;
+        }
+
+        public Criteria andPurpriceBetween(BigDecimal value1, BigDecimal value2) {
+            addCriterion("purprice between", value1, value2, "purprice");
+            return (Criteria) this;
+        }
+
+        public Criteria andPurpriceNotBetween(BigDecimal value1, BigDecimal value2) {
+            addCriterion("purprice not between", value1, value2, "purprice");
+            return (Criteria) this;
+        }
+
+        public Criteria andSalepriceIsNull() {
+            addCriterion("saleprice is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andSalepriceIsNotNull() {
+            addCriterion("saleprice is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andSalepriceEqualTo(BigDecimal value) {
+            addCriterion("saleprice =", value, "saleprice");
+            return (Criteria) this;
+        }
+
+        public Criteria andSalepriceNotEqualTo(BigDecimal value) {
+            addCriterion("saleprice <>", value, "saleprice");
+            return (Criteria) this;
+        }
+
+        public Criteria andSalepriceGreaterThan(BigDecimal value) {
+            addCriterion("saleprice >", value, "saleprice");
+            return (Criteria) this;
+        }
+
+        public Criteria andSalepriceGreaterThanOrEqualTo(BigDecimal value) {
+            addCriterion("saleprice >=", value, "saleprice");
+            return (Criteria) this;
+        }
+
+        public Criteria andSalepriceLessThan(BigDecimal value) {
+            addCriterion("saleprice <", value, "saleprice");
+            return (Criteria) this;
+        }
+
+        public Criteria andSalepriceLessThanOrEqualTo(BigDecimal value) {
+            addCriterion("saleprice <=", value, "saleprice");
+            return (Criteria) this;
+        }
+
+        public Criteria andSalepriceIn(List<BigDecimal> values) {
+            addCriterion("saleprice in", values, "saleprice");
+            return (Criteria) this;
+        }
+
+        public Criteria andSalepriceNotIn(List<BigDecimal> values) {
+            addCriterion("saleprice not in", values, "saleprice");
+            return (Criteria) this;
+        }
+
+        public Criteria andSalepriceBetween(BigDecimal value1, BigDecimal value2) {
+            addCriterion("saleprice between", value1, value2, "saleprice");
+            return (Criteria) this;
+        }
+
+        public Criteria andSalepriceNotBetween(BigDecimal value1, BigDecimal value2) {
+            addCriterion("saleprice not between", value1, value2, "saleprice");
             return (Criteria) this;
         }
     }

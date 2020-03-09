@@ -20,6 +20,7 @@
       <id column="mid" property="id"/>
       <result column="mname" property="name"/>
       <result column="unit_id" property="unitId"/>
+      <result column="saleprice" property="saleprice"/>
       <association property="unit" javaType="com.cx.truck.model.Unit">
         <id column="uid" property="id"/>
         <result column="uname" property="name"/>

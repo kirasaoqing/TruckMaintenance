@@ -1,5 +1,7 @@
 package com.cx.truck.model;
 
+import java.math.BigDecimal;
+
 public class Material {
     private Integer id;
 
@@ -8,6 +10,10 @@ public class Material {
     private Integer unitId;
 
     private Unit unit;
+
+    private BigDecimal purprice;
+
+    private BigDecimal saleprice;
 
     public Integer getId() {
         return id;
@@ -41,12 +47,30 @@ public class Material {
         this.unit = unit;
     }
 
+    public BigDecimal getPurprice() {
+        return purprice;
+    }
+
+    public void setPurprice(BigDecimal purprice) {
+        this.purprice = purprice;
+    }
+
+    public BigDecimal getSaleprice() {
+        return saleprice;
+    }
+
+    public void setSaleprice(BigDecimal saleprice) {
+        this.saleprice = saleprice;
+    }
+
     @Override
     public String toString() {
         return "Material{" +
                 "id=" + id +
                 ", name='" + name + '\'' +
                 ", unitId=" + unitId +
+                ", purprice=" + purprice +
+                ", saleprice=" + saleprice +
                 '}';
     }
 }

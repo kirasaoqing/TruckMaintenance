@@ -187,9 +187,11 @@
            IFNULL(E.quantity,0) AS useQty,
            IFNULL(D.quantity,0) - IFNULL(E.quantity,0) AS inventory
     FROM(
-    SELECT DISTINCT(material_id) FROM sv_maintenance_material smm
-    UNION ALL
-    SELECT DISTINCT(material_id) FROM sv_purchase_material spm) A
+        SELECT DISTINCT(material_id)
+        FROM(
+        SELECT DISTINCT(material_id)
+        FROM sv_maintenance_material smm
+        UNION ALL SELECT DISTINCT(material_id) FROM sv_purchase_material spm) M) A
     LEFT JOIN bc_material B ON B.id = A.material_id
     LEFT JOIN bc_unit C ON C.id = B.unit_id
     LEFT JOIN (SELECT A.material_id, SUM(A.quantity) AS quantity FROM sv_purchase_material A GROUP BY A.material_id)

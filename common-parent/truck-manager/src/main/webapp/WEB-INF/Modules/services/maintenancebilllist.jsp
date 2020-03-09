@@ -395,7 +395,7 @@
                         </div>
                     </div>
                     <div class="form-group row">
-                        <label class="col-sm-3 form-control-label" for="itemfees_input">项目费用</label>
+                        <label class="col-sm-3 form-control-label" for="itemfees_input">项目费用(元)</label>
                         <div class="col-sm-9">
                             <input type="text" class="form-control" placeholder="请输入项目费用" name="itemfees"
                                    id="itemfees_input">
@@ -467,18 +467,18 @@
                         </div>
                     </div>
                     <div class="form-group row">
-                        <label class="col-sm-3 form-control-label" for="price_input">单价</label>
+                        <label class="col-sm-3 form-control-label" for="saleprice_input">销售价(元)</label>
                         <div class="col-sm-9">
                             <input type="text" class="form-control" placeholder="请输入单价" name="price"
-                                   id="price_input">
+                                   id="saleprice_input" readonly>
                             <span class="help-block"></span>
                         </div>
                     </div>
                     <div class="form-group row">
-                        <label class="col-sm-3 form-control-label" for="amount_input">金额</label>
+                        <label class="col-sm-3 form-control-label" for="amount_input">金额(元)</label>
                         <div class="col-sm-9">
                             <input type="text" class="form-control" placeholder="请输入金额" name="amount"
-                                   id="amount_input">
+                                   id="amount_input" readonly>
                             <span class="help-block"></span>
                         </div>
                     </div>
@@ -566,7 +566,7 @@
                             success: function (result) {
                                 if (result.code == 100) {
                                     $("#itemModal").modal("hide");
-                                    //$("#item_table").bootstrapTable('refresh');
+                                    $("#item_table").bootstrapTable('refresh');
                                     swal({
                                         title: "维修项目保存成功",
                                         icon: "success",
@@ -589,7 +589,7 @@
                             success: function (result) {
                                 if (result.code == 100) {
                                     $("#itemModal").modal("hide");
-                                    //$("#item_table").bootstrapTable('refresh');
+                                    $("#item_table").bootstrapTable('refresh');
                                     swal({
                                         title: "维修项目修改成功",
                                         icon: "success",
@@ -627,7 +627,7 @@
                             success: function (result) {
                                 if (result.code == 100) {
                                     $("#materialModal").modal("hide");
-                                    //$("#material_table").bootstrapTable('refresh');
+                                    $("#material_table").bootstrapTable('refresh');
                                     swal({
                                         title: "维修材料保存成功",
                                         icon: "success",
@@ -650,12 +650,13 @@
                             success: function (result) {
                                 if (result.code == 100) {
                                     $("#materialModal").modal("hide");
-                                    //$("#material_table").bootstrapTable('refresh');
+                                    $("#material_table").bootstrapTable('refresh');
                                     swal({
                                         title: "维修材料修改成功",
                                         icon: "success",
                                         button: "确定"
                                     });
+                                    onExpandRow();
                                 } else if (result.code == 200) {
                                     swal({
                                         title: "维修材料修改失败",
@@ -836,18 +837,20 @@
                                     }
                                 },
                             }).then((value) => {
-                                $.ajax({
-                                    url: "${APP_PATH}/maintenanceitem/" + row.id.toString(),
-                                    type: "DELETE",
-                                    success: function (result) {
-                                        //$("#item_table").bootstrapTable('refresh');
-                                        swal({
-                                            title: "删除成功",
-                                            icon: "success",
-                                            button: "退出"
-                                        });
-                                    }
-                                });
+                                if (value == "delete") {
+                                    $.ajax({
+                                        url: "${APP_PATH}/maintenanceitem/" + row.id.toString(),
+                                        type: "DELETE",
+                                        success: function (result) {
+                                            $("#item_table").bootstrapTable('refresh');
+                                            swal({
+                                                title: "删除成功",
+                                                icon: "success",
+                                                button: "退出"
+                                            });
+                                        }
+                                    });
+                                }
                             })
                         }
                     }
@@ -874,18 +877,20 @@
                                     }
                                 },
                             }).then((value) => {
-                                $.ajax({
-                                    url: "${APP_PATH}/maintenancematerial/" + row.id.toString(),
-                                    type: "DELETE",
-                                    success: function (result) {
-                                        //$("#material_table").bootstrapTable('refresh');
-                                        swal({
-                                            title: "删除成功",
-                                            icon: "success",
-                                            button: "退出"
-                                        });
-                                    }
-                                });
+                                if (value == "delete") {
+                                    $.ajax({
+                                        url: "${APP_PATH}/maintenancematerial/" + row.id.toString(),
+                                        type: "DELETE",
+                                        success: function (result) {
+                                            $("#material_table").bootstrapTable('refresh');
+                                            swal({
+                                                title: "删除成功",
+                                                icon: "success",
+                                                button: "退出"
+                                            });
+                                        }
+                                    });
+                                }
                             })
                         }
                     }
@@ -893,8 +898,8 @@
                     //子表
                     var billId = row.id;
 
-                    var item_table = $detail.append('<table>维修项目</table><br>').find('table');
-                    var material_table = $detail.append('<table>维修材料</table>').find('table');
+                    var item_table = $detail.append('<table id="item_table">维修项目</table><br>').find('table');
+                    var material_table = $detail.append('<table id="material_table">维修材料</table>').find('table');
 
                     var item_table = $(item_table).bootstrapTable({
                         url: '${APP_PATH}/maintenanceitem/bill/' + billId,
@@ -993,7 +998,7 @@
                             $("#materialid_input").val(row.id);
                             $("#unit_input").val(row.material.unit.name);
                             $("#quantity_input").val(row.quantity);
-                            $("#price_input").val(row.price);
+                            $("#saleprice_input").val(row.price);
                             $("#amount_input").val(row.amount);
                             $("#materialModal").modal({
                                 backdrop: "static",
@@ -1180,6 +1185,8 @@
     //物料更改，单位更改
     $("#materialId_select").change(function () {
         $("#unit_input").val("");
+        $("#quantity_input").val(0);
+        $("#amount_input").val(0);
         var id = $(this).val();
         if (id == "") {
             $("#unit_input").val("");
@@ -1190,6 +1197,7 @@
                 success: function (result) {
                     var data = result.extend.material;
                     $("#unit_input").val(data.unit.name);
+                    $("#saleprice_input").val(data.saleprice);
                 }
             });
         }
@@ -1257,6 +1265,13 @@
             }
         });
     }
+
+    //==============================填数量，自动值更新金额=========================================
+    $("#quantity_input").change(function () {
+        var saleprice = $("#saleprice_input").val();
+        var quantity = $(this).val();
+        $("#amount_input").val(saleprice * quantity);
+    });
 </script>
 </body>
 </html>

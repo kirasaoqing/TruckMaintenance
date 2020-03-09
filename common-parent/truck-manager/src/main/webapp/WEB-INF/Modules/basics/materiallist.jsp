@@ -127,10 +127,10 @@
                 <li><a href="${APP_PATH}/home/worker.do"> <i class="icon-picture"> </i>员工信息</a>
                 </li>
                 <li>
-                    <a href="#materialdropdown" aria-expanded="false" data-toggle="collapse">
+                    <a href="#materialdropdown" aria-expanded="true" data-toggle="collapse">
                         <i class="icon-list"></i>材料设置
                     </a>
-                    <ul id="materialdropdown" class="collapse list-unstyled ">
+                    <ul id="materialdropdown" class="collapse show list-unstyled ">
                         <li class="active"><a href="${APP_PATH}/home/material.do"><i class="icon-padnote"></i>材料信息</a>
                         </li>
                         <li><a href="${APP_PATH}/home/unit.do"><i class="icon-padnote"></i>单位信息</a></li>
@@ -251,6 +251,22 @@
                         <div class="col-sm-9">
                             <select class="form-control" id="unit_select" name="unitId">
                             </select>
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <label class="col-sm-3 form-control-label">采购单价(元)</label>
+                        <div class="col-sm-9">
+                            <input type="text" class="form-control" placeholder="请输入采购单价" name="purprice"
+                                   id="purprice_input" required>
+                            <span class="help-block"></span>
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <label class="col-sm-3 form-control-label">销售单价(元)</label>
+                        <div class="col-sm-9">
+                            <input type="text" class="form-control" placeholder="请输入销售单价" name="saleprice"
+                                   id="saleprice_input" required>
+                            <span class="help-block"></span>
                         </div>
                     </div>
                 </form>
@@ -428,6 +444,14 @@
                         title: '单位',
                         align: 'center'
                     }, {
+                        field: 'purprice',
+                        title: '最新采购价(元)',
+                        align: 'center'
+                    },{
+                        field: 'saleprice',
+                        title: '最新销售价(元)',
+                        align: 'center'
+                    },{
                         field: 'operate',
                         title: '操作',
                         width: 100,
@@ -448,6 +472,8 @@
                     new unitInit(row.unit.id);
                     $("#id_input").val(row.id);
                     $("#name_input").val(row.name);
+                    $("#purprice_input").val(row.purprice);
+                    $("#saleprice_input").val(row.saleprice);
                     $("#materialModal").modal({
                         backdrop: "static",
                         draggable: true,
