@@ -31,4 +31,11 @@ public interface IMaintenanceBillService extends IBaseService<MaintenanceBill> {
      * @return
      */
     HashMap<String,Integer> getTruckCounts(String date);
+
+    /**
+     * 根据id获取带维修项目和材料的维修单
+     * @param id
+     * @return
+     */
+    MaintenanceBill findByIdWithItemAndMaterial(Integer id);
 }

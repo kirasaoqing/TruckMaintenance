@@ -35,7 +35,7 @@ public class MaintenanceItemController extends BaseController<MaintenanceItem> {
     @ResponseBody
     public JsonResult getItemsByBillId(@PathVariable("billId") Integer billId) {
         //List查询要放到startPage下面
-        PageHelper.startPage(1, 10);
+        PageHelper.startPage(1, 20);
         List<MaintenanceItem> items = maintenanceItemService.findByBillId(billId);
         PageInfo<MaintenanceItem> pageInfo = new PageInfo<>(items);
         //取出查询结果

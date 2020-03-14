@@ -542,6 +542,7 @@
                 /*'<button id="delete_one_btn" type="button" class="btn btn-outline-danger btn-sm"><span class="fa fa-trash"></span>删除</button>',*/
                 '<button id="item_add_btn" type="button" class="btn btn-primary btn-sm"><span class="fa fa-plus"></span>项目</button>',
                 '<button id="material_add_btn" type="button" class="btn btn-secondary btn-sm"><span class="fa fa-plus"></span>材料</button>',
+                '<button id="export_btn" type="button" class="btn btn-outline-primary btn-sm"><span class="fa fa-plus"></span>导出</button>',
             ].join('');
         }
 
@@ -556,56 +557,6 @@
                     draggable: true,
                     overflow: "hidden"
                 });
-                $("#item_save_or_update_btn").click(function () {
-                    //新增
-                    if ($("#itemid_input").val() == "") {
-                        $.ajax({
-                            url: "${APP_PATH}/maintenanceitem",
-                            type: "POST",
-                            data: $("#itemModal form").serialize(),
-                            success: function (result) {
-                                if (result.code == 100) {
-                                    $("#itemModal").modal("hide");
-                                    $("#item_table").bootstrapTable('refresh');
-                                    swal({
-                                        title: "维修项目保存成功",
-                                        icon: "success",
-                                        button: "确定"
-                                    });
-                                } else if (result.code == 200) {
-                                    swal({
-                                        title: "维修项目保存失败",
-                                        icon: "error",
-                                        button: "确定"
-                                    });
-                                }
-                            }
-                        });
-                    } else {//更新
-                        $.ajax({
-                            url: "${APP_PATH}/maintenanceitem",
-                            type: "PUT",
-                            data: $("#itemModal form").serialize(),
-                            success: function (result) {
-                                if (result.code == 100) {
-                                    $("#itemModal").modal("hide");
-                                    $("#item_table").bootstrapTable('refresh');
-                                    swal({
-                                        title: "维修项目修改成功",
-                                        icon: "success",
-                                        button: "确定"
-                                    });
-                                } else if (result.code == 200) {
-                                    swal({
-                                        title: "维修项目修改失败",
-                                        icon: "error",
-                                        button: "确定"
-                                    });
-                                }
-                            }
-                        });
-                    }
-                })
             },
 
             //维修材料新增按钮
@@ -618,58 +569,34 @@
                     draggable: true,
                     overflow: "hidden"
                 });
-                $("#material_save_or_update_btn").click(function () {
-                    if ($("#materialid_input").val() == "") {
-                        $.ajax({
-                            url: "${APP_PATH}/maintenancematerial",
-                            type: "POST",
-                            data: $("#materialModal form").serialize(),
-                            success: function (result) {
-                                if (result.code == 100) {
-                                    $("#materialModal").modal("hide");
-                                    $("#material_table").bootstrapTable('refresh');
-                                    swal({
-                                        title: "维修材料保存成功",
-                                        icon: "success",
-                                        button: "确定"
-                                    });
-                                } else if (result.code == 200) {
-                                    swal({
-                                        title: "维修材料保存失败",
-                                        icon: "error",
-                                        button: "确定"
-                                    });
-                                }
-                            }
-                        });
-                    } else {
-                        $.ajax({
-                            url: "${APP_PATH}/maintenancematerial",
-                            type: "PUT",
-                            data: $("#materialModal form").serialize(),
-                            success: function (result) {
-                                if (result.code == 100) {
-                                    $("#materialModal").modal("hide");
-                                    $("#material_table").bootstrapTable('refresh');
-                                    swal({
-                                        title: "维修材料修改成功",
-                                        icon: "success",
-                                        button: "确定"
-                                    });
-                                    onExpandRow();
-                                } else if (result.code == 200) {
-                                    swal({
-                                        title: "维修材料修改失败",
-                                        icon: "error",
-                                        button: "确定"
-                                    });
-                                }
-                            }
-                        });
+            },
+
+            //维修项目新增按钮
+            'click #export_btn': function (e, value, row, index) {
+                console.log(row.id);
+                $.ajax({
+                    url: "${APP_PATH}/maintenancebill/exportBillXls/" + row.id,
+                    type: "GET",
+                    success: function (result) {
+                        if (result.code == 100) {
+                            swal({
+                                title: "维修单导出成功，请于桌面查看",
+                                icon: "success",
+                                button: "确定"
+                            });
+                        } else {
+                            swal({
+                                title: "维修单导出失败",
+                                icon: "error",
+                                button: "确定"
+                            });
+                        }
                     }
-                })
+                });
             }
         };
+
+
         var oTableInit = new Object();
         //初始化Table
         oTableInit.Init = function (url) {
@@ -778,7 +705,7 @@
                     }, {
                         field: 'operate',
                         title: '操作',
-                        width: 160,
+                        width: 200,
                         align: 'center',
                         valign: 'middle',
                         events: operateEvents,//给按钮注册事件
@@ -948,7 +875,6 @@
                         }
                     });
 
-
                     var material_table = $(material_table).bootstrapTable({
                         url: '${APP_PATH}/maintenancematerial/bill/' + billId,
                         method: 'GET',
@@ -1098,6 +1024,106 @@
                             } else if (result.code == 200) {
                                 swal({
                                     title: "车辆信息修改失败",
+                                    icon: "error",
+                                    button: "确定"
+                                });
+                            }
+                        }
+                    });
+                }
+            });
+            $("#item_save_or_update_btn").click(function () {
+                //新增
+                if ($("#itemid_input").val() == "") {
+                    $.ajax({
+                        url: "${APP_PATH}/maintenanceitem",
+                        type: "POST",
+                        data: $("#itemModal form").serialize(),
+                        success: function (result) {
+                            if (result.code == 100) {
+                                $("#itemModal").modal("hide");
+                                $("#item_table").bootstrapTable('refresh');
+                                swal({
+                                    title: "维修项目保存成功",
+                                    icon: "success",
+                                    button: "确定"
+                                });
+                            } else if (result.code == 200) {
+                                swal({
+                                    title: "维修项目保存失败",
+                                    icon: "error",
+                                    button: "确定"
+                                });
+                            }
+                        }
+                    });
+                } else {//更新
+                    $.ajax({
+                        url: "${APP_PATH}/maintenanceitem",
+                        type: "PUT",
+                        data: $("#itemModal form").serialize(),
+                        success: function (result) {
+                            if (result.code == 100) {
+                                $("#itemModal").modal("hide");
+                                $("#item_table").bootstrapTable('refresh');
+                                swal({
+                                    title: "维修项目修改成功",
+                                    icon: "success",
+                                    button: "确定"
+                                });
+                            } else if (result.code == 200) {
+                                swal({
+                                    title: "维修项目修改失败",
+                                    icon: "error",
+                                    button: "确定"
+                                });
+                            }
+                        }
+                    });
+                }
+            });
+            $("#material_save_or_update_btn").click(function () {
+                if ($("#materialid_input").val() == "") {
+                    $.ajax({
+                        url: "${APP_PATH}/maintenancematerial",
+                        type: "POST",
+                        data: $("#materialModal form").serialize(),
+                        success: function (result) {
+                            if (result.code == 100) {
+                                $("#materialModal").modal("hide");
+                                $("#material_table").bootstrapTable('refresh');
+                                swal({
+                                    title: "维修材料保存成功",
+                                    icon: "success",
+                                    button: "确定"
+                                });
+                            } else if (result.code == 200) {
+                                swal({
+                                    title: "维修材料保存失败",
+                                    icon: "error",
+                                    button: "确定"
+                                });
+                            }
+                        }
+                    });
+                } else {
+                    $.ajax({
+                        url: "${APP_PATH}/maintenancematerial",
+                        type: "PUT",
+                        data: $("#materialModal form").serialize(),
+                        success: function (result) {
+                            if (result.code == 100) {
+                                $("#materialModal").modal("hide");
+                                $("#material_table").bootstrapTable('refresh');
+                                swal({
+                                    title: "维修材料修改成功",
+                                    icon: "success",
+                                    button: "确定"
+                                });
+                                onExpandRow();
+                            } else if (result.code == 200) {
+                                swal({
+                                    title: "维修材料修改失败",
                                     icon: "error",
                                     button: "确定"
                                 });

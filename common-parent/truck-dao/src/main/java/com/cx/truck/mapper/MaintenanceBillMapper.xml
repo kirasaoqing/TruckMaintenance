@@ -28,6 +28,10 @@
                 <result column="c_id" property="id"/>
                 <result column="customer_name" property="name"/>
             </association>
+            <association property="vehicleType" javaType="com.cx.truck.model.VehicleType">
+                <result column="v_id" property="id"/>
+                <result column="vehicletype_name" property="name"/>
+            </association>
         </association>
         <association property="maintenanceBillStatus" javaType="com.cx.truck.model.MaintenanceBillStatus">
             <id column="status_id" property="id"/>
@@ -63,6 +67,10 @@
             <association property="customer" javaType="com.cx.truck.model.Customer">
                 <result column="c_id" property="id"/>
                 <result column="customer_name" property="name"/>
+            </association>
+            <association property="vehicleType" javaType="com.cx.truck.model.VehicleType">
+                <result column="v_id" property="id"/>
+                <result column="vehicletype_name" property="name"/>
             </association>
         </association>
         <association property="maintenanceBillStatus" javaType="com.cx.truck.model.MaintenanceBillStatus">
@@ -140,13 +148,14 @@
         b.id, b.truck_id, b.enterdate, b.entrymileage, b.appointeddate, b.settingdate, b.status_id,
                 t.platenumber,
                 s.name AS status_name,
-				c.id AS c_id, c.name AS customer_name
+				c.id AS c_id, c.name AS customer_name,
+				v.id AS v_id, v.name AS vehicletype_name
     </sql>
     <sql id="WithItemAndMaterial_Column_List">
         b.id, b.truck_id, t.platenumber, b.enterdate, b.entrymileage, b.appointeddate, b.settingdate, b.status_id, s.name AS status_name,
 				i.id AS item_id, i.item,i.itemfees,
 				m.id AS material_id, m.name AS material_name, m.unit, m.quantity, m.price, m.amount,
-				c.id AS c_id, c.name AS customer_name
+				c.id AS c_id, c.name AS customer_name, v.id AS v_id, v.name AS vehicletype_name
     </sql>
 
     <select id="getTruckAndFinish" resultType="java.util.HashMap">
@@ -188,7 +197,7 @@
     </select>
 
 
-    <!--复杂查询含维修项及维修材料的维修单信息-->
+    <!--复杂查询含车辆和维修状态的维修单信息-->
     <select id="selectByExampleWithTruckAndStatus" resultMap="WithTruckAndStatusMap"
             parameterType="com.cx.truck.model.MaintenanceBillExample">
         select
@@ -200,6 +209,7 @@
         LEFT JOIN bc_truck t on t.id = b.truck_id
         LEFT JOIN sv_maintenance_bill_status s on s.id = b.status_id
         LEFT JOIN bc_customer c on c.id = t.customer_id
+        LEFT JOIN bc_vehicleType v on v.id = t.vehicletype_id
         <if test="_parameter != null">
             <include refid="Example_Where_Clause"/>
         </if>
@@ -219,9 +229,22 @@
         LEFT JOIN bc_truck t on t.id = b.truck_id
         LEFT JOIN sv_maintenance_bill_status s on s.id = b.status_id
         LEFT JOIN bc_customer c on c.id = t.customer_id
+        LEFT JOIN bc_vehicleType v on v.id = t.vehicletype_id
         where b.id = #{id,jdbcType=INTEGER}
     </select>
 
+    <!--按id查询含车辆和维修状态的维修单信息-->
+    <select id="selectByPrimaryKeyWithTruckAndStatus" resultMap="WithTruckAndStatusMap"
+            parameterType="java.lang.Integer">
+        select
+        <include refid="WithTruckAndStatus_Column_List"/>
+        FROM sv_maintenance_bill b
+        LEFT JOIN bc_truck t on t.id = b.truck_id
+        LEFT JOIN sv_maintenance_bill_status s on s.id = b.status_id
+        LEFT JOIN bc_customer c on c.id = t.customer_id
+        LEFT JOIN bc_vehicleType v on v.id = t.vehicletype_id
+        where b.id = #{id,jdbcType=INTEGER}
+    </select>
 
     <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
     delete from sv_maintenance_bill

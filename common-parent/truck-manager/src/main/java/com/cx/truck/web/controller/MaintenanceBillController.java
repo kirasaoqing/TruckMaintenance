@@ -2,18 +2,26 @@ package com.cx.truck.web.controller;
 
 import com.cx.truck.model.JsonResult;
 import com.cx.truck.model.MaintenanceBill;
+import com.cx.truck.model.MaintenanceItem;
+import com.cx.truck.model.MaintenanceMaterial;
 import com.cx.truck.service.IMaintenanceBillService;
+import com.cx.truck.service.IMaintenanceItemService;
+import com.cx.truck.service.IMaintenanceMaterialService;
 import com.cx.truck.web.controller.base.BaseController;
+import com.cx.truck.web.utils.JxlsUtils;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.io.support.PropertiesLoaderUtils;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.OutputStream;
+import java.text.SimpleDateFormat;
+import java.util.*;
 
 @RestController
 @RequestMapping("maintenancebill")
@@ -24,6 +32,10 @@ public class MaintenanceBillController extends BaseController<MaintenanceBill> {
 
     @Autowired
     private IMaintenanceBillService maintenanceBillService;
+    @Autowired
+    private IMaintenanceItemService maintenanceItemService;
+    @Autowired
+    private IMaintenanceMaterialService maintenanceMaterialService;
 
     //================================查询===================================
 
@@ -188,6 +200,7 @@ public class MaintenanceBillController extends BaseController<MaintenanceBill> {
 
     /**
      * 更新维修单
+     *
      * @param maintenanceBill
      * @return
      */
@@ -195,6 +208,72 @@ public class MaintenanceBillController extends BaseController<MaintenanceBill> {
     @ResponseBody
     public JsonResult update(MaintenanceBill maintenanceBill) {
         maintenanceBillService.update(maintenanceBill);
+        return JsonResult.success();
+    }
+
+
+    //==============================EXCEL导出============================
+    @GetMapping("/exportBillXls/{id}")
+    public JsonResult exportBillXls(@PathVariable("id") Integer id) throws Exception {
+        //通过Spring中的PropertiesLoaderUtils工具类进行获取xls.properties中的属性
+        Properties properties = new Properties();
+        properties = PropertiesLoaderUtils.loadAllProperties("xls.properties");
+        //System.out.println(new String(properties.getProperty("warshipType.2").getBytes("iso-8859-1"), "gbk"));
+        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+
+        // 模板路径和输出流
+        //String templatePath = "/Users/kira/Desktop/template.xls";
+        String templatePath = properties.getProperty("templatePath");
+        OutputStream os = new FileOutputStream(properties.getProperty("outPath"));
+        // 定义一个Map，往里面放入要在模板中显示数据
+        Map<String, Object> model = new HashMap<String, Object>();
+        MaintenanceBill bill = maintenanceBillService.findById(id);
+        model.put("id", bill.getId());
+        model.put("platenumber", bill.getTruck().getPlatenumber());
+        model.put("customer", bill.getTruck().getCustomer().getName());
+        model.put("enterdate", dateFormat.format(bill.getEnterdate()));
+        model.put("vehicleType", bill.getTruck().getVehicleType().getName());
+
+
+        List<Map> imList = new ArrayList<Map>();
+
+        List<MaintenanceItem> items = maintenanceItemService.findByBillId(id);
+        List<MaintenanceMaterial> materials = maintenanceMaterialService.findByBillId(id);
+        int size = items.size() > materials.size() ? items.size() : materials.size();
+        for (int i = 1; i < size + 1; i++) {
+            Map<String, Object> itemsAndMates = new HashMap<String, Object>();
+            if (items.size() >= i) {
+                MaintenanceItem item = items.get(i - 1);
+                itemsAndMates.put("item", item.getItem());
+                itemsAndMates.put("itemfees", item.getItemfees());
+            } else if (items.size() < i) {
+                itemsAndMates.put("item", "-");
+                itemsAndMates.put("itemfees", "-");
+            }
+            if (materials.size() >= i) {
+                MaintenanceMaterial material = materials.get(i - 1);
+                itemsAndMates.put("material", material.getMaterial().getName());
+                itemsAndMates.put("unit", material.getMaterial().getUnit().getName());
+                itemsAndMates.put("quantity", material.getQuantity());
+                itemsAndMates.put("price", material.getPrice());
+                itemsAndMates.put("amount", material.getAmount());
+            } else if (materials.size() < i) {
+                itemsAndMates.put("material", "-");
+                itemsAndMates.put("unit", "-");
+                itemsAndMates.put("quantity", "-");
+                itemsAndMates.put("price", "-");
+                itemsAndMates.put("amount", "-");
+            }
+            imList.add(itemsAndMates);
+        }
+
+        /*model.put("items", items);
+        model.put("materials", materials);*/
+        model.put("im", imList);
+
+        //调用之前写的工具类，传入模板路径，输出流，和装有数据Map
+        JxlsUtils.exportExcel(templatePath, os, model);
+        os.close();
         return JsonResult.success();
     }
 }

@@ -34,7 +34,7 @@ public class MaintenanceMaterialController extends BaseController<MaintenanceMat
     @ResponseBody
     public JsonResult getMaterialsByBillId(@PathVariable("billId") Integer billId) {
         //List查询要放到startPage下面
-        PageHelper.startPage(1, 10);
+        PageHelper.startPage(1, 20);
         List<MaintenanceMaterial> materials = maintenanceMaterialService.findByBillId(billId);
         PageInfo<MaintenanceMaterial> pageInfo = new PageInfo<>(materials);
         //取出查询结果

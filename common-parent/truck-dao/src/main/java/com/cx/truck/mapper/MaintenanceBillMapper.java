@@ -21,7 +21,7 @@ public interface MaintenanceBillMapper {
     List<MaintenanceBill> selectByExample(MaintenanceBillExample example);
 
     /**
-     * 复杂查询包含维修项及维修材料的维修单信息
+     * 复杂查询含车辆和维修状态的维修单信息
      *
      * @param example
      * @return
@@ -37,6 +37,14 @@ public interface MaintenanceBillMapper {
      * @return
      */
     MaintenanceBill selectByPrimaryKeyWithItemsAndMaterials(Integer id);
+
+    /**
+     * 按id复杂查询含车辆和维修状态的维修单信息
+     *
+     * @param id
+     * @return
+     */
+    MaintenanceBill selectByPrimaryKeyWithTruckAndStatus(Integer id);
 
     int updateByExampleSelective(@Param("record") MaintenanceBill record, @Param("example") MaintenanceBillExample example);
 

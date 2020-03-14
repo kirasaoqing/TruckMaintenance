@@ -41,7 +41,7 @@ public class MaintenanceBillServiceImpl extends BaseServiceImpl<MaintenanceBill>
 
     @Override
     public MaintenanceBill findById(Integer id) {
-        return maintenanceBillMapper.selectByPrimaryKeyWithItemsAndMaterials(id);
+        return maintenanceBillMapper.selectByPrimaryKeyWithTruckAndStatus(id);
     }
 
     @Override
@@ -146,5 +146,10 @@ public class MaintenanceBillServiceImpl extends BaseServiceImpl<MaintenanceBill>
             e.printStackTrace();
         }
         return maintenanceBillMapper.getTruckAndFinish(nowDate,beginDateW,endDateW,beginDateM,endDateM);
+    }
+
+    @Override
+    public MaintenanceBill findByIdWithItemAndMaterial(Integer id) {
+        return maintenanceBillMapper.selectByPrimaryKeyWithItemsAndMaterials(id);
     }
 }
